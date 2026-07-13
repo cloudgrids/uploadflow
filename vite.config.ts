@@ -6,7 +6,27 @@ import { defineConfig } from 'vite';
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss(), babel({ presets: [reactCompilerPreset()] })],
+  plugins: [
+    react(),
+    tailwindcss(),
+    babel({ presets: [reactCompilerPreset()] }),
+    {
+      name: 'uploadflow-test-upload',
+      configureServer(server) {
+        server.middlewares.use('/api/test-upload', (request, response) => {
+          let receivedBytes = 0;
+          request.on('data', (chunk: Buffer) => {
+            receivedBytes += chunk.length;
+          });
+          request.on('end', () => {
+            response.statusCode = 200;
+            response.setHeader('Content-Type', 'application/json');
+            response.end(JSON.stringify({ success: true, receivedBytes }));
+          });
+        });
+      }
+    }
+  ],
   server: {
     host: '127.0.0.1',
     port: 5173,

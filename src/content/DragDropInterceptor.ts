@@ -4,12 +4,12 @@ import { FileBypass } from './FileBypass';
 import type { OverlayManager } from './OverlayManager';
 
 export class DragDropInterceptor {
-  private readonly overlay: OverlayManager;
-  private readonly messages: MessageService;
+  private readonly overlayManager: OverlayManager;
+  private readonly messageService: MessageService;
 
-  constructor(overlay: OverlayManager, messages: MessageService) {
-    this.overlay = overlay;
-    this.messages = messages;
+  constructor(overlayManager: OverlayManager, messageService: MessageService) {
+    this.overlayManager = overlayManager;
+    this.messageService = messageService;
   }
 
   register(): void {
@@ -25,17 +25,19 @@ export class DragDropInterceptor {
 
     event.stopImmediatePropagation();
     event.preventDefault();
+
     const files = Array.from(event.dataTransfer.files);
     const target = event.target;
 
-    void this.messages
+    this.messageService
       .send<ExtensionConfig>({ type: 'GET_CONFIG' })
       .then((config) => {
         if (!config?.settings?.generalSettings?.enableUploadFlow) {
           FileBypass.drop(event, files, target);
           return;
         }
-        this.overlay.show({
+
+        this.overlayManager.show({
           files,
           config: config.settings,
           onComplete: (modifiedFiles) => FileBypass.drop(event, modifiedFiles, target),
