@@ -53,15 +53,15 @@ const getBlockTop = (
   return anchorY - totalHeight / 2;
 };
 
-const drawCanvas = (img: HTMLImageElement, options: WatermarkSettings) => {
+const drawCanvas = (image: ImageBitmap, options: WatermarkSettings) => {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
 
   if (!ctx) throw new Error('Could not get canvas context');
 
-  canvas.width = img.naturalWidth;
-  canvas.height = img.naturalHeight;
-  ctx.drawImage(img, 0, 0);
+  canvas.width = image.width;
+  canvas.height = image.height;
+  ctx.drawImage(image, 0, 0);
 
   ctx.font = `${options.fontSize}px ${options.font}`;
   ctx.fillStyle = options.fillStyle;
@@ -88,33 +88,30 @@ const drawCanvas = (img: HTMLImageElement, options: WatermarkSettings) => {
   return canvas;
 };
 
-export const watermark = (file: File, options: WatermarkSettings): Promise<File> => {
+export const watermark = async (file: File, options: WatermarkSettings): Promise<File> => {
+  let image: ImageBitmap;
+
+  try {
+    image = await createImageBitmap(file);
+  } catch {
+    throw new Error('Failed to load image');
+  }
+
+  let canvas: HTMLCanvasElement;
+  try {
+    canvas = drawCanvas(image, options);
+  } finally {
+    image.close();
+  }
+
   return new Promise<File>((resolve, reject) => {
-    const img = new Image();
-    img.src = URL.createObjectURL(file);
-
-    img.onload = () => {
-      URL.revokeObjectURL(img.src);
-
-      let canvas: HTMLCanvasElement;
-      try {
-        canvas = drawCanvas(img, options);
-      } catch (error) {
-        reject(error);
+    canvas.toBlob((blob) => {
+      if (!blob) {
+        reject(new Error('Canvas toBlob failed!'));
         return;
       }
 
-      canvas.toBlob((blob) => {
-        if (!blob) return reject(new Error('Canvas toBlob failed!'));
-
-        const watermarkedFile = new File([blob], file.name, { type: file.type, lastModified: Date.now() });
-        resolve(watermarkedFile);
-      }, file.type);
-    };
-
-    img.onerror = () => {
-      URL.revokeObjectURL(img.src);
-      reject(new Error('Failed to load image'));
-    };
+      resolve(new File([blob], file.name, { type: file.type, lastModified: Date.now() }));
+    }, file.type);
   });
 };

@@ -43,7 +43,7 @@ export const WatermarkSettings: React.FC<WatermarkSettingsProps> = ({ settings, 
     <div className="rounded-xl border border-slate-200 bg-white p-4 text-left shadow-sm dark:border-white/10 dark:bg-white/5 dark:shadow-none">
       <div className="mb-4 flex items-start justify-between gap-4">
         <div>
-          <h3 className="text-xs text-slate-950 dark:text-white">Image watermark</h3>
+          <h3 className="text-xs text-slate-950 dark:text-white">Watermark</h3>
           <p className="mt-1 text-[10px] text-slate-500">Set the default text and placement used by the watermark editor.</p>
         </div>
         <label className="flex cursor-pointer items-center gap-2 text-xs font-medium text-slate-700 dark:text-slate-300">

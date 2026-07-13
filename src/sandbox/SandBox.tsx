@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ImageEditor from '../components/ImageEditor';
 import TextEditor from '../components/TextEditor';
+import { Upscale } from '../components/Upscale';
 import { Watermark } from '../components/Watermark';
 import { DeleteIcon, DownloadIcon, EditIcon, UploadIcon } from '../lib/icons';
 import type { UploadFlowSettings, UploadFlowSettingsTab } from '../settings/UploadFlowSettings';
@@ -129,7 +130,7 @@ export const SandBox: React.FC<SandBoxProps> = ({ sandboxFiles, onOptimization, 
                     : 'text-slate-400 hover:bg-slate-800/70 hover:text-slate-200'
                 }`}
               >
-                {tool === 'image' ? 'Image optimize' : tool === 'redaction' ? 'Text redact' : 'Watermark'}
+                {tool === 'image' ? 'Image optimize' : tool === 'redaction' ? 'Text redact' : tool === 'upscale' ? 'Upscale' : 'Watermark'}
               </button>
             ))}
           </div>
@@ -160,7 +161,6 @@ export const SandBox: React.FC<SandBoxProps> = ({ sandboxFiles, onOptimization, 
                     </div>
                   );
                 }
-                break;
               case 'redaction':
                 if (config.redactionSettings.enableRedaction) {
                   return (
@@ -179,7 +179,6 @@ export const SandBox: React.FC<SandBoxProps> = ({ sandboxFiles, onOptimization, 
                     </div>
                   );
                 }
-                break;
               case 'watermark':
                 if (config.watermarkSettings.enableWatermark) {
                   return (
@@ -195,6 +194,25 @@ export const SandBox: React.FC<SandBoxProps> = ({ sandboxFiles, onOptimization, 
                   return (
                     <div className="text-sm text-yellow-400 text-center">
                       Watermarking is disabled in the settings. Please enable it to use this feature.
+                    </div>
+                  );
+                }
+              case 'upscale':
+                if (config.upscaleSettings.enableUpscaling) {
+                  return (
+                    <Upscale
+                      key={activeEditingFile.id}
+                      file={editorFile}
+                      onSave={(file) => handleApplySandboxEdit(activeEditingFile.id, file)}
+                      onCancel={() => setEditingFile(null)}
+                      config={config.upscaleSettings}
+                      onApplyAll={(transform) => void applyToAll(transform)}
+                    />
+                  );
+                } else {
+                  return (
+                    <div className="text-center text-sm text-yellow-400">
+                      Image upscaling is disabled in the settings. Please enable it to use this feature.
                     </div>
                   );
                 }

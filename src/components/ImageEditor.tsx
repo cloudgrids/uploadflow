@@ -3,6 +3,8 @@ import { compressImage, compressImageAtScale } from '../lib/compress';
 import type { ImageSettings } from '../settings/UploadFlowSettings';
 import type { FileTransformer } from '../types/File';
 import { formatBytes } from '../utils/helpers';
+import { useFullscreen } from '../hooks/useFullscreen';
+import { FullscreenButton } from './FullscreenButton';
 
 interface ImageEditorProps {
   file: File;
@@ -28,6 +30,7 @@ export default function ImageEditor({ file, onSave, onCancel, config, onApplyAll
   const [optimizedFile, setOptimizedFile] = useState<File | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const { elementRef: previewRef, isFullscreen, toggleFullscreen } = useFullscreen<HTMLDivElement>();
 
   const targetWidth = Math.round(originalWidth * (scale / 100));
   const targetHeight = Math.round(originalHeight * (scale / 100));
@@ -99,6 +102,12 @@ export default function ImageEditor({ file, onSave, onCancel, config, onApplyAll
     });
 
     onSave(output);
+  };
+
+  const handleFullscreen = () => {
+    void toggleFullscreen().catch((reason: unknown) => {
+      setError(reason instanceof Error ? reason.message : 'Fullscreen mode is not available.');
+    });
   };
 
   const currentWidth = targetWidth;
@@ -205,8 +214,18 @@ export default function ImageEditor({ file, onSave, onCancel, config, onApplyAll
           )}
         </div>
 
-        <div className="flex min-w-0 flex-col justify-between bg-slate-950/40 border border-slate-800/80 rounded-xl p-3">
-          <div className="relative flex items-center justify-center bg-slate-900/60 rounded-lg h-36 border border-slate-800 overflow-hidden group">
+        <div
+          ref={previewRef}
+          className={`relative flex min-w-0 flex-col justify-between border border-slate-800/80 bg-slate-950 p-3 ${
+            isFullscreen ? 'h-screen w-screen gap-4 p-5' : 'rounded-xl bg-slate-950/40'
+          }`}
+        >
+          <div
+            className={`group relative flex items-center justify-center overflow-hidden rounded-lg border border-slate-800 bg-slate-900/60 ${
+              isFullscreen ? 'min-h-0 flex-1' : 'h-36'
+            }`}
+          >
+            <FullscreenButton isFullscreen={isFullscreen} onClick={handleFullscreen} className="absolute right-2 top-2 z-20" />
             {loading ? (
               <div className="flex flex-col items-center gap-2">
                 <div className="w-6 h-6 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>

@@ -41,7 +41,7 @@ export const ImageSettings: React.FC<ImageSettingsProps> = ({ settings, onUpdate
           />
         </label>
       </div>
-      <div className="flex flex-col gap-3">
+      <fieldset disabled={!is.enableAutoOptimize} className="flex flex-col gap-3.5 disabled:opacity-50">
         <div className="flex items-center justify-between">
           <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">Default Convert Format</span>
           <select
@@ -70,7 +70,7 @@ export const ImageSettings: React.FC<ImageSettingsProps> = ({ settings, onUpdate
             className="w-full accent-purple-500 cursor-pointer h-1 bg-slate-800 rounded-lg appearance-none"
           />
         </div>
-      </div>
+      </fieldset>
     </div>
   );
 };

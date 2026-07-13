@@ -42,7 +42,7 @@ export const TextRedactSettings: React.FC<TextRedactSettingsProps> = ({ settings
           />
         </label>
       </div>
-      <div className="flex flex-col gap-2.5">
+      <fieldset disabled={!rs.enableRedaction} className="flex flex-col gap-3.5 disabled:opacity-50">
         {[
           { key: 'redactEmail', label: 'Redact Email Addresses', desc: 'Replaces user@domain.com patterns' },
           { key: 'redactPhone', label: 'Redact Phone Numbers', desc: 'Replaces US/international numeric digits patterns' },
@@ -65,7 +65,7 @@ export const TextRedactSettings: React.FC<TextRedactSettingsProps> = ({ settings
             </label>
           );
         })}
-      </div>
+      </fieldset>
     </div>
   );
 };

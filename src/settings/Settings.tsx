@@ -2,6 +2,7 @@ import { GeneralSettings } from './GeneralSettings';
 import { ImageSettings } from './ImageSettings';
 import { TextRedactSettings } from './TextRedactSettings';
 import type { UploadFlowSettings } from './UploadFlowSettings';
+import { UpscaleSettings } from './UpscaleSettings';
 import { WatermarkSettings } from './WatermarkSettings';
 
 interface SettingsProps {
@@ -17,6 +18,7 @@ export const Settings: React.FC<SettingsProps> = ({ settings, onUpdate, onResetS
       <ImageSettings settings={settings} onUpdate={onUpdate} />
       <TextRedactSettings settings={settings} onUpdate={onUpdate} />
       <WatermarkSettings settings={settings} onUpdate={onUpdate} />
+      <UpscaleSettings settings={settings} onUpdate={onUpdate} />
     </div>
   );
 };

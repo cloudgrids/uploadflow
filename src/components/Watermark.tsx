@@ -1,8 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { watermark } from '../lib/watermark';
 import { WatermarkSettings } from '../settings/UploadFlowSettings';
 import type { FileTransformer } from '../types/File';
 import { formatBytes } from '../utils/helpers';
+import { useFullscreen } from '../hooks/useFullscreen';
+import { FullscreenButton } from './FullscreenButton';
+import { ObjectUrlImage } from './ObjectUrlImage';
 
 interface WatermarkProps {
   file: File;
@@ -35,6 +38,13 @@ export function Watermark({ file, onSave, onCancel, config, onApplyAll }: Waterm
   const [output, setOutput] = useState<File | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const { elementRef: previewRef, isFullscreen, toggleFullscreen } = useFullscreen<HTMLDivElement>();
+
+  const handleFullscreen = () => {
+    void toggleFullscreen().catch((reason: unknown) => {
+      setError(reason instanceof Error ? reason.message : 'Fullscreen mode is not available.');
+    });
+  };
 
   const currentOptions = useCallback(
     () =>
@@ -50,13 +60,6 @@ export function Watermark({ file, onSave, onCancel, config, onApplyAll }: Waterm
       ),
     [config?.textAlign, config?.textBaseline, fillStyle, font, fontSize, position, text]
   );
-
-  const previewUrl = useMemo(() => (output ? URL.createObjectURL(output) : null), [output]);
-
-  useEffect(() => {
-    if (!previewUrl) return;
-    return () => URL.revokeObjectURL(previewUrl);
-  }, [previewUrl]);
 
   useEffect(() => {
     if (!text.trim()) return;
@@ -198,14 +201,20 @@ export function Watermark({ file, onSave, onCancel, config, onApplyAll }: Waterm
           </label>
         </div>
 
-        <div className="relative flex min-h-64 min-w-0 items-center justify-center overflow-hidden rounded-xl border border-slate-800 bg-slate-950/50 p-3">
+        <div
+          ref={previewRef}
+          className={`relative flex min-w-0 items-center justify-center overflow-hidden border border-slate-800 bg-slate-950 p-3 ${
+            isFullscreen ? 'h-screen w-screen p-6' : 'min-h-64 rounded-xl bg-slate-950/50'
+          }`}
+        >
+          <FullscreenButton isFullscreen={isFullscreen} onClick={handleFullscreen} className="absolute right-2 top-2 z-20" />
           {loading && (
             <div className="absolute inset-0 z-10 flex items-center justify-center bg-slate-950/60 text-xs text-slate-300">
               Updating preview…
             </div>
           )}
-          {text.trim() && previewUrl ? (
-            <img src={previewUrl} alt="Watermark preview" className="max-h-72 max-w-full object-contain" />
+          {text.trim() && output ? (
+            <ObjectUrlImage file={output} alt="Watermark preview" className={isFullscreen ? 'max-h-full max-w-full object-contain' : 'max-h-72 max-w-full object-contain'} />
           ) : (
             <span className="text-xs text-slate-500">Enter text to preview the watermark.</span>
           )}
