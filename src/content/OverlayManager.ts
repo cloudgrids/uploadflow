@@ -5,6 +5,21 @@ import type { UploadFlowSettings } from '../settings/UploadFlowSettings';
 import shadowStyles from '../index.css?inline';
 
 const OVERLAY_Z_INDEX = '2147483646';
+const CONTAINED_OVERLAY_EVENTS = [
+  'keydown',
+  'keypress',
+  'keyup',
+  'beforeinput',
+  'input',
+  'compositionstart',
+  'compositionupdate',
+  'compositionend',
+  'copy',
+  'cut',
+  'paste',
+  'focusin',
+  'focusout'
+] as const;
 
 export interface OverlayOptions {
   files: File[];
@@ -60,6 +75,9 @@ export class OverlayManager {
     document.body.appendChild(this.container);
 
     const shadowRoot = this.container.attachShadow({ mode: 'open' });
+    const containEvent = (event: Event) => event.stopPropagation();
+    CONTAINED_OVERLAY_EVENTS.forEach((eventType) => shadowRoot.addEventListener(eventType, containEvent));
+
     const style = document.createElement('style');
     style.textContent = shadowStyles;
     shadowRoot.appendChild(style);

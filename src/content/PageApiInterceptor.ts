@@ -30,12 +30,13 @@ export class PageApiInterceptor {
     window.removeEventListener('message', this.handleMessage);
   }
 
-  private respond(id: string, files: File[]): void {
+  private respond(id: string, files: File[], cancelled = false): void {
     const response: PageInterceptorResponse = {
       source: PAGE_INTERCEPTOR_SOURCE,
       type: 'RESPONSE',
       id,
-      files
+      files,
+      cancelled
     };
     window.postMessage(response, '*');
   }
@@ -61,7 +62,7 @@ export class PageApiInterceptor {
           files,
           config: config.settings,
           onComplete: (modifiedFiles) => this.respond(id, modifiedFiles),
-          onCancel: () => this.respond(id, files)
+          onCancel: () => this.respond(id, files, true)
         });
       })
       .catch(() => this.respond(id, files));

@@ -1,6 +1,6 @@
 export const PAGE_INTERCEPTOR_SOURCE = 'uploadflow-page-interceptor';
 
-export type PageInterceptorKind = 'clipboard-read' | 'xhr-send' | 'file-picker' | 'file-handle-get-file';
+export type PageInterceptorKind = 'file-input' | 'clipboard-read' | 'fetch-send' | 'xhr-send' | 'file-handle-get-file';
 
 export interface PageInterceptorRequest {
   source: typeof PAGE_INTERCEPTOR_SOURCE;
@@ -15,6 +15,7 @@ export interface PageInterceptorResponse {
   type: 'RESPONSE';
   id: string;
   files: File[];
+  cancelled: boolean;
 }
 
 export interface PageInterceptorReady {
