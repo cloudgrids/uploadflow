@@ -1,7 +1,6 @@
 import { DeleteIcon } from '../lib/icons';
 import type { UploadFlowSettings } from '../settings/UploadFlowSettings';
-import type { RecentFile } from '../types/File';
-import type { Stats } from '../types/Stats';
+import type { RecentFile, Stats } from '../types/Common';
 import { formatBytes } from '../utils/helpers';
 import { Panel, SectionHeading } from './ui';
 

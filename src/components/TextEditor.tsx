@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { redactSensitiveData } from '../lib/redact';
 import type { RedactionSettings } from '../settings/UploadFlowSettings';
-import type { FileTransformer } from '../types/File';
+import type { FileTransformer } from '../types/Common';
 import { formatBytes } from '../utils/helpers';
 
 interface TextEditorProps {

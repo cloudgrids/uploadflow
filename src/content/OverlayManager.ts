@@ -2,6 +2,7 @@ import { createElement } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import App from '../App';
 import type { UploadFlowSettings } from '../settings/UploadFlowSettings';
+import appStyles from '../App.css?inline';
 import shadowStyles from '../index.css?inline';
 
 const OVERLAY_Z_INDEX = '2147483646';
@@ -79,7 +80,7 @@ export class OverlayManager {
     CONTAINED_OVERLAY_EVENTS.forEach((eventType) => shadowRoot.addEventListener(eventType, containEvent));
 
     const style = document.createElement('style');
-    style.textContent = shadowStyles;
+    style.textContent = `${shadowStyles}\n${appStyles}`;
     shadowRoot.appendChild(style);
 
     const mountPoint = document.createElement('div');

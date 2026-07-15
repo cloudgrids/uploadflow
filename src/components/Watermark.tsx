@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useFullscreen } from '../hooks/useFullscreen';
 import { watermark } from '../lib/watermark';
 import { WatermarkSettings } from '../settings/UploadFlowSettings';
-import type { FileTransformer } from '../types/File';
+import type { FileTransformer } from '../types/Common';
 import { formatBytes } from '../utils/helpers';
 import { FullscreenButton } from './FullscreenButton';
 import { ObjectUrlImage } from './ObjectUrlImage';

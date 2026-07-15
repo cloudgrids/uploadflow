@@ -77,16 +77,19 @@ export class WatermarkSettings {
 
 export class GeneralSettings {
   enableUploadFlow: boolean;
+  enableInspectMode: boolean;
   defaultTab: UploadFlowSettingsTab;
   theme: 'light' | 'dark' | 'system';
 
   constructor(
     enableUploadFlow: boolean = true,
+    enableInspectMode: boolean = false,
     defaultTab: UploadFlowSettingsTab = 'image',
     theme: 'light' | 'dark' | 'system' = 'system'
   ) {
     this.enableUploadFlow = enableUploadFlow;
     this.defaultTab = defaultTab;
+    this.enableInspectMode = enableInspectMode;
     this.theme = theme;
   }
 }

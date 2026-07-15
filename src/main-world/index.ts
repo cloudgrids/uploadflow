@@ -1,6 +1,8 @@
 import {
   PAGE_INTERCEPTOR_SOURCE,
   type PageInterceptorKind,
+  type PageMediaInspectionState,
+  type PageMediaSources,
   type PageInterceptorState,
   type PageInterceptorRequest,
   type PageInterceptorResponse
@@ -8,6 +10,7 @@ import {
 
 let bridgeReady = false;
 let interceptionEnabled = false;
+let mediaInspectionEnabled = false;
 const processedFiles = new WeakSet<File>();
 const userSelectedFiles = new WeakSet<File>();
 
@@ -23,7 +26,53 @@ window.addEventListener('message', (event: MessageEvent<unknown>) => {
     bridgeReady = true;
     interceptionEnabled = message.enabled;
   }
+  const mediaState = event.data as Partial<PageMediaInspectionState>;
+  if (
+    mediaState.source === PAGE_INTERCEPTOR_SOURCE &&
+    mediaState.type === 'MEDIA_INSPECTION_STATE' &&
+    typeof mediaState.enabled === 'boolean'
+  ) {
+    mediaInspectionEnabled = mediaState.enabled;
+  }
 });
+
+function captureXMediaSources(response: Response): void {
+  if (!mediaInspectionEnabled || !/(^|\.)((x|twitter)\.com)$/.test(window.location.hostname)) return;
+  if (!/\/(i\/api|graphql)\//.test(response.url)) return;
+  if (!response.headers.get('content-type')?.includes('application/json')) return;
+
+  void response
+    .clone()
+    .json()
+    .then((body: unknown) => {
+      const urls = new Set<string>();
+      const pending: unknown[] = [body];
+      let visited = 0;
+
+      while (pending.length && visited < 50_000) {
+        const value = pending.pop();
+        visited += 1;
+        if (typeof value === 'string') {
+          if (/^https?:\/\/[^\s]+\.(mp4|webm|m3u8)(?:\?|$)/i.test(value)) urls.add(value);
+        } else if (Array.isArray(value)) {
+          pending.push(...value);
+        } else if (value && typeof value === 'object') {
+          pending.push(...Object.values(value as Record<string, unknown>));
+        }
+      }
+
+      if (!urls.size) return;
+      const message: PageMediaSources = {
+        source: PAGE_INTERCEPTOR_SOURCE,
+        type: 'MEDIA_SOURCES',
+        urls: Array.from(urls)
+      };
+      window.postMessage(message, '*');
+    })
+    .catch(() => {
+      // Ignore non-JSON and opaque responses; the page still receives its original response.
+    });
+}
 
 function interceptFiles(kind: PageInterceptorKind, files: File[]): Promise<FileInterceptionResult> {
   if (!bridgeReady || !interceptionEnabled || !files.length) return Promise.resolve({ files, cancelled: false });
@@ -207,7 +256,11 @@ function registerFetchInterceptor(): void {
 
   window.fetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
     const body = init?.body;
-    if (!(body instanceof FormData) || !bridgeReady || !interceptionEnabled) return originalFetch(input, init);
+    if (!(body instanceof FormData) || !bridgeReady || !interceptionEnabled) {
+      const response = await originalFetch(input, init);
+      captureXMediaSources(response);
+      return response;
+    }
 
     const entries: Array<[string, FormDataEntryValue]> = [];
     const files: File[] = [];
@@ -216,7 +269,11 @@ function registerFetchInterceptor(): void {
       if (value instanceof File) files.push(value);
     });
 
-    if (!files.length || !hasUserSelectedFile(files)) return originalFetch(input, init);
+    if (!files.length || !hasUserSelectedFile(files)) {
+      const response = await originalFetch(input, init);
+      captureXMediaSources(response);
+      return response;
+    }
     const { files: modifiedFiles } = await interceptFiles('fetch-send', files);
     const replacement = new FormData();
     let fileIndex = 0;
@@ -228,7 +285,9 @@ function registerFetchInterceptor(): void {
       } else replacement.append(key, value);
     }
 
-    return originalFetch(input, { ...init, body: replacement });
+    const response = await originalFetch(input, { ...init, body: replacement });
+    captureXMediaSources(response);
+    return response;
   };
 }
 

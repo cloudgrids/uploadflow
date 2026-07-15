@@ -1,6 +1,5 @@
-import type { RecentFile } from '../types/File';
+import type { RecentFile, Stats } from '../types/Common';
 import type { StatsSnapshot } from '../types/Message';
-import type { Stats } from '../types/Stats';
 import type { StorageService } from './StorageService';
 
 const emptyStats: Stats = { totalFiles: 0, bytesSaved: 0, totalOriginalBytes: 0 };

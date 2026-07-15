@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useFullscreen } from '../hooks/useFullscreen';
 import { compressImage, compressImageAtScale } from '../lib/compress';
 import type { ImageSettings } from '../settings/UploadFlowSettings';
-import type { FileTransformer } from '../types/File';
+import type { FileTransformer } from '../types/Common';
 import { formatBytes } from '../utils/helpers';
-import { useFullscreen } from '../hooks/useFullscreen';
 import { FullscreenButton } from './FullscreenButton';
 
 interface ImageEditorProps {

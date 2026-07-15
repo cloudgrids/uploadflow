@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useFullscreen } from '../hooks/useFullscreen';
 import type { UpscaleSettings } from '../settings/UploadFlowSettings';
-import type { FileTransformer } from '../types/File';
+import type { FileTransformer } from '../types/Common';
 import { upscaleInstance } from '../upscaler';
 import { formatBytes } from '../utils/helpers';
 import { toast } from '../utils/Toaster';

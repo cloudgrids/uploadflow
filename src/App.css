@@ -183,3 +183,35 @@
     border-right-color: var(--border);
   }
 }
+
+.uploadflow-workspace {
+  color-scheme: dark;
+}
+
+.settings-workspace > div {
+  border-color: rgb(255 255 255 / 10%) !important;
+  background: rgb(255 255 255 / 3%) !important;
+  box-shadow: none !important;
+}
+
+.settings-workspace h3,
+.settings-workspace label,
+.settings-workspace .text-slate-950,
+.settings-workspace .text-slate-900,
+.settings-workspace .text-slate-800,
+.settings-workspace .text-slate-700 {
+  color: rgb(255 255 255 / 82%) !important;
+}
+
+.settings-workspace p,
+.settings-workspace .text-slate-500 {
+  color: rgb(255 255 255 / 34%) !important;
+}
+
+.settings-workspace input:not([type='checkbox']):not([type='range']):not([type='color']),
+.settings-workspace textarea,
+.settings-workspace select {
+  border-color: rgb(255 255 255 / 10%) !important;
+  background: #0d1113 !important;
+  color: rgb(255 255 255 / 78%) !important;
+}

@@ -23,3 +23,15 @@ export interface PageInterceptorState {
   type: 'STATE';
   enabled: boolean;
 }
+
+export interface PageMediaInspectionState {
+  source: typeof PAGE_INTERCEPTOR_SOURCE;
+  type: 'MEDIA_INSPECTION_STATE';
+  enabled: boolean;
+}
+
+export interface PageMediaSources {
+  source: typeof PAGE_INTERCEPTOR_SOURCE;
+  type: 'MEDIA_SOURCES';
+  urls: string[];
+}

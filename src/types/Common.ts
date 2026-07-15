@@ -14,3 +14,9 @@ export interface SandboxFile {
 }
 
 export type FileTransformer = (file: File) => Promise<File>;
+
+export interface Stats {
+  totalFiles: number;
+  bytesSaved: number;
+  totalOriginalBytes: number;
+}

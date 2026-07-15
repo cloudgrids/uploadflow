@@ -4,6 +4,7 @@ import { DragDropInterceptor } from './DragDropInterceptor';
 import { FileChangeInterceptor } from './FileChangeInterceptor';
 import { FileInputInterceptor } from './FileInputInterceptor';
 import { InterceptionState } from './InterceptionState';
+import { InterceptionController } from './InterceptionController';
 import { OverlayManager } from './OverlayManager';
 import { PageApiInterceptor } from './PageApiInterceptor';
 import { PasteInterceptor } from './PasteInterceptor';
@@ -24,5 +25,6 @@ new ContentController(
   new FileChangeInterceptor(),
   new DragDropInterceptor(overlayManager, messageService, interceptionState),
   new PasteInterceptor(overlayManager, messageService, interceptionState),
-  pageApiInterceptor
+  pageApiInterceptor,
+  new InterceptionController(messageService)
 ).initialize();

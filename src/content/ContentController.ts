@@ -2,6 +2,7 @@ import type { DragDropInterceptor } from './DragDropInterceptor';
 import type { FileChangeInterceptor } from './FileChangeInterceptor';
 import type { FileInputInterceptor } from './FileInputInterceptor';
 import type { InterceptionState } from './InterceptionState';
+import type { InterceptionController } from './InterceptionController';
 import type { PageApiInterceptor } from './PageApiInterceptor';
 import type { PasteInterceptor } from './PasteInterceptor';
 
@@ -12,6 +13,7 @@ export class ContentController {
   private readonly dropInterceptor: DragDropInterceptor;
   private readonly pasteInterceptor: PasteInterceptor;
   private readonly pageApiInterceptor: PageApiInterceptor;
+  private readonly interceptionController: InterceptionController;
 
   constructor(
     interceptionState: InterceptionState,
@@ -19,7 +21,8 @@ export class ContentController {
     changeInterceptor: FileChangeInterceptor,
     dropInterceptor: DragDropInterceptor,
     pasteInterceptor: PasteInterceptor,
-    pageApiInterceptor: PageApiInterceptor
+    pageApiInterceptor: PageApiInterceptor,
+    interceptionController: InterceptionController
   ) {
     this.interceptionState = interceptionState;
     this.inputInterceptor = inputInterceptor;
@@ -27,6 +30,7 @@ export class ContentController {
     this.dropInterceptor = dropInterceptor;
     this.pasteInterceptor = pasteInterceptor;
     this.pageApiInterceptor = pageApiInterceptor;
+    this.interceptionController = interceptionController;
   }
 
   initialize(): void {
@@ -36,5 +40,6 @@ export class ContentController {
     this.changeInterceptor.register();
     this.dropInterceptor.register();
     this.pasteInterceptor.register();
+    this.interceptionController.register();
   }
 }

@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
 import { AppHeader } from './components/AppHeader';
-import { Dashboard } from './components/Dashboard';
+import { Downloads } from './components/Downloads';
 import Tabs from './components/Tabs';
+import { UploadFlowIcon } from './lib/icons';
 import { SandBox } from './sandbox/SandBox';
+import { availableTools } from './sandbox/file-tools';
 import { ConfigService } from './services/ConfigService';
 import { MessageService } from './services/MessageService';
 import { storageService } from './services/StorageService';
 import { Settings } from './settings/Settings';
-import { UploadFlowSettings } from './settings/UploadFlowSettings';
-import type { RecentFile, SandboxFile } from './types/File';
+import { UploadFlowSettings, type UploadFlowSettingsTab } from './settings/UploadFlowSettings';
+import type { RecentFile, SandboxFile, Stats } from './types/Common';
 import type { StatsSnapshot } from './types/Message';
-import type { Stats } from './types/Stats';
-import { toast } from './utils/Toaster';
 
-export type AppTabs = 'dashboard' | 'sandbox' | 'settings';
+export type AppTabs = 'files' | UploadFlowSettingsTab | 'downloads' | 'settings';
 const configService = new ConfigService(storageService);
 const messageService = new MessageService();
 const defaultSettings = new UploadFlowSettings();
@@ -40,10 +40,11 @@ const toSandboxFiles = (files: File[]): SandboxFile[] =>
 
 export default function App({ initialFiles = [], initialSettings, onComplete, onCancel }: AppProps) {
   const isOverlay = Boolean(initialSettings && onComplete && onCancel);
-  const [activeTab, setActiveTab] = useState<AppTabs>(isOverlay ? 'sandbox' : 'dashboard');
+  const [activeTab, setActiveTab] = useState<AppTabs>('files');
+  const [activeTool, setActiveTool] = useState<UploadFlowSettingsTab>((initialSettings ?? defaultSettings).generalSettings.defaultTab);
   const [stats, setStats] = useState<Stats>(defaultStats);
   const [settings, setSettings] = useState<UploadFlowSettings>(initialSettings ?? defaultSettings);
-  const [recentFiles, setRecentFiles] = useState<RecentFile[]>([]);
+  const [, setRecentFiles] = useState<RecentFile[]>([]);
   const [sandboxFiles, setSandboxFiles] = useState<SandboxFile[]>(() => toSandboxFiles(initialFiles));
   const [editingFile, setEditingFile] = useState<SandboxFile | null>(null);
 
@@ -94,16 +95,6 @@ export default function App({ initialFiles = [], initialSettings, onComplete, on
       .catch(() => undefined);
   };
 
-  const handleResetStat = (id: string) => {
-    try {
-      setRecentFiles((prev) => prev.filter((file) => file.id !== id));
-      void messageService.send({ type: 'DELETE_STAT', payload: { id } });
-      toast.success('Upload history entry deleted.');
-    } catch {
-      toast.error('Could not delete upload history entry.');
-    }
-  };
-
   const handleResetStats = async () => {
     const response = await messageService.send<{ success: boolean; error?: string }>({ type: 'RESET_STATS' });
     if (!response.success) throw new Error(response.error ?? 'Failed to reset statistics');
@@ -112,60 +103,111 @@ export default function App({ initialFiles = [], initialSettings, onComplete, on
     setRecentFiles([]);
   };
 
+  const handleTabChange = (tab: AppTabs) => {
+    setActiveTab(tab);
+    if (tab === 'files') {
+      setEditingFile(null);
+      return;
+    }
+    if (tab === 'settings' || tab === 'downloads') return;
+
+    setActiveTool(tab);
+    const currentSource = editingFile?.optimizedFile ?? editingFile?.file;
+    if (editingFile && currentSource && availableTools(currentSource).includes(tab)) return;
+
+    const compatibleFile = sandboxFiles.find((item) => availableTools(item.optimizedFile ?? item.file).includes(tab));
+    setEditingFile(compatibleFile ?? null);
+  };
+
+  const handleToolChange = (tool: UploadFlowSettingsTab) => {
+    setActiveTool(tool);
+    setActiveTab(tool);
+  };
+
+  const workspaceCopy: Record<AppTabs, { eyebrow: string; title: string }> = {
+    files: {
+      eyebrow: sandboxFiles.length ? `${sandboxFiles.length} ${sandboxFiles.length === 1 ? 'file' : 'files'} intercepted` : 'Private file queue',
+      title: sandboxFiles.length ? 'Review before upload' : 'Prepare files before upload'
+    },
+    image: { eyebrow: 'Image workspace', title: 'Optimize for the web' },
+    redaction: { eyebrow: 'Privacy workspace', title: 'Redact private data' },
+    watermark: { eyebrow: 'Brand workspace', title: 'Apply a watermark' },
+    upscale: { eyebrow: 'Resolution workspace', title: 'Upscale an image' },
+    downloads: { eyebrow: 'Chrome download manager', title: 'Downloads' },
+    settings: { eyebrow: 'Workspace preferences', title: 'Settings' }
+  };
+  const heading = workspaceCopy[activeTab];
+  const reduction = stats.totalOriginalBytes ? Math.round((stats.bytesSaved / stats.totalOriginalBytes) * 100) : 0;
+
   return (
     <div
-      className={`app-shell mx-auto flex w-full min-w-0 flex-col overflow-hidden px-5 py-4 font-sans text-slate-800 antialiased selection:bg-slate-950/20 dark:text-slate-100 ${
+      className={`uploadflow-workspace app-shell mx-auto flex w-full min-w-0 flex-col overflow-hidden border border-white/15 bg-[#101416] font-sans text-white antialiased shadow-2xl selection:bg-[#eefb7a] selection:text-[#101416] ${
         isOverlay
-          ? 'h-[calc(100vh-2rem)] max-w-4xl rounded-xl border border-slate-200 bg-white shadow-2xl dark:border-white/10 dark:bg-neutral-900'
-          : 'min-h-150'
+          ? 'h-[calc(100vh-2rem)] max-w-6xl rounded-[26px]'
+          : 'h-[600px] rounded-none border-0'
       }`}
     >
       <AppHeader />
-      <Tabs activeTab={activeTab} onChange={(tab) => setActiveTab(tab as AppTabs)} />
 
-      <main className={`mt-5 flex min-w-0 flex-1 flex-col ${isOverlay ? 'min-h-0 overflow-y-auto pr-1' : 'min-h-100'}`}>
-        {activeTab === 'dashboard' && (
-          <Dashboard recentFiles={recentFiles} stats={stats} settings={settings} onResetStat={handleResetStat} />
-        )}
-        {activeTab === 'sandbox' && (
-          <SandBox
-            editingFile={editingFile}
-            sandboxFiles={sandboxFiles}
-            setEditingFile={setEditingFile}
-            setSandboxFiles={setSandboxFiles}
-            onOptimization={logOptimization}
-            config={settings}
-          />
-        )}
-        {activeTab === 'settings' && <Settings onUpdate={updateSettings} settings={settings} onResetStats={handleResetStats} />}
-      </main>
+      <div className="flex min-h-0 min-w-0 flex-1">
+        <aside className="flex w-[142px] shrink-0 flex-col border-r border-white/10 p-3 sm:w-[174px] sm:p-4">
+          <div className="mb-5 flex items-center gap-2 px-2 pt-1">
+            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-white text-[#101416]"><UploadFlowIcon /></span>
+            <div className="min-w-0">
+              <strong className="block truncate text-[11px] font-black uppercase italic">UploadFlow</strong>
+              <span className="mt-0.5 hidden text-[7px] font-bold uppercase tracking-[.15em] text-white/25 sm:block">Private toolkit</span>
+            </div>
+          </div>
+          <Tabs activeTab={activeTab} onChange={handleTabChange} />
 
-      {isOverlay && (
-        <div className="mt-4 flex shrink-0 flex-wrap justify-end gap-2 border-t border-slate-900 pt-3">
-          <button
-            type="button"
-            onClick={onCancel}
-            className="cursor-pointer rounded-lg px-3.5 py-2 text-xs font-semibold text-slate-400 transition-colors hover:bg-red-900 hover:text-white"
-          >
-            Cancel Upload
-          </button>
-          <button
-            type="button"
-            onClick={() => onComplete?.(sandboxFiles.map((item) => item.optimizedFile ?? item.file))}
-            className="cursor-pointer rounded-md bg-slate-950 px-4 py-2 text-xs font-bold text-white shadow-sm transition-all hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
-          >
-            Proceed to Upload
-          </button>
-        </div>
-      )}
+          <div className="mt-auto hidden rounded-2xl bg-[#eefb7a] p-3 text-[#101416] sm:block">
+            <span className="font-mono text-[7px] uppercase tracking-[.16em] opacity-45">Total reduction</span>
+            <strong className="mt-2 block text-2xl font-black tracking-[-.05em]">−{reduction}%</strong>
+            <span className="mt-1 block text-[7px] font-black uppercase">{stats.totalFiles} files processed</span>
+          </div>
+        </aside>
 
-      <footer className="mt-4 flex shrink-0 items-center justify-between border-t border-slate-200 pt-3 text-[9px] font-medium uppercase tracking-[0.14em] text-slate-500 select-none dark:border-white/6 dark:text-slate-600">
-        <span>UploadFlow v1.0</span>
-        <span className="flex items-center gap-1.5">
-          <i className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-          Local processing
-        </span>
-      </footer>
+        <section className="flex min-h-0 min-w-0 flex-1 flex-col">
+          <div className="flex shrink-0 items-end justify-between gap-3 border-b border-white/10 px-4 py-4 sm:px-6 sm:py-5">
+            <div className="min-w-0">
+              <p className="truncate text-[8px] font-black uppercase tracking-[.2em] text-emerald-400">{heading.eyebrow}</p>
+              <h1 className="mt-1 truncate text-lg leading-tight text-white sm:text-2xl">{heading.title}</h1>
+            </div>
+            <span className="hidden shrink-0 rounded-full border border-white/10 px-2.5 py-1 font-mono text-[8px] text-white/30 sm:block">
+              {isOverlay ? window.location.hostname || 'webpage' : 'extension popup'}
+            </span>
+          </div>
+
+          <main className="min-h-0 min-w-0 flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-5">
+            {activeTab !== 'settings' && activeTab !== 'downloads' && (
+              <SandBox
+                editingFile={editingFile}
+                sandboxFiles={sandboxFiles}
+                setEditingFile={setEditingFile}
+                setSandboxFiles={setSandboxFiles}
+                onOptimization={logOptimization}
+                config={settings}
+                activeTool={activeTool}
+                onActiveToolChange={handleToolChange}
+              />
+            )}
+            {activeTab === 'downloads' && <Downloads />}
+            {activeTab === 'settings' && <Settings onUpdate={updateSettings} settings={settings} onResetStats={handleResetStats} />}
+          </main>
+
+          <footer className="flex min-h-14 shrink-0 items-center justify-between gap-3 border-t border-white/10 px-4 py-3 sm:px-6">
+            <span className="hidden text-[8px] font-bold uppercase tracking-[.16em] text-white/25 sm:flex sm:items-center sm:gap-2"><i className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Originals stay untouched</span>
+            {isOverlay ? (
+              <div className="ml-auto flex items-center gap-2">
+                <button type="button" onClick={onCancel} className="cursor-pointer rounded-xl px-3 py-2 text-[9px] font-bold uppercase text-white/35 transition hover:bg-red-500/10 hover:text-red-300">Cancel</button>
+                <button type="button" onClick={() => onComplete?.(sandboxFiles.map((item) => item.optimizedFile ?? item.file))} className="cursor-pointer rounded-xl bg-white px-4 py-2.5 text-[9px] font-black uppercase text-[#101416] transition hover:bg-[#eefb7a]">Continue with {sandboxFiles.length} {sandboxFiles.length === 1 ? 'file' : 'files'}</button>
+              </div>
+            ) : (
+              <span className="ml-auto text-[8px] font-bold uppercase tracking-[.14em] text-white/20">UploadFlow v1.0</span>
+            )}
+          </footer>
+        </section>
+      </div>
     </div>
   );
 }

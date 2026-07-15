@@ -13,7 +13,7 @@ interface SettingsProps {
 
 export const Settings: React.FC<SettingsProps> = ({ settings, onUpdate, onResetStats }) => {
   return (
-    <div className="flex flex-col gap-4 animate-fadeIn">
+    <div className="settings-workspace flex flex-col gap-4 animate-fadeIn">
       <GeneralSettings settings={settings} onUpdate={onUpdate} onResetStats={onResetStats} />
       <ImageSettings settings={settings} onUpdate={onUpdate} />
       <TextRedactSettings settings={settings} onUpdate={onUpdate} />

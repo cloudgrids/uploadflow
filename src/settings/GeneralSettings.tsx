@@ -28,12 +28,21 @@ export const GeneralSettings: React.FC<GeneralSettingsProps> = ({ settings, onUp
     }
   };
 
-  const changeInterceptUploads = (enabled: boolean) => {
+  const toggleUploadFlowMode = (enabled: boolean) => {
     try {
       updateGeneralSettings({ enableUploadFlow: enabled });
       toast.sw(`Upload interception ${enabled ? 'enabled' : 'disabled'}.`, enabled);
     } catch {
       toast.error('Could not update upload interception setting.');
+    }
+  };
+
+    const toggleInspectMode = (enabled: boolean) => {
+    try {
+      updateGeneralSettings({ enableInspectMode: enabled });
+      toast.sw(`Inspect mode ${enabled ? 'enabled' : 'disabled'}.`, enabled);
+    } catch {
+      toast.error('Could not update inspect mode setting.');
     }
   };
 
@@ -55,7 +64,22 @@ export const GeneralSettings: React.FC<GeneralSettingsProps> = ({ settings, onUp
           <input
             type="checkbox"
             checked={gs.enableUploadFlow}
-            onChange={(event) => changeInterceptUploads(event.target.checked)}
+            onChange={(event) => toggleUploadFlowMode(event.target.checked)}
+            className="h-4 w-4 cursor-pointer accent-purple-500"
+          />
+        </label>
+      </div>
+
+      <div className="flex flex-col gap-2.5">
+        <label className="flex items-center flex-row justify-between gap-2 text-xs font-medium text-slate-700 dark:text-slate-300 cursor-pointer">
+          <div className="flex flex-col gap-1">
+            Inspect Mode
+            <span className="text-[10px] text-slate-500">Show download actions over webpage images, videos, and audio.</span>
+          </div>
+          <input
+            type="checkbox"
+            checked={gs.enableInspectMode}
+            onChange={(event) => toggleInspectMode(event.target.checked)}
             className="h-4 w-4 cursor-pointer accent-purple-500"
           />
         </label>

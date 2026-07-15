@@ -5,7 +5,7 @@ import { Upscale } from '../components/Upscale';
 import { Watermark } from '../components/Watermark';
 import { DeleteIcon, DownloadIcon, EditIcon, UploadIcon } from '../lib/icons';
 import type { UploadFlowSettings, UploadFlowSettingsTab } from '../settings/UploadFlowSettings';
-import type { FileTransformer, SandboxFile } from '../types/File';
+import type { FileTransformer, SandboxFile } from '../types/Common';
 import { formatBytes } from '../utils/helpers';
 import { availableTools } from './file-tools';
 
@@ -16,10 +16,20 @@ interface SandBoxProps {
   onOptimization: (originalFile: File, optimizedFile: File, id: string) => void;
   setEditingFile: React.Dispatch<React.SetStateAction<SandboxFile | null>>;
   config: UploadFlowSettings;
+  activeTool: UploadFlowSettingsTab;
+  onActiveToolChange: (tool: UploadFlowSettingsTab) => void;
 }
 
-export const SandBox: React.FC<SandBoxProps> = ({ sandboxFiles, onOptimization, setEditingFile, setSandboxFiles, editingFile, config }) => {
-  const [activeTool, setActiveTool] = useState<UploadFlowSettingsTab>(config.generalSettings.defaultTab);
+export const SandBox: React.FC<SandBoxProps> = ({
+  sandboxFiles,
+  onOptimization,
+  setEditingFile,
+  setSandboxFiles,
+  editingFile,
+  config,
+  activeTool,
+  onActiveToolChange
+}) => {
   const [applyingToAll, setApplyingToAll] = useState(false);
 
   const addFilesToSandbox = (filesList: File[]) => {
@@ -79,7 +89,7 @@ export const SandBox: React.FC<SandBoxProps> = ({ sandboxFiles, onOptimization, 
   const openEditor = (item: SandboxFile) => {
     const firstTool = availableTools(item.optimizedFile || item.file)[0];
     if (!firstTool) return;
-    setActiveTool(firstTool);
+    onActiveToolChange(firstTool);
     setEditingFile(item);
   };
 
@@ -123,11 +133,11 @@ export const SandBox: React.FC<SandBoxProps> = ({ sandboxFiles, onOptimization, 
               <button
                 key={tool}
                 type="button"
-                onClick={() => setActiveTool(tool)}
+                onClick={() => onActiveToolChange(tool)}
                 className={`min-w-max flex-1 cursor-pointer rounded-lg px-3 py-2 text-xs font-semibold capitalize transition-colors ${
                   selectedTool === tool
-                    ? 'bg-slate-950 text-white shadow-sm dark:bg-white dark:text-slate-950'
-                    : 'text-slate-400 hover:bg-slate-800/70 hover:text-slate-200'
+                    ? 'bg-white text-[#101416] shadow-sm'
+                    : 'text-white/35 hover:bg-white/5 hover:text-white/75'
                 }`}
               >
                 {tool === 'image' ? 'Image optimize' : tool === 'redaction' ? 'Text redact' : tool === 'upscale' ? 'Upscale' : 'Watermark'}
@@ -224,21 +234,21 @@ export const SandBox: React.FC<SandBoxProps> = ({ sandboxFiles, onOptimization, 
           <div
             onDragOver={(e) => e.preventDefault()}
             onDrop={handleFileDrop}
-            className="flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 p-6 text-center transition-all hover:border-slate-950 hover:bg-white dark:border-white/15 dark:bg-white/5 dark:hover:border-white dark:hover:bg-white/8"
+            className="flex min-h-44 cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-white/15 bg-white/[.025] p-6 text-center transition-all hover:border-[#eefb7a]/60 hover:bg-white/[.045]"
             onClick={() => document.getElementById('sandbox-file-input')?.click()}
           >
             <input id="sandbox-file-input" type="file" multiple className="hidden" onChange={handleFileChange} />
-            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-950 shadow-sm dark:border-white/10 dark:bg-white dark:text-slate-950 dark:shadow-none">
+            <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white text-[#101416] shadow-sm">
               <UploadIcon />
             </div>
-            <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-200">Drag files here to optimize</h3>
-            <p className="text-xs text-slate-500 mt-1">Supports Images (PNG, JPG, WEBP) & Text (CSV, TXT, JSON, MD)</p>
+            <h3 className="text-xs text-white">Drop another file</h3>
+            <p className="mt-1 text-[10px] text-white/30">PNG, JPG, WEBP, TXT and supported media.</p>
           </div>
 
           {sandboxFiles.length > 0 && (
-            <div className="flex flex-col gap-2 rounded-xl border border-slate-200 bg-white p-3 shadow-sm dark:border-white/10 dark:bg-white/5 dark:shadow-none">
-              <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2 mb-1">
-                <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Sandbox Queue</span>
+            <div className="flex flex-col gap-2 rounded-2xl border border-white/10 bg-white/[.025] p-3 shadow-sm">
+              <div className="mb-1 flex items-center justify-between border-b border-white/10 pb-2">
+                <span className="text-[9px] font-bold uppercase tracking-[.16em] text-emerald-400">{sandboxFiles.length} {sandboxFiles.length === 1 ? 'file' : 'files'} intercepted</span>
                 <button
                   onClick={() => setSandboxFiles([])}
                   className="text-[10px] text-red-400 hover:text-red-300 font-semibold cursor-pointer"
@@ -254,10 +264,10 @@ export const SandBox: React.FC<SandBoxProps> = ({ sandboxFiles, onOptimization, 
                   return (
                     <div
                       key={item.id}
-                      className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-200 dark:bg-slate-900/70 dark:border-slate-800/80 text-xs gap-3"
+                      className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-[#171b1d] p-3 text-xs"
                     >
                       <div className="flex flex-col min-w-0 flex-1">
-                        <span className="font-semibold text-slate-800 dark:text-slate-200 truncate">
+                        <span className="truncate font-semibold text-white/80">
                           {item.optimizedFile ? item.optimizedFile.name : item.file.name}
                         </span>
                         <span className="text-[10px] text-slate-500 font-mono mt-0.5">
@@ -272,7 +282,7 @@ export const SandBox: React.FC<SandBoxProps> = ({ sandboxFiles, onOptimization, 
                         {isEditable && (
                           <button
                             onClick={() => openEditor(item)}
-                            className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-md transition-colors cursor-pointer"
+                            className="cursor-pointer rounded-lg border border-white/10 bg-white/5 p-2 text-white/60 transition-colors hover:bg-white hover:text-[#101416]"
                             title="Edit & Optimize"
                           >
                             <EditIcon />
@@ -280,14 +290,14 @@ export const SandBox: React.FC<SandBoxProps> = ({ sandboxFiles, onOptimization, 
                         )}
                         <button
                           onClick={() => handleDownloadFile(item)}
-                          className="cursor-pointer rounded-md border border-slate-300 bg-white p-1.5 text-slate-700 transition-colors hover:bg-slate-100 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10"
+                          className="cursor-pointer rounded-lg border border-white/10 bg-white/5 p-2 text-white/60 transition-colors hover:bg-white hover:text-[#101416]"
                           title="Download Output"
                         >
                           <DownloadIcon />
                         </button>
                         <button
                           onClick={() => handleDeleteSandboxFile(item.id)}
-                          className="p-1.5 bg-slate-800 hover:bg-red-950/30 text-slate-500 hover:text-red-400 rounded-md transition-colors cursor-pointer"
+                          className="cursor-pointer rounded-lg border border-white/10 bg-white/5 p-2 text-white/35 transition-colors hover:border-red-400/30 hover:bg-red-500/10 hover:text-red-300"
                           title="Remove File"
                         >
                           <DeleteIcon />
