@@ -11,9 +11,15 @@ const tools = [
 ];
 
 const workflow = [
-  ['01', 'Intercept', 'UploadFlow notices a supported file input, paste, or drop before the webpage receives it.'],
+  ['01', 'Choose a source', 'Use a normal file input, paste or drop files, or pick from URLs you saved while browsing.'],
   ['02', 'Review', 'A private workspace opens with the original files visible first. Choose only the tools you need.'],
   ['03', 'Return', 'Approve the result and UploadFlow returns the processed file to the exact upload flow you started.']
+];
+
+const browserFeatures = [
+  ['01', 'Inspect media', 'Hover a webpage image, video, or audio element to reveal its available source without covering the page.'],
+  ['02', 'Hand off downloads', 'Send detected media to Chrome so downloads remain visible and manageable in the browser.'],
+  ['03', 'Save URL files', 'Keep up to 20 remote file URLs with previews, then fetch one only when a website asks for a file.']
 ];
 
 function ArrowIcon() {
@@ -108,6 +114,42 @@ function ProductPreview() {
   );
 }
 
+function BrowserToolsPreview() {
+  return (
+    <div className="relative min-h-125 overflow-hidden rounded-[26px] border border-white/15 bg-[#15191b] shadow-[0_35px_100px_rgba(0,0,0,.38)]">
+      <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+        <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-[#ff6b5e]" /><span className="h-2.5 w-2.5 rounded-full bg-[#f4c95d]" /><span className="h-2.5 w-2.5 rounded-full bg-[#58c477]" /></div>
+        <div className="rounded-full bg-white/5 px-4 py-1.5 font-mono text-[8px] text-white/35">example.com/gallery</div>
+        <span className="font-mono text-[8px] uppercase tracking-widest text-emerald-400">Inspect on</span>
+      </div>
+
+      <div className="relative min-h-72 overflow-hidden border-b border-white/10 bg-[radial-gradient(circle_at_70%_25%,rgba(238,251,122,.18),transparent_27%),linear-gradient(135deg,#31484a,#91aca0_48%,#d8ca9f)]">
+        <div className="absolute inset-x-[18%] bottom-0 h-[72%] rounded-t-[50%] bg-[#172d29]/75" />
+        <div className="absolute left-1/2 top-[24%] h-24 w-24 -translate-x-1/2 rounded-full border-14 border-white/45" />
+        <button type="button" aria-label="Media inspector example" className="absolute left-4 top-4 grid h-9 w-9 place-items-center rounded-xl border border-white/20 bg-[#171717] text-lg font-black text-white shadow-xl">↓</button>
+
+        <div className="absolute left-14 top-4 w-[min(310px,calc(100%-72px))] rounded-2xl border border-white/15 bg-[#171717]/95 p-4 shadow-2xl backdrop-blur">
+          <div className="flex items-start justify-between gap-3"><div><p className="text-[8px] font-black uppercase italic tracking-wider">Image source</p><p className="mt-2 line-clamp-2 font-mono text-[8px] leading-4 text-white/35">https://media.example.com/campaign-cover.jpg</p></div><span className="h-2 w-2 shrink-0 rounded-full bg-emerald-400" /></div>
+          <div className="mt-3 flex flex-wrap gap-2"><span className="rounded-lg bg-white px-3 py-2 text-[8px] font-black uppercase text-[#101416]">Download</span><span className="rounded-lg border border-white/15 px-3 py-2 text-[8px] font-black uppercase text-white/60">Save URL</span><span className="rounded-lg border border-white/15 px-3 py-2 text-[8px] font-black uppercase text-white/60">Copy</span></div>
+        </div>
+      </div>
+
+      <div className="p-4 sm:p-5">
+        <div className="mb-3 flex items-end justify-between"><div><p className="text-[8px] font-black uppercase tracking-[.18em] text-[#eefb7a]">Remote file library</p><h3 className="mt-1 text-xl">Ready for the next file input</h3></div><span className="font-mono text-[8px] text-white/30">2 / 20</span></div>
+        <div className="grid gap-2">
+          {[['campaign-cover.jpg', 'IMAGE · SAVED JUST NOW'], ['product-demo.mp4', 'VIDEO · CHROME DOWNLOAD']].map(([name, meta], index) => (
+            <div key={name} className="grid grid-cols-[44px_1fr_auto] items-center gap-3 rounded-xl border border-white/10 bg-white/3 p-2.5">
+              <div className={`h-11 rounded-lg ${index === 0 ? 'bg-[linear-gradient(135deg,#40555d,#e9d7aa)]' : 'grid place-items-center bg-[#252a2d] text-xs text-white/50'}`}>{index === 1 ? '▶' : ''}</div>
+              <div className="min-w-0"><p className="truncate text-[10px] font-bold">{name}</p><p className="mt-1 text-[7px] font-bold tracking-wider text-white/30">{meta}</p></div>
+              <span className="rounded-lg bg-white px-3 py-2 text-[8px] font-black uppercase text-[#101416]">Use</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function LandingPage() {
   const handleCopy = async () => {
     try {
@@ -138,6 +180,7 @@ export function LandingPage() {
 
           <nav className="hidden items-center gap-7 text-[9px] font-bold uppercase tracking-[.16em] text-white/45 md:flex" aria-label="Main navigation">
             <a href="#workflow" className="transition hover:text-white">How it works</a>
+            <a href="#extension" className="transition hover:text-white">Extension</a>
             <a href="#tools" className="transition hover:text-white">Tools</a>
             <a href="#privacy" className="transition hover:text-white">Privacy</a>
             <a href="#share" className="transition hover:text-white">Share</a>
@@ -161,14 +204,14 @@ export function LandingPage() {
                 Own every<br />file <span className="text-[#eefb7a]">before</span><br />it uploads.
               </h1>
               <p className="mt-8 max-w-xl text-sm leading-6 text-white/50 sm:text-base sm:leading-7">
-                UploadFlow intercepts files at the edge of the web, gives you a private place to optimize and protect them, then returns the finished version to the original upload.
+                Intercept uploads, inspect media already on the page, and reuse files from saved URLs—all from one private browser workspace.
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-3">
                 <a href="/demo" className="inline-flex min-h-12 items-center gap-3 rounded-full bg-[#eefb7a] px-6 text-[10px] font-black uppercase tracking-widest text-[#0b0d0f] transition hover:-translate-y-0.5 hover:bg-white">Try UploadFlow <ArrowIcon /></a>
                 <a href="#workflow" className="inline-flex min-h-12 items-center rounded-full border border-white/15 px-6 text-[10px] font-bold uppercase tracking-widest text-white/70 transition hover:border-white/35 hover:text-white">See the workflow</a>
               </div>
               <div className="mt-10 flex flex-wrap gap-x-6 gap-y-3 text-[9px] font-bold uppercase tracking-widest text-white/35">
-                {['No account', 'No cloud storage', 'Originals preserved'].map((item) => <span key={item} className="flex items-center gap-2"><span className="text-[#eefb7a]"><CheckIcon /></span>{item}</span>)}
+                {['No account', 'URL file picker', 'Chrome-managed downloads'].map((item) => <span key={item} className="flex items-center gap-2"><span className="text-[#eefb7a]"><CheckIcon /></span>{item}</span>)}
               </div>
             </div>
             <ProductPreview />
@@ -177,7 +220,7 @@ export function LandingPage() {
 
         <div className="overflow-hidden border-b border-white/10 bg-[#eefb7a] py-3 text-[#0b0d0f]">
           <div className="flex min-w-max items-center justify-center gap-8 px-4 text-[10px] font-black uppercase italic tracking-[.12em] sm:gap-14">
-            <span>Intercept</span><span>✦</span><span>Optimize</span><span>✦</span><span>Protect</span><span>✦</span><span>Return</span><span>✦</span><span>Upload with intent</span>
+            <span>Intercept</span><span>✦</span><span>Inspect media</span><span>✦</span><span>Save URL</span><span>✦</span><span>Protect</span><span>✦</span><span>Return</span>
           </div>
         </div>
 
@@ -199,6 +242,26 @@ export function LandingPage() {
                 </article>
               ))}
             </div>
+          </div>
+        </section>
+
+        <section id="extension" className="border-y border-white/10 bg-[#111416]">
+          <div className="mx-auto grid w-full max-w-360 items-center gap-14 px-5 py-20 sm:px-8 sm:py-28 lg:grid-cols-[.82fr_1.18fr] lg:px-12">
+            <div>
+              <p className="text-[9px] font-black uppercase tracking-[.22em] text-emerald-400">Beyond the upload button</p>
+              <h2 className="mt-5 max-w-xl text-5xl leading-[.9] sm:text-6xl">Files you find.<br /><span className="text-[#eefb7a]">Ready when needed.</span></h2>
+              <p className="mt-6 max-w-lg text-sm leading-6 text-white/45">Inspect mode adds one small control only while you hover media. Download it through Chrome or save the URL for a future upload—without permanently storing the file in UploadFlow.</p>
+
+              <div className="mt-10 border-t border-white/15">
+                {browserFeatures.map(([number, title, copy]) => (
+                  <article key={number} className="grid grid-cols-[36px_1fr] gap-3 border-b border-white/15 py-5">
+                    <span className="font-mono text-[9px] text-[#eefb7a]">/{number}</span>
+                    <div><h3 className="text-lg">{title}</h3><p className="mt-2 max-w-md text-xs leading-5 text-white/40">{copy}</p></div>
+                  </article>
+                ))}
+              </div>
+            </div>
+            <BrowserToolsPreview />
           </div>
         </section>
 
