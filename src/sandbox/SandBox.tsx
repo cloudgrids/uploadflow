@@ -234,7 +234,7 @@ export const SandBox: React.FC<SandBoxProps> = ({
           <div
             onDragOver={(e) => e.preventDefault()}
             onDrop={handleFileDrop}
-            className="flex min-h-44 cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-white/15 bg-white/[.025] p-6 text-center transition-all hover:border-[#eefb7a]/60 hover:bg-white/[.045]"
+            className="flex min-h-44 cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-white/15 bg-white/2.5 p-6 text-center transition-all hover:border-[#eefb7a]/60 hover:bg-white/4.5"
             onClick={() => document.getElementById('sandbox-file-input')?.click()}
           >
             <input id="sandbox-file-input" type="file" multiple className="hidden" onChange={handleFileChange} />
@@ -246,7 +246,7 @@ export const SandBox: React.FC<SandBoxProps> = ({
           </div>
 
           {sandboxFiles.length > 0 && (
-            <div className="flex flex-col gap-2 rounded-2xl border border-white/10 bg-white/[.025] p-3 shadow-sm">
+            <div className="flex flex-col gap-2 rounded-2xl border border-white/10 bg-white/2.5 p-3 shadow-sm">
               <div className="mb-1 flex items-center justify-between border-b border-white/10 pb-2">
                 <span className="text-[9px] font-bold uppercase tracking-[.16em] text-emerald-400">{sandboxFiles.length} {sandboxFiles.length === 1 ? 'file' : 'files'} intercepted</span>
                 <button

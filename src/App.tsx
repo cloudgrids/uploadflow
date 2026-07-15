@@ -144,13 +144,13 @@ export default function App({ initialFiles = [], initialSettings, onComplete, on
       className={`uploadflow-workspace app-shell mx-auto flex w-full min-w-0 flex-col overflow-hidden border border-white/15 bg-[#101416] font-sans text-white antialiased shadow-2xl selection:bg-[#eefb7a] selection:text-[#101416] ${
         isOverlay
           ? 'h-[calc(100vh-2rem)] max-w-6xl rounded-[26px]'
-          : 'h-[600px] rounded-none border-0'
+          : 'h-150 rounded-none border-0'
       }`}
     >
       <AppHeader />
 
       <div className="flex min-h-0 min-w-0 flex-1">
-        <aside className="flex w-[142px] shrink-0 flex-col border-r border-white/10 p-3 sm:w-[174px] sm:p-4">
+        <aside className="flex w-35.5 shrink-0 flex-col border-r border-white/10 p-3 sm:w-43.5 sm:p-4">
           <div className="mb-5 flex items-center gap-2 px-2 pt-1">
             <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-white text-[#101416]"><UploadFlowIcon /></span>
             <div className="min-w-0">
@@ -162,7 +162,7 @@ export default function App({ initialFiles = [], initialSettings, onComplete, on
 
           <div className="mt-auto hidden rounded-2xl bg-[#eefb7a] p-3 text-[#101416] sm:block">
             <span className="font-mono text-[7px] uppercase tracking-[.16em] opacity-45">Total reduction</span>
-            <strong className="mt-2 block text-2xl font-black tracking-[-.05em]">−{reduction}%</strong>
+            <strong className="mt-2 block text-2xl font-black tracking-tighter">−{reduction}%</strong>
             <span className="mt-1 block text-[7px] font-black uppercase">{stats.totalFiles} files processed</span>
           </div>
         </aside>

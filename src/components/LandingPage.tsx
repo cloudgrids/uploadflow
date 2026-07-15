@@ -31,7 +31,7 @@ function CheckIcon() {
 
 function ProductPreview() {
   return (
-    <div className="relative mx-auto w-full max-w-[680px] lg:mr-0">
+    <div className="relative mx-auto w-full max-w-170 lg:mr-0">
       <div className="absolute -inset-12 rounded-full bg-emerald-400/10 blur-3xl" />
       <div className="relative overflow-hidden rounded-[26px] border border-white/15 bg-[#15191b] shadow-[0_45px_120px_rgba(0,0,0,.55)]">
         <div className="flex items-center justify-between border-b border-white/10 px-4 py-3 sm:px-5">
@@ -43,7 +43,7 @@ function ProductPreview() {
           <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-white/35">Private workspace · local</span>
         </div>
 
-        <div className="grid min-h-[390px] sm:grid-cols-[150px_1fr]">
+        <div className="grid min-h-97.5 sm:grid-cols-[150px_1fr]">
           <aside className="hidden border-r border-white/10 p-3 sm:block">
             <div className="mb-5 flex items-center gap-2 px-2 pt-1">
               <span className="grid h-7 w-7 place-items-center rounded-lg bg-white text-[#0b0d0f]"><UploadFlowIcon /></span>
@@ -67,9 +67,9 @@ function ProductPreview() {
 
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#202528]">
-                <div className="relative aspect-[4/3] overflow-hidden bg-[linear-gradient(135deg,#40555d,#a8c3b3_48%,#e9d7aa)]">
+                <div className="relative aspect-4/3 overflow-hidden bg-[linear-gradient(135deg,#40555d,#a8c3b3_48%,#e9d7aa)]">
                   <div className="absolute inset-x-7 bottom-0 h-24 rounded-t-full bg-[#142c27]/70" />
-                  <div className="absolute left-1/2 top-[28%] h-16 w-16 -translate-x-1/2 rounded-full border-[10px] border-white/50" />
+                  <div className="absolute left-1/2 top-[28%] h-16 w-16 -translate-x-1/2 rounded-full border-10 border-white/50" />
                   <span className="absolute left-3 top-3 rounded-md bg-[#0b0d0f]/80 px-2 py-1 font-mono text-[8px]">JPG</span>
                 </div>
                 <div className="flex items-center justify-between p-3">
@@ -78,7 +78,7 @@ function ProductPreview() {
                 </div>
               </div>
 
-              <div className="flex min-h-[196px] flex-col justify-between rounded-2xl border border-dashed border-white/15 bg-white/[.025] p-4">
+              <div className="flex min-h-49 flex-col justify-between rounded-2xl border border-dashed border-white/15 bg-white/2.5 p-4">
                 <div>
                   <span className="grid h-8 w-8 place-items-center rounded-lg border border-white/10 text-sm text-white/70">+</span>
                   <p className="mt-4 text-[10px] font-bold uppercase text-white/70">Drop another file</p>
@@ -109,7 +109,7 @@ export function LandingPage() {
   return (
     <div className="min-h-screen w-full overflow-x-clip bg-[#0b0d0f] text-white selection:bg-[#eefb7a] selection:text-[#0b0d0f]">
       <header className="sticky top-0 z-30 border-b border-white/10 bg-[#0b0d0f]/85 backdrop-blur-xl">
-        <div className="mx-auto flex min-h-16 w-full max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-12">
+        <div className="mx-auto flex min-h-16 w-full max-w-360 items-center justify-between px-5 sm:px-8 lg:px-12">
           <a href="#top" className="flex items-center gap-3 text-white no-underline" aria-label="UploadFlow home">
             <span className="grid h-9 w-9 place-items-center rounded-xl bg-white text-[#0b0d0f]"><UploadFlowIcon /></span>
             <span><strong className="block text-[15px] font-black uppercase italic leading-none">UploadFlow</strong><small className="mt-1 block text-[8px] font-bold uppercase tracking-[.2em] text-white/35">Private upload toolkit</small></span>
@@ -129,23 +129,23 @@ export function LandingPage() {
 
       <main id="top">
         <section className="relative isolate overflow-hidden border-b border-white/10">
-          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_70%_20%,rgba(238,251,122,.08),transparent_31%),linear-gradient(rgba(255,255,255,.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.025)_1px,transparent_1px)] bg-[size:auto,48px_48px,48px_48px]" />
-          <div className="mx-auto grid min-h-[calc(100svh-65px)] w-full max-w-[1440px] items-center gap-14 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-[.9fr_1.1fr] lg:px-12 lg:py-24">
+          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_70%_20%,rgba(238,251,122,.08),transparent_31%),linear-gradient(rgba(255,255,255,.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.025)_1px,transparent_1px)] bg-size-[auto,48px_48px,48px_48px]" />
+          <div className="mx-auto grid min-h-[calc(100svh-65px)] w-full max-w-360 items-center gap-14 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-[.9fr_1.1fr] lg:px-12 lg:py-24">
             <div>
               <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[.16em] text-emerald-300">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_12px_#34d399]" /> Runs locally in your browser
               </div>
-              <h1 className="max-w-[760px] text-[clamp(3.6rem,7.4vw,7.8rem)] leading-[.83] tracking-[-.07em]">
+              <h1 className="max-w-190 text-[clamp(3.6rem,7.4vw,7.8rem)] leading-[.83] tracking-[-.07em]">
                 Own every<br />file <span className="text-[#eefb7a]">before</span><br />it uploads.
               </h1>
               <p className="mt-8 max-w-xl text-sm leading-6 text-white/50 sm:text-base sm:leading-7">
                 UploadFlow intercepts files at the edge of the web, gives you a private place to optimize and protect them, then returns the finished version to the original upload.
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-3">
-                <a href="/test" className="inline-flex min-h-12 items-center gap-3 rounded-full bg-[#eefb7a] px-6 text-[10px] font-black uppercase tracking-[.1em] text-[#0b0d0f] transition hover:-translate-y-0.5 hover:bg-white">Try the interceptor <ArrowIcon /></a>
-                <a href="#workflow" className="inline-flex min-h-12 items-center rounded-full border border-white/15 px-6 text-[10px] font-bold uppercase tracking-[.1em] text-white/70 transition hover:border-white/35 hover:text-white">See the workflow</a>
+                <a href="/test" className="inline-flex min-h-12 items-center gap-3 rounded-full bg-[#eefb7a] px-6 text-[10px] font-black uppercase tracking-widest text-[#0b0d0f] transition hover:-translate-y-0.5 hover:bg-white">Try the interceptor <ArrowIcon /></a>
+                <a href="#workflow" className="inline-flex min-h-12 items-center rounded-full border border-white/15 px-6 text-[10px] font-bold uppercase tracking-widest text-white/70 transition hover:border-white/35 hover:text-white">See the workflow</a>
               </div>
-              <div className="mt-10 flex flex-wrap gap-x-6 gap-y-3 text-[9px] font-bold uppercase tracking-[.1em] text-white/35">
+              <div className="mt-10 flex flex-wrap gap-x-6 gap-y-3 text-[9px] font-bold uppercase tracking-widest text-white/35">
                 {['No account', 'No cloud storage', 'Originals preserved'].map((item) => <span key={item} className="flex items-center gap-2"><span className="text-[#eefb7a]"><CheckIcon /></span>{item}</span>)}
               </div>
             </div>
@@ -159,7 +159,7 @@ export function LandingPage() {
           </div>
         </div>
 
-        <section id="workflow" className="mx-auto w-full max-w-[1440px] px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
+        <section id="workflow" className="mx-auto w-full max-w-360 px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
           <div className="grid gap-12 lg:grid-cols-[.65fr_1.35fr]">
             <div className="lg:sticky lg:top-28 lg:self-start">
               <p className="text-[9px] font-bold uppercase tracking-[.22em] text-[#eefb7a]">How it works</p>
@@ -179,7 +179,7 @@ export function LandingPage() {
         </section>
 
         <section id="tools" className="border-y border-white/10 bg-[#111416]">
-          <div className="mx-auto w-full max-w-[1440px] px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
+          <div className="mx-auto w-full max-w-360 px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
             <div className="mb-12 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
               <div><p className="text-[9px] font-bold uppercase tracking-[.22em] text-emerald-400">Inside the workspace</p><h2 className="mt-4 text-4xl leading-none sm:text-5xl">Four tools. One flow.</h2></div>
               <p className="max-w-sm text-sm leading-6 text-white/40">Use one transformation or combine them. You decide what happens to every file.</p>
@@ -198,7 +198,7 @@ export function LandingPage() {
 
         <section id="privacy" className="relative overflow-hidden">
           <div className="absolute inset-y-0 right-0 w-1/2 bg-[radial-gradient(circle_at_center,rgba(52,211,153,.12),transparent_60%)]" />
-          <div className="relative mx-auto grid w-full max-w-[1440px] gap-16 px-5 py-20 sm:px-8 sm:py-28 lg:grid-cols-2 lg:px-12">
+          <div className="relative mx-auto grid w-full max-w-360 gap-16 px-5 py-20 sm:px-8 sm:py-28 lg:grid-cols-2 lg:px-12">
             <div>
               <span className="inline-flex rounded-full border border-white/15 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[.18em] text-white/45">Privacy by architecture</span>
               <h2 className="mt-7 text-5xl leading-[.88] sm:text-7xl">Your files<br />stay yours.</h2>
@@ -220,13 +220,13 @@ export function LandingPage() {
             <div className="relative mx-auto max-w-4xl">
               <p className="text-[9px] font-black uppercase tracking-[.22em] opacity-45">See the handoff for yourself</p>
               <h2 className="mt-5 text-5xl leading-[.88] sm:text-7xl">Make the file ready<br />before the web sees it.</h2>
-              <a href="/test" className="mt-9 inline-flex min-h-12 items-center gap-3 rounded-full bg-[#0b0d0f] px-6 text-[10px] font-black uppercase tracking-[.1em] text-white transition hover:-translate-y-0.5">Launch the test page <ArrowIcon /></a>
+              <a href="/test" className="mt-9 inline-flex min-h-12 items-center gap-3 rounded-full bg-[#0b0d0f] px-6 text-[10px] font-black uppercase tracking-widest text-white transition hover:-translate-y-0.5">Launch the test page <ArrowIcon /></a>
             </div>
           </div>
         </section>
       </main>
 
-      <footer className="mx-auto flex w-full max-w-[1440px] flex-col gap-5 px-5 py-8 text-[9px] font-bold uppercase tracking-[.13em] text-white/30 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-12">
+      <footer className="mx-auto flex w-full max-w-360 flex-col gap-5 px-5 py-8 text-[9px] font-bold uppercase tracking-[.13em] text-white/30 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-12">
         <div className="flex items-center gap-2 text-white/70"><span className="grid h-7 w-7 place-items-center rounded-lg bg-white text-black"><UploadFlowIcon /></span>UploadFlow</div>
         <p>Private tools for files in motion.</p>
         <a href="#top" className="transition hover:text-white">Back to top ↑</a>
