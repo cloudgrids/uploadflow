@@ -66,11 +66,11 @@ export const Upscale: React.FC<UpscaleProps> = ({ file, onSave, onCancel, config
   };
 
   return (
-    <div className="flex min-w-0 max-w-full flex-col gap-4 overflow-hidden rounded-xl border border-slate-200/10 bg-slate-900/40 p-4 text-left">
+    <div className="flex min-w-0 max-w-full flex-col gap-4 overflow-hidden rounded-2xl border border-white/10 bg-white/[.025] p-4 text-left">
       <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 border-b border-slate-200/10 pb-3">
         <div>
           <h3 className="m-0 flex items-center gap-2 text-base font-semibold text-slate-100">
-            <svg className="h-5 w-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="h-5 w-5 text-[#eefb7a]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17L17 7m0 0h-7m7 0v7M5 7v10a2 2 0 002 2h10" />
             </svg>
             AI Image Upscaler
@@ -87,7 +87,7 @@ export const Upscale: React.FC<UpscaleProps> = ({ file, onSave, onCancel, config
           <div>
             <div className="mb-2 flex items-center justify-between gap-2">
               <span className="text-xs font-semibold text-slate-300">Upscale factor</span>
-              <span className="font-mono text-xs font-semibold text-purple-400">{upscaleFactor}× resolution</span>
+              <span className="font-mono text-xs font-semibold text-[#eefb7a]">{upscaleFactor}× resolution</span>
             </div>
             <div className="grid grid-cols-2 gap-2">
               {[2, 4].map((factor) => (
@@ -98,8 +98,8 @@ export const Upscale: React.FC<UpscaleProps> = ({ file, onSave, onCancel, config
                   disabled={isUpscaling}
                   className={`cursor-pointer rounded-lg border px-3 py-2.5 text-left transition-all disabled:cursor-not-allowed disabled:opacity-50 ${
                     upscaleFactor === factor
-                      ? 'border-purple-500 bg-purple-600/20 text-purple-200 shadow-sm'
-                      : 'border-slate-800 bg-slate-950/30 text-slate-400 hover:border-slate-700 hover:text-slate-200'
+                      ? 'border-[#eefb7a]/60 bg-[#eefb7a]/10 text-[#eefb7a] shadow-sm'
+                      : 'border-white/10 bg-black/20 text-white/35 hover:border-white/25 hover:text-white/70'
                   }`}
                 >
                   <span className="block text-sm font-semibold">{factor}×</span>
@@ -186,7 +186,7 @@ export const Upscale: React.FC<UpscaleProps> = ({ file, onSave, onCancel, config
                 )}
                 {isUpscaling && (
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-slate-950/85">
-                    <div className="h-7 w-7 animate-spin rounded-full border-2 border-purple-500 border-t-transparent" />
+                    <div className="h-7 w-7 animate-spin rounded-full border-2 border-[#eefb7a] border-t-transparent" />
                     <span className="text-xs font-medium text-slate-300">Upscaling image {upscaleFactor}×…</span>
                     <span className="text-[10px] text-slate-500">Keep this editor open while processing</span>
                   </div>
@@ -222,7 +222,7 @@ export const Upscale: React.FC<UpscaleProps> = ({ file, onSave, onCancel, config
             type="button"
             onClick={() => onApplyAll(upscaleFile)}
             disabled={isUpscaling}
-            className="cursor-pointer rounded-lg border border-purple-500/30 bg-purple-600/10 px-4 py-1.5 text-xs font-semibold text-purple-300 hover:bg-purple-600/20 disabled:cursor-not-allowed disabled:opacity-50"
+            className="cursor-pointer rounded-xl border border-[#eefb7a]/25 bg-[#eefb7a]/5 px-4 py-2 text-[9px] font-black uppercase tracking-wide text-[#eefb7a] hover:bg-[#eefb7a]/10 disabled:cursor-not-allowed disabled:opacity-50"
           >
             Upscale all {upscaleFactor}×
           </button>
@@ -232,7 +232,7 @@ export const Upscale: React.FC<UpscaleProps> = ({ file, onSave, onCancel, config
             type="button"
             onClick={() => void handleUpscale()}
             disabled={isUpscaling}
-            className="cursor-pointer rounded-lg bg-purple-600 px-4 py-1.5 text-xs font-semibold text-white shadow-lg shadow-purple-600/20 transition-all hover:bg-purple-500 disabled:cursor-not-allowed disabled:opacity-50"
+            className="cursor-pointer rounded-xl bg-white px-4 py-2 text-[9px] font-black uppercase tracking-wide text-[#101416] transition-all hover:bg-[#eefb7a] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isUpscaling ? 'Upscaling…' : `Upscale ${upscaleFactor}×`}
           </button>
@@ -240,7 +240,7 @@ export const Upscale: React.FC<UpscaleProps> = ({ file, onSave, onCancel, config
           <button
             type="button"
             onClick={() => onSave(upscaledFile)}
-            className="cursor-pointer rounded-lg bg-purple-600 px-4 py-1.5 text-xs font-semibold text-white shadow-lg shadow-purple-600/20 transition-all hover:bg-purple-500"
+            className="cursor-pointer rounded-xl bg-white px-4 py-2 text-[9px] font-black uppercase tracking-wide text-[#101416] transition-all hover:bg-[#eefb7a]"
           >
             Apply Upscaled Image
           </button>

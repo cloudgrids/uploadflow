@@ -9,7 +9,7 @@ export function FullscreenButton({ isFullscreen, onClick, className = '' }: Full
     <button
       type="button"
       onClick={onClick}
-      className={`flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-slate-200 bg-white dark:border-white/10 dark:bg-neutral-900 shadow-sm transition-colors hover:border-purple-500/60 hover:text-purple-300 ${className}`}
+      className={`flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-white/10 bg-black/25 text-white/45 shadow-sm transition-colors hover:border-[#eefb7a]/50 hover:text-[#eefb7a] ${className}`}
       aria-label={isFullscreen ? 'Exit fullscreen preview' : 'Open fullscreen preview'}
       title={isFullscreen ? 'Exit fullscreen' : 'View fullscreen'}
     >

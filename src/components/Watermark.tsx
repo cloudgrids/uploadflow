@@ -88,7 +88,7 @@ export function Watermark({ file, onSave, onCancel, config, onApplyAll }: Waterm
   }, [currentOptions, file, text]);
 
   return (
-    <div className="flex min-w-0 max-w-full flex-col gap-4 overflow-hidden rounded-xl border border-slate-200/10 bg-slate-900/40 p-4 text-left">
+    <div className="flex min-w-0 max-w-full flex-col gap-4 overflow-hidden rounded-2xl border border-white/10 bg-white/[.025] p-4 text-left">
       <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 border-b border-slate-200/10 pb-3">
         <div>
           <h3 className="m-0 text-base font-semibold text-slate-100">Add Watermark</h3>
@@ -107,7 +107,7 @@ export function Watermark({ file, onSave, onCancel, config, onApplyAll }: Waterm
               value={text}
               onChange={(event) => setText(event.target.value)}
               maxLength={120}
-              className="mt-1.5 w-full min-h-5 rounded-lg border border-slate-800 bg-slate-950/50 px-3 py-2 text-sm font-normal text-slate-200 outline-none focus:border-purple-500"
+              className="mt-1.5 min-h-5 w-full rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-sm font-normal text-white/75 outline-none focus:border-[#eefb7a]/60"
               placeholder="Enter watermark text"
             />
           </label>
@@ -117,7 +117,7 @@ export function Watermark({ file, onSave, onCancel, config, onApplyAll }: Waterm
             <select
               value={position as string}
               onChange={(event) => setPosition(event.target.value)}
-              className="mt-1.5 w-full rounded-lg border border-slate-800 bg-slate-950 px-2.5 py-2 text-xs text-slate-300 outline-none focus:border-purple-500"
+              className="mt-1.5 w-full rounded-xl border border-white/10 bg-black/20 px-2.5 py-2 text-xs text-white/65 outline-none focus:border-[#eefb7a]/60"
             >
               {positions.map((pos) => (
                 <option key={pos.value} value={pos.value}>
@@ -133,7 +133,7 @@ export function Watermark({ file, onSave, onCancel, config, onApplyAll }: Waterm
               <select
                 value={font}
                 onChange={(event) => setFont(event.target.value)}
-                className="mt-1.5 w-full rounded-lg border border-slate-800 bg-slate-950 px-2.5 py-2 text-xs text-slate-300 outline-none focus:border-purple-500"
+                className="mt-1.5 w-full rounded-xl border border-white/10 bg-black/20 px-2.5 py-2 text-xs text-white/65 outline-none focus:border-[#eefb7a]/60"
               >
                 <option value="Arial">Arial</option>
                 <option value="Georgia">Georgia</option>
@@ -147,7 +147,7 @@ export function Watermark({ file, onSave, onCancel, config, onApplyAll }: Waterm
                 type="color"
                 value={fillStyle}
                 onChange={(event) => setFillStyle(event.target.value)}
-                className="mt-1.5 h-9 w-full cursor-pointer rounded-lg border border-slate-800 bg-slate-950 p-1"
+                className="mt-1.5 h-9 w-full cursor-pointer rounded-xl border border-white/10 bg-black/20 p-1"
               />
             </label>
           </div>
@@ -158,7 +158,7 @@ export function Watermark({ file, onSave, onCancel, config, onApplyAll }: Waterm
               <select
                 value={alignment}
                 onChange={(event) => setAlignment(event.target.value)}
-                className="mt-1.5 w-full rounded-lg border border-slate-800 bg-slate-950 px-2.5 py-2 text-xs text-slate-300 outline-none focus:border-purple-500"
+                className="mt-1.5 w-full rounded-xl border border-white/10 bg-black/20 px-2.5 py-2 text-xs text-white/65 outline-none focus:border-[#eefb7a]/60"
               >
                 <option value="left">Left</option>
                 <option value="center">Center</option>
@@ -172,7 +172,7 @@ export function Watermark({ file, onSave, onCancel, config, onApplyAll }: Waterm
               <select
                 value={baseline}
                 onChange={(event) => setBaseline(event.target.value)}
-                className="mt-1.5 w-full rounded-lg border border-slate-800 bg-slate-950 px-2.5 py-2 text-xs text-slate-300 outline-none focus:border-purple-500"
+                className="mt-1.5 w-full rounded-xl border border-white/10 bg-black/20 px-2.5 py-2 text-xs text-white/65 outline-none focus:border-[#eefb7a]/60"
               >
                 <option value="top">Top</option>
                 <option value="ideographic">Ideographic</option>
@@ -186,7 +186,7 @@ export function Watermark({ file, onSave, onCancel, config, onApplyAll }: Waterm
 
           <label className="text-xs font-semibold text-slate-300">
             <span className="flex justify-between">
-              Font size <span className="font-mono text-purple-400">{fontSize}px</span>
+              Font size <span className="font-mono text-[#eefb7a]">{fontSize}px</span>
             </span>
             <input
               type="range"
@@ -194,7 +194,7 @@ export function Watermark({ file, onSave, onCancel, config, onApplyAll }: Waterm
               max="120"
               value={fontSize}
               onChange={(event) => setFontSize(Number(event.target.value))}
-              className="mt-2 h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-slate-800 accent-purple-500"
+              className="mt-2 h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-white/10 accent-[#eefb7a]"
             />
           </label>
         </div>
@@ -236,7 +236,7 @@ export function Watermark({ file, onSave, onCancel, config, onApplyAll }: Waterm
             type="button"
             onClick={() => onApplyAll((input) => watermark(input, currentOptions()))}
             disabled={loading || !text.trim()}
-            className="rounded-lg border border-purple-500/30 bg-purple-600/10 px-4 py-1.5 text-xs font-semibold text-purple-300 hover:bg-purple-600/20 disabled:opacity-50"
+            className="rounded-xl border border-[#eefb7a]/25 bg-[#eefb7a]/5 px-4 py-2 text-[9px] font-black uppercase tracking-wide text-[#eefb7a] hover:bg-[#eefb7a]/10 disabled:opacity-50"
           >
             Apply to all
           </button>
@@ -245,7 +245,7 @@ export function Watermark({ file, onSave, onCancel, config, onApplyAll }: Waterm
           type="button"
           onClick={() => output && onSave(output)}
           disabled={!output || loading || !text.trim()}
-          className="rounded-lg bg-purple-600 px-4 py-1.5 text-xs font-semibold text-white shadow-lg shadow-purple-600/20 hover:bg-purple-500 disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-xl bg-white px-4 py-2 text-[9px] font-black uppercase tracking-wide text-[#101416] hover:bg-[#eefb7a] disabled:cursor-not-allowed disabled:opacity-50"
         >
           Apply Watermark
         </button>

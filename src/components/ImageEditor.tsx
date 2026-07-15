@@ -116,10 +116,10 @@ export default function ImageEditor({ file, onSave, onCancel, config, onApplyAll
   const savePercent = Math.round((savedBytes / file.size) * 100);
 
   return (
-    <div className="flex min-w-0 max-w-full flex-col gap-4 overflow-hidden rounded-xl border border-slate-200/10 bg-slate-900/40 p-4 text-left">
+    <div className="flex min-w-0 max-w-full flex-col gap-4 overflow-hidden rounded-2xl border border-white/10 bg-white/[.025] p-4 text-left">
       <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 border-b border-slate-200/10 pb-3">
         <h3 className="text-base font-semibold text-slate-100 flex items-center gap-2">
-          <svg className="w-5 h-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="h-5 w-5 text-[#eefb7a]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -138,7 +138,7 @@ export default function ImageEditor({ file, onSave, onCancel, config, onApplyAll
         <div className="flex min-w-0 flex-col gap-3.5">
           <div>
             <label className="block text-xs font-semibold text-slate-300 mb-1.5">File Name</label>
-            <div className="flex rounded-lg bg-slate-950/50 border border-slate-800 focus-within:border-purple-500 transition-colors">
+            <div className="flex rounded-xl border border-white/10 bg-black/20 transition-colors focus-within:border-[#eefb7a]/60">
               <input
                 type="text"
                 value={newName}
@@ -158,8 +158,8 @@ export default function ImageEditor({ file, onSave, onCancel, config, onApplyAll
                   onClick={() => setFormat(f)}
                   className={`py-1.5 px-2.5 text-xs font-medium rounded-lg border transition-all cursor-pointer ${
                     format === f
-                      ? 'bg-purple-600/20 border-purple-500 text-purple-300 shadow-sm'
-                      : 'bg-slate-950/30 border-slate-800 hover:border-slate-700 text-slate-400 hover:text-slate-200'
+                      ? 'border-[#eefb7a]/60 bg-[#eefb7a]/10 text-[#eefb7a] shadow-sm'
+                      : 'border-white/10 bg-black/20 text-white/35 hover:border-white/25 hover:text-white/70'
                   }`}
                 >
                   {f.split('/')[1].toUpperCase()}
@@ -171,7 +171,7 @@ export default function ImageEditor({ file, onSave, onCancel, config, onApplyAll
           <div>
             <div className="flex items-center justify-between mb-1">
               <label className="text-xs font-semibold text-slate-300">Dimensions Scale</label>
-              <span className="text-xs text-purple-400 font-semibold font-mono">{scale}%</span>
+              <span className="font-mono text-xs font-semibold text-[#eefb7a]">{scale}%</span>
             </div>
             <input
               type="range"
@@ -179,7 +179,7 @@ export default function ImageEditor({ file, onSave, onCancel, config, onApplyAll
               max="100"
               value={scale}
               onChange={(e) => setScale(Number(e.target.value))}
-              className="w-full accent-purple-500 cursor-pointer h-1.5 bg-slate-800 rounded-lg appearance-none"
+              className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-white/10 accent-[#eefb7a]"
             />
             <div className="flex flex-wrap justify-between gap-x-2 mt-1 text-[10px] text-slate-500 font-mono">
               <span>
@@ -195,7 +195,7 @@ export default function ImageEditor({ file, onSave, onCancel, config, onApplyAll
             <div>
               <div className="flex items-center justify-between mb-1">
                 <label className="text-xs font-semibold text-slate-300">Compression Quality</label>
-                <span className="text-xs text-purple-400 font-semibold font-mono">{Math.round(quality * 100)}%</span>
+                <span className="font-mono text-xs font-semibold text-[#eefb7a]">{Math.round(quality * 100)}%</span>
               </div>
               <input
                 type="range"
@@ -204,7 +204,7 @@ export default function ImageEditor({ file, onSave, onCancel, config, onApplyAll
                 step="0.05"
                 value={quality}
                 onChange={(e) => setQuality(Number(e.target.value))}
-                className="w-full accent-purple-500 cursor-pointer h-1.5 bg-slate-800 rounded-lg appearance-none"
+                className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-white/10 accent-[#eefb7a]"
               />
               <div className="flex justify-between mt-1 text-[10px] text-slate-500">
                 <span>Maximum Compress</span>
@@ -228,7 +228,7 @@ export default function ImageEditor({ file, onSave, onCancel, config, onApplyAll
             <FullscreenButton isFullscreen={isFullscreen} onClick={handleFullscreen} className="absolute right-2 top-2 z-20" />
             {loading ? (
               <div className="flex flex-col items-center gap-2">
-                <div className="w-6 h-6 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+                <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#eefb7a] border-t-transparent"></div>
                 <span className="text-xs text-slate-400">Processing...</span>
               </div>
             ) : previewUrl ? (
@@ -275,7 +275,7 @@ export default function ImageEditor({ file, onSave, onCancel, config, onApplyAll
             type="button"
             onClick={() => onApplyAll((input) => compressImageAtScale(input, quality, format, scale))}
             disabled={loading}
-            className="px-4 py-1.5 text-xs font-semibold text-purple-300 bg-purple-600/10 hover:bg-purple-600/20 border border-purple-500/30 rounded-lg disabled:opacity-50 cursor-pointer"
+            className="cursor-pointer rounded-xl border border-[#eefb7a]/25 bg-[#eefb7a]/5 px-4 py-2 text-[9px] font-black uppercase tracking-wide text-[#eefb7a] hover:bg-[#eefb7a]/10 disabled:opacity-50"
           >
             Apply to all
           </button>
@@ -283,7 +283,7 @@ export default function ImageEditor({ file, onSave, onCancel, config, onApplyAll
         <button
           onClick={handleSave}
           disabled={loading || !optimizedFile}
-          className="px-4 py-1.5 text-xs font-semibold text-white bg-purple-600 hover:bg-purple-500 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg shadow-lg shadow-purple-600/20 transition-all cursor-pointer"
+          className="cursor-pointer rounded-xl bg-white px-4 py-2 text-[9px] font-black uppercase tracking-wide text-[#101416] transition-all hover:bg-[#eefb7a] disabled:cursor-not-allowed disabled:opacity-50"
         >
           Apply Changes
         </button>

@@ -146,7 +146,7 @@ export const SandBox: React.FC<SandBoxProps> = ({
           </div>
 
           {applyingToAll && (
-            <div className="rounded-lg border border-purple-500/20 bg-purple-500/10 px-3 py-2 text-xs text-purple-300">
+            <div className="rounded-xl border border-[#eefb7a]/20 bg-[#eefb7a]/5 px-3 py-2 text-xs text-[#eefb7a]/80">
               Applying the current {selectedTool} options to compatible files…
             </div>
           )}

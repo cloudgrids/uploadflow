@@ -215,3 +215,20 @@
   background: #0d1113 !important;
   color: rgb(255 255 255 / 78%) !important;
 }
+
+.uploadflow-workspace input[type='checkbox'],
+.uploadflow-workspace input[type='range'] {
+  accent-color: #eefb7a !important;
+}
+
+.settings-workspace .text-purple-400,
+.settings-workspace .text-purple-300 {
+  color: #eefb7a !important;
+}
+
+.settings-workspace input:focus,
+.settings-workspace textarea:focus,
+.settings-workspace select:focus {
+  border-color: rgb(238 251 122 / 60%) !important;
+  outline: none;
+}

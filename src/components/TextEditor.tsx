@@ -76,10 +76,10 @@ export default function TextEditor({ file, onSave, onCancel, config, onApplyAll 
   };
 
   return (
-    <div className="flex min-w-0 max-w-full flex-col gap-4 overflow-hidden rounded-xl border border-slate-200/10 bg-slate-900/40 p-4 text-left">
+    <div className="flex min-w-0 max-w-full flex-col gap-4 overflow-hidden rounded-2xl border border-white/10 bg-white/[.025] p-4 text-left">
       <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 border-b border-slate-200/10 pb-3">
         <h3 className="text-base font-semibold text-slate-100 flex items-center gap-2">
-          <svg className="w-5 h-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="h-5 w-5 text-[#eefb7a]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -112,7 +112,7 @@ export default function TextEditor({ file, onSave, onCancel, config, onApplyAll 
           <div className="relative bg-slate-950/60 border border-slate-800 rounded-xl overflow-hidden flex-1 min-h-55 flex">
             {loading ? (
               <div className="absolute inset-0 flex items-center justify-center bg-slate-950/20">
-                <div className="w-6 h-6 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+                <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#eefb7a] border-t-transparent"></div>
               </div>
             ) : (
               <textarea
@@ -128,7 +128,7 @@ export default function TextEditor({ file, onSave, onCancel, config, onApplyAll 
         <div className="flex min-w-0 flex-col gap-4 bg-slate-950/30 p-3 rounded-xl border border-slate-800/80">
           <div>
             <label className="block text-xs font-semibold text-slate-300 mb-1.5">File Name</label>
-            <div className="flex rounded-lg bg-slate-950/50 border border-slate-800 focus-within:border-purple-500 transition-colors">
+            <div className="flex rounded-xl border border-white/10 bg-black/20 transition-colors focus-within:border-[#eefb7a]/60">
               <input
                 type="text"
                 value={newName}
@@ -159,7 +159,7 @@ export default function TextEditor({ file, onSave, onCancel, config, onApplyAll 
                       type="checkbox"
                       checked={redactRules[key]}
                       onChange={(e) => setRedactRules((prev) => ({ ...prev, [key]: e.target.checked }))}
-                      className="rounded border-slate-700 bg-slate-800 text-purple-600 focus:ring-purple-500 w-3.5 h-3.5"
+                      className="h-3.5 w-3.5 rounded border-white/15 bg-black/30 text-[#eefb7a] focus:ring-[#eefb7a]"
                     />
                     {labels[key]}
                   </label>
@@ -170,7 +170,7 @@ export default function TextEditor({ file, onSave, onCancel, config, onApplyAll 
             <button
               onClick={handleRedact}
               disabled={loading || !Object.values(redactRules).some(Boolean)}
-              className="mt-1 w-full flex items-center justify-center gap-1.5 py-2 px-3 text-xs font-semibold text-purple-300 bg-purple-600/10 hover:bg-purple-600/20 border border-purple-500/30 hover:border-purple-500/50 rounded-lg transition-all cursor-pointer"
+              className="mt-1 flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-xl border border-[#eefb7a]/25 bg-[#eefb7a]/5 px-3 py-2 text-[9px] font-black uppercase tracking-wide text-[#eefb7a] transition-all hover:bg-[#eefb7a]/10"
             >
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
@@ -198,7 +198,7 @@ export default function TextEditor({ file, onSave, onCancel, config, onApplyAll 
             type="button"
             onClick={() => onApplyAll(redactFile)}
             disabled={loading || !Object.values(redactRules).some(Boolean)}
-            className="px-4 py-1.5 text-xs font-semibold text-purple-300 bg-purple-600/10 hover:bg-purple-600/20 border border-purple-500/30 rounded-lg disabled:opacity-50 cursor-pointer"
+            className="cursor-pointer rounded-xl border border-[#eefb7a]/25 bg-[#eefb7a]/5 px-4 py-2 text-[9px] font-black uppercase tracking-wide text-[#eefb7a] hover:bg-[#eefb7a]/10 disabled:opacity-50"
           >
             Apply to all
           </button>
@@ -206,7 +206,7 @@ export default function TextEditor({ file, onSave, onCancel, config, onApplyAll 
         <button
           onClick={handleSave}
           disabled={loading}
-          className="px-4 py-1.5 text-xs font-semibold text-white bg-purple-600 hover:bg-purple-500 rounded-lg shadow-lg shadow-purple-600/20 transition-all cursor-pointer"
+          className="cursor-pointer rounded-xl bg-white px-4 py-2 text-[9px] font-black uppercase tracking-wide text-[#101416] transition-all hover:bg-[#eefb7a]"
         >
           Apply Changes
         </button>
