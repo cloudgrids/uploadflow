@@ -2,7 +2,7 @@
 import { toast } from '../utils/Toaster';
 
 export class UpscaleApi {
-  private readonly viteServerUrl = (import.meta.env.VITE_SERVER_URL || 'http://127.0.0.1:5173').replace(/\/$/, '');
+  private readonly serverUrl = (import.meta.env.VITE_SERVER_URL || 'https://uploadflow-vercel.app').replace(/\/$/, '');
 
   private readonly defaultFormValues = {
     chunk: '0',
@@ -15,9 +15,9 @@ export class UpscaleApi {
   } as const;
 
   public async initializeSession() {
-    const result = await fetch(`${this.viteServerUrl}/api/upscale`);
+    const result = await fetch(`${this.serverUrl}/api/upscale`);
 
-    if (!result.ok) throw new Error(`Failed to initialize upscale session through Vite server (${result.status}).`);
+    if (!result.ok) throw new Error(`Failed to initialize upscale session through UploadFlow server (${result.status}).`);
 
     const text = await result.text();
 
