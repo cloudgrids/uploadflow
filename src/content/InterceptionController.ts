@@ -1,7 +1,7 @@
-import type { MessageService } from '../services/MessageService';
-import type { ExtensionConfig } from '../types/Message';
+import { isExtensionContextInvalidatedError, type MessageService } from '../services/MessageService';
+import type { ExtensionConfig, UrlFileMediaType, UrlFileRecord } from '../types/Message';
 import { PAGE_INTERCEPTOR_SOURCE, type PageMediaInspectionState, type PageMediaSources } from '../types/PageInterceptor';
-import { MEDIA_SELECTOR, type MediaElement, isMediaElement } from './media/Media';
+import { MEDIA_SELECTOR, type MediaElement, isMediaElement, visibleMediaBounds } from './media/Media';
 import { mediaFromPointerEvent } from './media/MediaDetector';
 import { MediaInspectorMenu } from './media/MediaInspectorMenu';
 import { MEDIA_INSPECTOR_STYLES } from './media/MediaInspectorStyles';
@@ -40,7 +40,6 @@ export class InterceptionController {
   }
 
   unregister(): void {
-    chrome.storage.onChanged.removeListener(this.handleStorageChange);
     window.removeEventListener('message', this.handlePageMessage);
     window.removeEventListener('pointerover', this.handlePointerOver, true);
     window.removeEventListener('pointerout', this.handlePointerOut, true);
@@ -48,6 +47,7 @@ export class InterceptionController {
     window.removeEventListener('resize', this.handleViewportChange);
     document.removeEventListener('fullscreenchange', this.handleFullscreenChange);
     this.disable();
+    chrome.storage?.onChanged?.removeListener(this.handleStorageChange);
   }
 
   private readonly handleStorageChange = (changes: Record<string, chrome.storage.StorageChange>, areaName: string): void => {
@@ -155,9 +155,12 @@ export class InterceptionController {
     this.layer = document.createElement('div');
     this.layer.className = 'layer';
     shadowRoot.appendChild(this.layer);
-    this.menu = new MediaInspectorMenu(this.layer, this.sourceResolver, (url, media, button, status) => {
-      void this.downloadMedia(url, media, button, status);
-    });
+    this.menu = new MediaInspectorMenu(
+      this.layer,
+      this.sourceResolver,
+      (url, media, button, status) => void this.downloadMedia(url, media, button, status),
+      (url, media, button, status) => void this.saveUrlFile(url, media, button, status)
+    );
     this.mountTarget().appendChild(this.host);
   }
 
@@ -338,7 +341,7 @@ export class InterceptionController {
   private updatePositions(): void {
     this.ensureHostPlacement();
     for (const [media, button] of this.controls) {
-      const rect = media.getBoundingClientRect();
+      const rect = visibleMediaBounds(media);
       const visible =
         media.isConnected &&
         rect.width >= 32 &&
@@ -358,7 +361,7 @@ export class InterceptionController {
         continue;
       }
       button.style.top = `${Math.max(6, rect.top + 8)}px`;
-      button.style.left = `${Math.min(window.innerWidth - 34, Math.max(6, rect.right - 36))}px`;
+      button.style.left = `${Math.min(window.innerWidth - 34, Math.max(6, rect.left + 8))}px`;
     }
   }
 
@@ -392,8 +395,10 @@ export class InterceptionController {
       status.className = 'download-status success';
       status.textContent = 'Chrome is managing this download.';
     } catch (error) {
-      console.error('[UploadFlow] Unable to start Chrome download:', error);
-      button.textContent = 'Download failed';
+      if (!isExtensionContextInvalidatedError(error)) {
+        console.error('[UploadFlow] Unable to start Chrome download:', error);
+      }
+      button.textContent = isExtensionContextInvalidatedError(error) ? 'Refresh required' : 'Download failed';
       const message = error instanceof Error ? error.message : 'Chrome could not start this download.';
       button.title = message;
       status.className = 'download-status error';
@@ -404,6 +409,49 @@ export class InterceptionController {
         if (!button.isConnected) return;
         button.textContent = originalLabel;
         button.title = '';
+      }, 2_000);
+    }
+  }
+
+  private async saveUrlFile(
+    url: string,
+    media: MediaElement,
+    button: HTMLButtonElement,
+    status: HTMLParagraphElement
+  ): Promise<void> {
+    button.disabled = true;
+    const originalLabel = button.textContent ?? 'Save URL';
+    button.textContent = 'Saving…';
+    status.className = 'download-status';
+    status.textContent = 'Adding this media URL to UploadFlow…';
+    try {
+      const mediaType: UrlFileMediaType = media instanceof HTMLImageElement
+        ? 'image'
+        : media instanceof HTMLVideoElement ? 'video'
+          : media instanceof HTMLAudioElement ? 'audio' : 'file';
+      const previewUrl = media instanceof HTMLVideoElement
+        ? media.poster || undefined
+        : media instanceof HTMLImageElement ? media.currentSrc || media.src : undefined;
+      await this.messageService.send<{ files: UrlFileRecord[] }>({
+        type: 'SAVE_URL_FILE',
+        payload: {
+          url,
+          name: this.sourceResolver.downloadName(url, media),
+          previewUrl,
+          mediaType
+        }
+      });
+      button.textContent = 'Saved';
+      status.className = 'download-status success';
+      status.textContent = 'Saved to URL files. Open any file input to use it.';
+    } catch (error) {
+      button.textContent = 'Save failed';
+      status.className = 'download-status error';
+      status.textContent = error instanceof Error ? error.message : 'Could not save this URL.';
+    } finally {
+      button.disabled = false;
+      setTimeout(() => {
+        if (button.isConnected) button.textContent = originalLabel;
       }, 2_000);
     }
   }

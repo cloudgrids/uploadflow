@@ -1,4 +1,5 @@
 export type UploadFlowSettingsTab = 'image' | 'redaction' | 'upscale' | 'watermark';
+export type FilePickerMode = 'url' | 'native';
 
 export class ImageSettings {
   enableAutoOptimize: boolean;
@@ -78,18 +79,21 @@ export class WatermarkSettings {
 export class GeneralSettings {
   enableUploadFlow: boolean;
   enableInspectMode: boolean;
+  filePickerMode: FilePickerMode;
   defaultTab: UploadFlowSettingsTab;
   theme: 'light' | 'dark' | 'system';
 
   constructor(
     enableUploadFlow: boolean = true,
     enableInspectMode: boolean = false,
+    filePickerMode: FilePickerMode = 'url',
     defaultTab: UploadFlowSettingsTab = 'image',
     theme: 'light' | 'dark' | 'system' = 'system'
   ) {
     this.enableUploadFlow = enableUploadFlow;
-    this.defaultTab = defaultTab;
     this.enableInspectMode = enableInspectMode;
+    this.filePickerMode = filePickerMode;
+    this.defaultTab = defaultTab;
     this.theme = theme;
   }
 }

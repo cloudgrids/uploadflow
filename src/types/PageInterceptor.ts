@@ -22,6 +22,7 @@ export interface PageInterceptorState {
   source: typeof PAGE_INTERCEPTOR_SOURCE;
   type: 'STATE';
   enabled: boolean;
+  filePickerMode: 'url' | 'native';
 }
 
 export interface PageMediaInspectionState {
@@ -34,4 +35,10 @@ export interface PageMediaSources {
   source: typeof PAGE_INTERCEPTOR_SOURCE;
   type: 'MEDIA_SOURCES';
   urls: string[];
+}
+
+export interface PageUrlFilePickerRequest {
+  source: typeof PAGE_INTERCEPTOR_SOURCE;
+  type: 'URL_FILE_PICKER_REQUEST';
+  inputId: string;
 }

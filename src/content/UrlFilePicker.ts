@@ -1,5 +1,7 @@
 import type { MessageService } from '../services/MessageService';
+import { UrlFileFetchClient } from '../services/UrlFileFetchClient';
 import type { UrlFileRecord } from '../types/Message';
+import { PAGE_INTERCEPTOR_SOURCE, type PageUrlFilePickerRequest } from '../types/PageInterceptor';
 import { FileBypass } from './FileBypass';
 import type { InterceptionState } from './InterceptionState';
 
@@ -9,6 +11,7 @@ export class UrlFilePicker {
   private readonly messageService: MessageService;
   private readonly interceptionState: InterceptionState;
   private readonly nativePickerBypass = new WeakSet<HTMLInputElement>();
+  private readonly fetchClient = new UrlFileFetchClient();
   private host: HTMLDivElement | null = null;
   private input: HTMLInputElement | null = null;
   private records: UrlFileRecord[] = [];
@@ -21,11 +24,13 @@ export class UrlFilePicker {
   register(): void {
     window.addEventListener('click', this.handleClick, true);
     window.addEventListener('keydown', this.handleKeyDown, true);
+    window.addEventListener('message', this.handlePageMessage);
   }
 
   unregister(): void {
     window.removeEventListener('click', this.handleClick, true);
     window.removeEventListener('keydown', this.handleKeyDown, true);
+    window.removeEventListener('message', this.handlePageMessage);
     this.close();
   }
 
@@ -33,7 +38,7 @@ export class UrlFilePicker {
     const input = this.fileInputFromEvent(event);
     if (!input || input.disabled) return;
     if (this.nativePickerBypass.delete(input)) return;
-    if (!this.interceptionState.enabled) return;
+    if (!this.interceptionState.enabled || this.interceptionState.filePickerMode !== 'url') return;
 
     event.preventDefault();
     event.stopImmediatePropagation();
@@ -42,6 +47,24 @@ export class UrlFilePicker {
 
   private readonly handleKeyDown = (event: KeyboardEvent): void => {
     if (event.key === 'Escape' && this.host) this.close();
+  };
+
+  private readonly handlePageMessage = (event: MessageEvent<unknown>): void => {
+    if (event.source !== window || !event.data || typeof event.data !== 'object') return;
+    const message = event.data as Partial<PageUrlFilePickerRequest>;
+    if (
+      message.source !== PAGE_INTERCEPTOR_SOURCE ||
+      message.type !== 'URL_FILE_PICKER_REQUEST' ||
+      typeof message.inputId !== 'string'
+    ) {
+      return;
+    }
+    if (!this.interceptionState.enabled || this.interceptionState.filePickerMode !== 'url') return;
+    const selector = `[data-uploadflow-url-picker-id="${CSS.escape(message.inputId)}"]`;
+    const input = document.querySelector<HTMLInputElement>(selector);
+    if (!input || input.type !== 'file') return;
+    delete input.dataset.uploadflowUrlPickerId;
+    this.open(input);
   };
 
   private fileInputFromEvent(event: MouseEvent): HTMLInputElement | null {
@@ -87,7 +110,9 @@ export class UrlFilePicker {
         .status.error { color: #fca5a5; }
         .saved-head { display: flex; justify-content: space-between; margin-top: 22px; padding-bottom: 9px; border-bottom: 1px solid rgba(255,255,255,.1); color: rgba(255,255,255,.35); font-size: 9px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
         .list { display: grid; gap: 7px; margin-top: 10px; }
-        .item { display: grid; grid-template-columns: minmax(0,1fr) auto auto; align-items: center; gap: 7px; border: 1px solid rgba(255,255,255,.09); border-radius: 12px; padding: 10px; background: rgba(255,255,255,.025); }
+        .item { display: grid; grid-template-columns: 48px minmax(0,1fr) auto auto; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.09); border-radius: 12px; padding: 9px; background: rgba(255,255,255,.025); }
+        .preview { width: 48px; height: 48px; display: grid; place-items: center; overflow: hidden; border-radius: 9px; background: rgba(255,255,255,.07); color: rgba(255,255,255,.45); font-size: 16px; }
+        .preview img { width: 100%; height: 100%; object-fit: cover; }
         .name,.url { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .name { color: rgba(255,255,255,.82); font-size: 11px; font-weight: 750; }
         .url { margin-top: 3px; color: rgba(255,255,255,.28); font: 8px ui-monospace, SFMono-Regular, Menlo, monospace; }
@@ -154,6 +179,7 @@ export class UrlFilePicker {
     this.records.forEach((record) => {
       const item = document.createElement('div');
       item.className = 'item';
+      const preview = this.createPreview(record);
       const copy = document.createElement('div');
       const name = document.createElement('span');
       name.className = 'name';
@@ -172,9 +198,33 @@ export class UrlFilePicker {
       remove.className = 'remove';
       remove.textContent = 'Remove';
       remove.addEventListener('click', () => void this.removeRecord(record.id));
-      item.append(copy, use, remove);
+      item.append(preview, copy, use, remove);
       list.appendChild(item);
     });
+  }
+
+  private createPreview(record: UrlFileRecord): HTMLDivElement {
+    const preview = document.createElement('div');
+    preview.className = 'preview';
+    if (record.previewUrl) {
+      const image = document.createElement('img');
+      image.src = record.previewUrl;
+      image.alt = '';
+      image.addEventListener('error', () => {
+        preview.replaceChildren(document.createTextNode(this.mediaIcon(record.mediaType)));
+      });
+      preview.appendChild(image);
+    } else {
+      preview.textContent = this.mediaIcon(record.mediaType);
+    }
+    return preview;
+  }
+
+  private mediaIcon(mediaType: UrlFileRecord['mediaType']): string {
+    if (mediaType === 'video') return '▶';
+    if (mediaType === 'audio') return '♪';
+    if (mediaType === 'image') return '▧';
+    return '↗';
   }
 
   private async fetchAndUse(value: string, preferredName?: string): Promise<void> {
@@ -190,37 +240,46 @@ export class UrlFilePicker {
       return;
     }
 
-    this.setStatus('Fetching the file…');
+    this.setStatus('Fetching the file through UploadFlow…');
     try {
-      const response = await fetch(url.href, { credentials: 'include' });
-      if (!response.ok) throw new Error(`The URL returned HTTP ${response.status}`);
-      const blob = await response.blob();
+      const { blob, filename } = await this.fetchClient.fetch(url.href, (received, total) => {
+        if (this.host !== picker) return;
+        const receivedLabel = this.formatBytes(received);
+        this.setStatus(total > 0 ? `Fetching ${receivedLabel} / ${this.formatBytes(total)}…` : `Fetching ${receivedLabel}…`);
+      });
       if (this.host !== picker || this.input !== input || !input.isConnected) return;
-      const name = preferredName || this.nameFromResponse(response, url);
+      const name = preferredName || filename || this.nameFromUrl(url);
       const file = new File([blob], name, { type: blob.type || 'application/octet-stream', lastModified: Date.now() });
       if (!this.acceptsFile(input, file)) throw new Error(`This input does not accept ${file.name}`);
+      const mediaType = this.mediaTypeFor(file.type);
       const saved = await this.messageService.send<{ files: UrlFileRecord[] }>({
         type: 'SAVE_URL_FILE',
-        payload: { url: url.href, name }
+        payload: {
+          url: url.href,
+          name,
+          previewUrl: mediaType === 'image' || mediaType === 'video' ? url.href : undefined,
+          mediaType
+        }
       });
       this.records = saved.files;
       FileBypass.input(input, [file]);
       this.close();
     } catch (error) {
-      const message = error instanceof TypeError
-        ? 'The site blocked this cross-origin fetch. Try a URL that allows browser access.'
-        : error instanceof Error ? error.message : 'Could not fetch this file.';
+      const message = this.messageService.normalizeRuntimeError(error).message;
       this.setStatus(message, true);
     }
   }
 
-  private nameFromResponse(response: Response, url: URL): string {
-    const disposition = response.headers.get('content-disposition');
-    const encoded = disposition?.match(/filename\*=UTF-8''([^;]+)/i)?.[1];
-    const plain = disposition?.match(/filename="?([^";]+)"?/i)?.[1];
+  private nameFromUrl(url: URL): string {
     const pathName = url.pathname.split('/').filter(Boolean).pop();
-    const name = encoded ? decodeURIComponent(encoded) : plain || (pathName ? decodeURIComponent(pathName) : 'remote-file');
+    const name = pathName ? decodeURIComponent(pathName) : 'remote-file';
     return name.replace(/[<>:"/\\|?*]/g, '_');
+  }
+
+  private formatBytes(bytes: number): string {
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   }
 
   private acceptsFile(input: HTMLInputElement, file: File): boolean {
@@ -233,6 +292,13 @@ export class UrlFilePicker {
       if (rule.endsWith('/*')) return type.startsWith(rule.slice(0, -1));
       return type === rule;
     });
+  }
+
+  private mediaTypeFor(type: string): UrlFileRecord['mediaType'] {
+    if (type.startsWith('image/')) return 'image';
+    if (type.startsWith('video/')) return 'video';
+    if (type.startsWith('audio/')) return 'audio';
+    return 'file';
   }
 
   private async removeRecord(id: string): Promise<void> {

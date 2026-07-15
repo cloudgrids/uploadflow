@@ -71,7 +71,9 @@ export class MessageRouter {
         response = this.urlFiles.list().then((files) => ({ files }));
         break;
       case 'SAVE_URL_FILE':
-        response = this.urlFiles.save(message.payload.url, message.payload.name).then((files) => ({ files }));
+        response = this.urlFiles
+          .save(message.payload.url, message.payload.name, message.payload.previewUrl, message.payload.mediaType)
+          .then((files) => ({ files }));
         break;
       case 'DELETE_URL_FILE':
         response = this.urlFiles.remove(message.payload.id).then((files) => ({ files }));

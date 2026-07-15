@@ -34,5 +34,5 @@
     }
   ],
   "permissions": ["activeTab", "downloads", "scripting", "storage"],
-  "host_permissions": ["https://uploadflow.cloudgrids.tech/*"]
+  "host_permissions": ["http://*/*", "https://*/*"]
 }

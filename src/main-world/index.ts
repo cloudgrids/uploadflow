@@ -3,6 +3,7 @@ import {
   type PageInterceptorKind,
   type PageMediaInspectionState,
   type PageMediaSources,
+  type PageUrlFilePickerRequest,
   type PageInterceptorState,
   type PageInterceptorRequest,
   type PageInterceptorResponse
@@ -10,6 +11,7 @@ import {
 
 let bridgeReady = false;
 let interceptionEnabled = false;
+let filePickerMode: 'url' | 'native' = 'url';
 let mediaInspectionEnabled = false;
 const processedFiles = new WeakSet<File>();
 const userSelectedFiles = new WeakSet<File>();
@@ -25,6 +27,7 @@ window.addEventListener('message', (event: MessageEvent<unknown>) => {
   if (message.source === PAGE_INTERCEPTOR_SOURCE && message.type === 'STATE' && typeof message.enabled === 'boolean') {
     bridgeReady = true;
     interceptionEnabled = message.enabled;
+    filePickerMode = message.filePickerMode === 'native' ? 'native' : 'url';
   }
   const mediaState = event.data as Partial<PageMediaInspectionState>;
   if (
@@ -325,8 +328,33 @@ function registerFilePickerInterceptor(): void {
   };
 }
 
+function registerUrlFileInputPicker(): void {
+  const prototype = HTMLInputElement.prototype;
+  const originalShowPicker = prototype.showPicker;
+  if (typeof originalShowPicker !== 'function') return;
+
+  prototype.showPicker = function (): void {
+    if (!interceptionEnabled || filePickerMode !== 'url' || this.type !== 'file') {
+      originalShowPicker.call(this);
+      return;
+    }
+
+    const inputId = typeof crypto.randomUUID === 'function'
+      ? crypto.randomUUID()
+      : `uf-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    this.dataset.uploadflowUrlPickerId = inputId;
+    const request: PageUrlFilePickerRequest = {
+      source: PAGE_INTERCEPTOR_SOURCE,
+      type: 'URL_FILE_PICKER_REQUEST',
+      inputId
+    };
+    window.postMessage(request, '*');
+  };
+}
+
 registerFileInputInterceptor();
 registerClipboardReadInterceptor();
 registerFetchInterceptor();
 registerXhrInterceptor();
 registerFilePickerInterceptor();
+registerUrlFileInputPicker();

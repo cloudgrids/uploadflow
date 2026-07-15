@@ -1,5 +1,5 @@
 import type { StorageService } from './StorageService';
-import type { UrlFileRecord } from '../types/Message';
+import type { UrlFileMediaType, UrlFileRecord } from '../types/Message';
 
 const URL_FILES_KEY = 'urlFiles';
 const MAX_URL_FILES = 20;
@@ -13,10 +13,17 @@ export class UrlFileLibraryService {
 
   async list(): Promise<UrlFileRecord[]> {
     const { urlFiles = [] } = await this.storage.get<{ urlFiles?: UrlFileRecord[] }>([URL_FILES_KEY]);
-    return Array.isArray(urlFiles) ? urlFiles.slice(0, MAX_URL_FILES) : [];
+    return Array.isArray(urlFiles)
+      ? urlFiles.slice(0, MAX_URL_FILES).map((record) => ({ ...record, mediaType: record.mediaType ?? 'file' }))
+      : [];
   }
 
-  async save(url: string, name?: string): Promise<UrlFileRecord[]> {
+  async save(
+    url: string,
+    name?: string,
+    previewUrl?: string,
+    mediaType: UrlFileMediaType = 'file'
+  ): Promise<UrlFileRecord[]> {
     const normalizedUrl = this.normalizeUrl(url);
     const files = await this.list();
     const existing = files.find((item) => item.url === normalizedUrl);
@@ -24,6 +31,8 @@ export class UrlFileLibraryService {
       id: existing?.id ?? crypto.randomUUID(),
       url: normalizedUrl,
       name: name?.trim() || existing?.name || this.nameFromUrl(normalizedUrl),
+      previewUrl: previewUrl ? this.normalizeUrl(previewUrl) : existing?.previewUrl,
+      mediaType: mediaType || existing?.mediaType || 'file',
       createdAt: new Date().toISOString()
     };
     const next = [record, ...files.filter((item) => item.url !== normalizedUrl)].slice(0, MAX_URL_FILES);

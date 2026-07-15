@@ -3,6 +3,7 @@ import { StatsService } from '../services/StatsService';
 import { storageService } from '../services/StorageService';
 import { InstallHandler } from './InstallHandler';
 import { MessageRouter } from './MessageRouter';
+import { UrlFileFetchService } from './UrlFileFetchService';
 
 export class Background {
   initialize(): void {
@@ -11,5 +12,6 @@ export class Background {
 
     new InstallHandler(storageService, config, stats).register();
     new MessageRouter(config, stats, storageService).register();
+    new UrlFileFetchService().register();
   }
 }

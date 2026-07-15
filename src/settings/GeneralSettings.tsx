@@ -1,5 +1,5 @@
 import { toast } from '../utils/Toaster';
-import type { UploadFlowSettings, UploadFlowSettingsTab } from './UploadFlowSettings';
+import type { FilePickerMode, UploadFlowSettings, UploadFlowSettingsTab } from './UploadFlowSettings';
 
 interface GeneralSettingsProps {
   settings: UploadFlowSettings;
@@ -37,7 +37,7 @@ export const GeneralSettings: React.FC<GeneralSettingsProps> = ({ settings, onUp
     }
   };
 
-    const toggleInspectMode = (enabled: boolean) => {
+  const toggleInspectMode = (enabled: boolean) => {
     try {
       updateGeneralSettings({ enableInspectMode: enabled });
       toast.sw(`Inspect mode ${enabled ? 'enabled' : 'disabled'}.`, enabled);
@@ -69,6 +69,21 @@ export const GeneralSettings: React.FC<GeneralSettingsProps> = ({ settings, onUp
           />
         </label>
       </div>
+
+      <label className="flex flex-row justify-between gap-3 text-xs font-medium text-slate-700 dark:text-slate-300">
+        <div className="flex flex-col gap-1">
+          File Input Picker
+          <span className="block text-[10px] text-slate-500">Choose what opens when a website requests a file.</span>
+        </div>
+        <select
+          value={gs.filePickerMode ?? 'url'}
+          onChange={(event) => updateGeneralSettings({ filePickerMode: event.target.value as FilePickerMode })}
+          className="cursor-pointer rounded-lg border border-slate-300 bg-white px-2.5 py-2 text-xs text-slate-800 outline-none focus:border-purple-500 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200"
+        >
+          <option value="url">UploadFlow URL picker</option>
+          <option value="native">Native file picker</option>
+        </select>
+      </label>
 
       <div className="flex flex-col gap-2.5">
         <label className="flex items-center flex-row justify-between gap-2 text-xs font-medium text-slate-700 dark:text-slate-300 cursor-pointer">

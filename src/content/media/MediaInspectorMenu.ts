@@ -7,17 +7,25 @@ export type MediaDownloadHandler = (
   button: HTMLButtonElement,
   status: HTMLParagraphElement
 ) => void;
+export type MediaSaveHandler = MediaDownloadHandler;
 
 export class MediaInspectorMenu {
   private readonly layer: HTMLDivElement;
   private readonly sourceResolver: MediaSourceResolver;
   private readonly onDownload: MediaDownloadHandler;
+  private readonly onSave: MediaSaveHandler;
   private element: HTMLDivElement | null = null;
 
-  constructor(layer: HTMLDivElement, sourceResolver: MediaSourceResolver, onDownload: MediaDownloadHandler) {
+  constructor(
+    layer: HTMLDivElement,
+    sourceResolver: MediaSourceResolver,
+    onDownload: MediaDownloadHandler,
+    onSave: MediaSaveHandler
+  ) {
     this.layer = layer;
     this.sourceResolver = sourceResolver;
     this.onDownload = onDownload;
+    this.onSave = onSave;
   }
 
   open(media: MediaElement, anchor: HTMLButtonElement): void {
@@ -89,6 +97,10 @@ export class MediaInspectorMenu {
     download.classList.add('primary');
     download.addEventListener('click', () => this.onDownload(url, media, download, status));
     actions.appendChild(download);
+
+    const save = this.actionButton('Save URL');
+    save.addEventListener('click', () => this.onSave(url, media, save, status));
+    actions.appendChild(save);
   }
 
   private actionButton(label: string): HTMLButtonElement {

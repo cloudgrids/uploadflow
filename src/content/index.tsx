@@ -20,7 +20,7 @@ const pageApiInterceptor = new PageApiInterceptor(
   interceptionState
 );
 
-new ContentController(
+const contentController = new ContentController(
   interceptionState,
   new FileInputInterceptor(overlayManager, messageService, interceptionState),
   new FileChangeInterceptor(),
@@ -29,4 +29,7 @@ new ContentController(
   pageApiInterceptor,
   new InterceptionController(messageService),
   new UrlFilePicker(messageService, interceptionState)
-).initialize();
+);
+
+messageService.onContextInvalidated(() => contentController.invalidate());
+contentController.initialize();
