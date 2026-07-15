@@ -27,8 +27,8 @@ export class UrlFileFetchService {
       const allowed = await chrome.permissions.contains({ origins: [origin] });
       if (!allowed) throw new Error(`UploadFlow does not have access to ${url.host}`);
 
-      const response = await fetch(url.href, { credentials: 'include', signal });
-      if (!response.ok) throw new Error(`The URL returned HTTP ${response.status}`);
+      const response = await this.fetchResponse(url, signal);
+      if (!response.ok) throw new Error(this.httpError(response.status, url));
       const contentType = response.headers.get('content-type')?.split(';')[0]?.trim() || 'application/octet-stream';
       const totalBytes = Number(response.headers.get('content-length')) || 0;
       this.send(port, {
@@ -59,6 +59,38 @@ export class UrlFileFetchService {
         message: error instanceof Error ? error.message : 'Could not fetch this URL'
       });
     }
+  }
+
+  private async fetchResponse(url: URL, signal: AbortSignal): Promise<Response> {
+    const response = await fetch(url.href, {
+      credentials: 'include',
+      cache: 'no-store',
+      signal
+    });
+    if (response.status !== 403) return response;
+
+    // Some media CDNs reject a full-file request but accept the range request
+    // normally made by an image/video player or download client.
+    return fetch(url.href, {
+      credentials: 'include',
+      cache: 'no-store',
+      headers: { Range: 'bytes=0-' },
+      signal
+    });
+  }
+
+  private httpError(status: number, url: URL): string {
+    if (status === 401) return 'This URL requires a signed-in browser session that the server did not accept.';
+    if (status !== 403) return `The URL returned HTTP ${status}`;
+
+    const signedParameters = ['expires', 'expiry', 'exp', 'signature', 'policy', 'token', 'key-pair-id'];
+    let hasTemporarySignature = false;
+    url.searchParams.forEach((_value, key) => {
+      if (signedParameters.includes(key.toLowerCase())) hasTemporarySignature = true;
+    });
+    return hasTemporarySignature
+      ? 'The server rejected this temporary signed URL (HTTP 403). Reopen the source page and save its refreshed URL.'
+      : 'The server denied this file request (HTTP 403). It may require page-specific authentication or block external downloads.';
   }
 
   private responseFilename(response: Response): string | undefined {
