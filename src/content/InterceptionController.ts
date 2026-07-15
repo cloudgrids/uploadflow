@@ -1,28 +1,27 @@
 import type { MessageService } from '../services/MessageService';
 import type { ExtensionConfig } from '../types/Message';
-import {
-  PAGE_INTERCEPTOR_SOURCE,
-  type PageMediaInspectionState,
-  type PageMediaSources
-} from '../types/PageInterceptor';
+import { PAGE_INTERCEPTOR_SOURCE, type PageMediaInspectionState, type PageMediaSources } from '../types/PageInterceptor';
+import { MEDIA_SELECTOR, type MediaElement, isMediaElement } from './media/Media';
+import { mediaFromPointerEvent } from './media/MediaDetector';
+import { MediaInspectorMenu } from './media/MediaInspectorMenu';
+import { MEDIA_INSPECTOR_STYLES } from './media/MediaInspectorStyles';
+import { MediaSourceResolver } from './media/MediaSourceResolver';
 
-type MediaElement = HTMLImageElement | HTMLVideoElement | HTMLAudioElement;
-
-const MEDIA_SELECTOR = 'img, video, audio';
-const INSPECTOR_Z_INDEX = '2147483645';
+const INSPECTOR_Z_INDEX = '2147483647';
 
 export class InterceptionController {
   private readonly messageService: MessageService;
   private enabled = false;
   private host: HTMLDivElement | null = null;
   private layer: HTMLDivElement | null = null;
-  private menu: HTMLDivElement | null = null;
+  private menu: MediaInspectorMenu | null = null;
   private observer: MutationObserver | null = null;
+  private observedRoots = new WeakSet<Node>();
   private controls = new Map<MediaElement, HTMLButtonElement>();
   private positionFrame: number | null = null;
   private activeMedia: MediaElement | null = null;
   private hideTimer: ReturnType<typeof setTimeout> | null = null;
-  private capturedMediaSources: string[][] = [];
+  private readonly sourceResolver = new MediaSourceResolver();
   private refreshVersion = 0;
 
   constructor(messageService: MessageService) {
@@ -32,27 +31,26 @@ export class InterceptionController {
   register(): void {
     chrome.storage.onChanged.addListener(this.handleStorageChange);
     window.addEventListener('message', this.handlePageMessage);
-    document.addEventListener('pointerover', this.handlePointerOver, true);
-    document.addEventListener('pointerout', this.handlePointerOut, true);
+    window.addEventListener('pointerover', this.handlePointerOver, true);
+    window.addEventListener('pointerout', this.handlePointerOut, true);
     window.addEventListener('scroll', this.handleViewportChange, true);
     window.addEventListener('resize', this.handleViewportChange);
+    document.addEventListener('fullscreenchange', this.handleFullscreenChange);
     void this.refresh();
   }
 
   unregister(): void {
     chrome.storage.onChanged.removeListener(this.handleStorageChange);
     window.removeEventListener('message', this.handlePageMessage);
-    document.removeEventListener('pointerover', this.handlePointerOver, true);
-    document.removeEventListener('pointerout', this.handlePointerOut, true);
+    window.removeEventListener('pointerover', this.handlePointerOver, true);
+    window.removeEventListener('pointerout', this.handlePointerOut, true);
     window.removeEventListener('scroll', this.handleViewportChange, true);
     window.removeEventListener('resize', this.handleViewportChange);
+    document.removeEventListener('fullscreenchange', this.handleFullscreenChange);
     this.disable();
   }
 
-  private readonly handleStorageChange = (
-    changes: Record<string, chrome.storage.StorageChange>,
-    areaName: string
-  ): void => {
+  private readonly handleStorageChange = (changes: Record<string, chrome.storage.StorageChange>, areaName: string): void => {
     if (areaName !== 'local' || (!('settings' in changes) && !('isEnabled' in changes))) return;
 
     const nextSettings = changes.settings?.newValue as ExtensionConfig['settings'] | undefined;
@@ -91,14 +89,8 @@ export class InterceptionController {
     this.enabled = true;
     this.updatePageMediaInspection(true);
     this.mount();
-    this.scan(document);
     this.observer = new MutationObserver(this.handleMutations);
-    this.observer.observe(document.documentElement, {
-      subtree: true,
-      childList: true,
-      attributes: true,
-      attributeFilter: ['src', 'srcset']
-    });
+    this.observeRoot(document);
   }
 
   private disable(): void {
@@ -106,16 +98,18 @@ export class InterceptionController {
     this.updatePageMediaInspection(false);
     this.observer?.disconnect();
     this.observer = null;
+    this.observedRoots = new WeakSet<Node>();
     if (this.positionFrame !== null) cancelAnimationFrame(this.positionFrame);
     this.positionFrame = null;
     this.clearHideTimer();
     this.activeMedia = null;
     this.controls.clear();
+    this.menu?.close();
     this.menu = null;
     this.host?.remove();
     this.host = null;
     this.layer = null;
-    this.capturedMediaSources = [];
+    this.sourceResolver.clear();
   }
 
   private updatePageMediaInspection(enabled: boolean): void {
@@ -130,18 +124,13 @@ export class InterceptionController {
   private readonly handlePageMessage = (event: MessageEvent<unknown>): void => {
     if (event.source !== window || !event.data || typeof event.data !== 'object') return;
     const message = event.data as Partial<PageMediaSources>;
-    if (
-      message.source !== PAGE_INTERCEPTOR_SOURCE ||
-      message.type !== 'MEDIA_SOURCES' ||
-      !Array.isArray(message.urls)
-    ) {
+    if (message.source !== PAGE_INTERCEPTOR_SOURCE || message.type !== 'MEDIA_SOURCES' || !Array.isArray(message.urls)) {
       return;
     }
 
     const urls = message.urls.filter((url): url is string => typeof url === 'string');
     if (!urls.length) return;
-    this.capturedMediaSources.push(urls);
-    this.capturedMediaSources = this.capturedMediaSources.slice(-20);
+    this.sourceResolver.capture(urls);
   };
 
   private mount(): void {
@@ -152,33 +141,52 @@ export class InterceptionController {
       inset: '0',
       zIndex: INSPECTOR_Z_INDEX,
       pointerEvents: 'none',
-      isolation: 'isolate'
+      isolation: 'isolate',
+      display: 'block',
+      width: '100vw',
+      height: '100vh'
     });
 
     const shadowRoot = this.host.attachShadow({ mode: 'open' });
     const style = document.createElement('style');
-    style.textContent = `
-      * { box-sizing: border-box; }
-      .layer { position: fixed; inset: 0; pointer-events: none; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
-      .media-action { position: fixed; width: 28px; height: 28px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.22); border-radius: 8px; background: #171717; color: #fff; box-shadow: 0 4px 18px rgba(0,0,0,.32); cursor: pointer; visibility: hidden; opacity: 0; pointer-events: none; font-size: 16px; font-weight: 800; line-height: 1; transition: opacity .12s ease, transform .15s ease, background .15s ease; }
-      .media-action.visible { visibility: visible; opacity: 1; pointer-events: auto; }
-      .media-action:hover { transform: translateY(-1px); background: #292929; }
-      .media-action:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
-      .menu { position: fixed; width: min(340px, calc(100vw - 24px)); padding: 12px; border: 1px solid rgba(255,255,255,.14); border-radius: 12px; background: #171717; color: #fff; box-shadow: 0 18px 50px rgba(0,0,0,.42); pointer-events: auto; }
-      .menu-title { margin: 0; font-size: 11px; font-weight: 850; font-style: italic; text-transform: uppercase; letter-spacing: -.01em; }
-      .url { margin-top: 8px; padding: 8px; border-radius: 7px; background: rgba(255,255,255,.07); color: #a3a3a3; font: 10px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; overflow-wrap: anywhere; max-height: 76px; overflow: auto; }
-      .actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-      .action { display: inline-flex; align-items: center; justify-content: center; min-height: 30px; padding: 0 10px; border: 1px solid rgba(255,255,255,.14); border-radius: 7px; background: rgba(255,255,255,.07); color: #fff; text-decoration: none; cursor: pointer; font: 700 10px/1 Inter, ui-sans-serif, system-ui, sans-serif; }
-      .action:hover { background: rgba(255,255,255,.14); }
-      .action.primary { border-color: #fff; background: #fff; color: #171717; }
-      .unavailable { color: #fbbf24; }
-    `;
+    style.textContent = MEDIA_INSPECTOR_STYLES;
     shadowRoot.appendChild(style);
 
     this.layer = document.createElement('div');
     this.layer.className = 'layer';
     shadowRoot.appendChild(this.layer);
-    document.documentElement.appendChild(this.host);
+    this.menu = new MediaInspectorMenu(this.layer, this.sourceResolver, (url, media, button, status) => {
+      void this.downloadMedia(url, media, button, status);
+    });
+    this.mountTarget().appendChild(this.host);
+  }
+
+  private mountTarget(): Element {
+    return document.fullscreenElement ?? document.documentElement;
+  }
+
+  private ensureHostPlacement(): void {
+    if (!this.host) return;
+    const target = this.mountTarget();
+    if (this.host.parentElement !== target) target.appendChild(this.host);
+  }
+
+  private readonly handleFullscreenChange = (): void => {
+    this.ensureHostPlacement();
+    this.closeMenu();
+    this.schedulePositions();
+  };
+
+  private observeRoot(root: Document | ShadowRoot): void {
+    if (!this.observer || this.observedRoots.has(root)) return;
+    this.observedRoots.add(root);
+    this.observer.observe(root, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+      attributeFilter: ['src', 'srcset']
+    });
+    this.scan(root);
   }
 
   private readonly handleMutations = (mutations: MutationRecord[]): void => {
@@ -202,11 +210,24 @@ export class InterceptionController {
 
   private scan(root: Node): void {
     if (!this.enabled || !this.layer) return;
-    if (this.isMedia(root)) this.addControl(root);
-    if (root instanceof Element || root instanceof Document) {
+    if (isMediaElement(root)) this.addControl(root);
+    if (root instanceof Element || root instanceof Document || root instanceof ShadowRoot) {
       root.querySelectorAll<MediaElement>(MEDIA_SELECTOR).forEach((media) => this.addControl(media));
     }
+    this.scanOpenShadowRoots(root);
     this.schedulePositions();
+  }
+
+  private scanOpenShadowRoots(root: Node): void {
+    const elements: Element[] = [];
+    if (root instanceof Element) elements.push(root);
+    if (root instanceof Element || root instanceof Document || root instanceof ShadowRoot) {
+      elements.push(...Array.from(root.querySelectorAll<Element>('*')));
+    }
+
+    elements.forEach((element) => {
+      if (element.shadowRoot) this.observeRoot(element.shadowRoot);
+    });
   }
 
   private addControl(media: MediaElement): void {
@@ -218,11 +239,25 @@ export class InterceptionController {
     button.textContent = '↓';
     button.title = 'Open UploadFlow media options';
     button.setAttribute('aria-label', 'Open media download options');
-    button.addEventListener('click', (event) => {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      this.openMenu(media, button);
-    });
+    button.addEventListener(
+      'pointerdown',
+      (event) => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        this.openMenu(media, button);
+      },
+      true
+    );
+    button.addEventListener(
+      'click',
+      (event) => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        // Keyboard activation does not dispatch pointerdown.
+        if (event.detail === 0) this.openMenu(media, button);
+      },
+      true
+    );
     button.addEventListener('pointerenter', () => this.clearHideTimer());
     button.addEventListener('pointerleave', () => this.scheduleHide(media));
     this.layer?.appendChild(button);
@@ -256,9 +291,7 @@ export class InterceptionController {
     const related = event.relatedTarget;
     if (
       related instanceof Node &&
-      (media.contains(related) ||
-        (related instanceof Element && related.contains(media)) ||
-        this.host?.contains(related))
+      (media.contains(related) || (related instanceof Element && related.contains(media)) || this.host?.contains(related))
     ) {
       return;
     }
@@ -266,31 +299,10 @@ export class InterceptionController {
   };
 
   private mediaFromPointerEvent(event: PointerEvent): MediaElement | null {
-    const target = event.target;
-    if (!(target instanceof Element)) return null;
-
-    const directMedia = target.closest<MediaElement>(MEDIA_SELECTOR);
-    if (directMedia && this.controls.has(directMedia)) return directMedia;
-
-    // Some sites draw their hover/click surface with a wrapper's ::after pseudo
-    // element. The wrapper becomes the event target even though an image or video
-    // is visibly underneath it, so inspect its media descendants at the pointer.
-    let container: Element | null = target;
-    for (let depth = 0; container && depth < 5; depth += 1, container = container.parentElement) {
-      if (container === document.body || container === document.documentElement) break;
-
-      const media = Array.from(container.querySelectorAll<MediaElement>(MEDIA_SELECTOR))
-        .reverse()
-        .find((candidate) => this.controls.has(candidate) && this.containsPoint(candidate, event.clientX, event.clientY));
-      if (media) return media;
-    }
-
-    return null;
-  }
-
-  private containsPoint(media: MediaElement, x: number, y: number): boolean {
-    const rect = media.getBoundingClientRect();
-    return rect.width > 0 && rect.height > 0 && x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+    return mediaFromPointerEvent(event, (media) => {
+      this.addControl(media);
+      return this.controls.has(media);
+    });
   }
 
   private showForMedia(media: MediaElement): void {
@@ -308,7 +320,7 @@ export class InterceptionController {
     this.clearHideTimer();
     this.hideTimer = setTimeout(() => {
       this.hideTimer = null;
-      if (media.matches(':hover') || this.menu?.matches(':hover')) return;
+      if (media.matches(':hover') || this.menu?.isHovered()) return;
       this.clearActiveMedia();
     }, 100);
   }
@@ -324,6 +336,7 @@ export class InterceptionController {
   }
 
   private updatePositions(): void {
+    this.ensureHostPlacement();
     for (const [media, button] of this.controls) {
       const rect = media.getBoundingClientRect();
       const visible =
@@ -350,98 +363,41 @@ export class InterceptionController {
   }
 
   private openMenu(media: MediaElement, button: HTMLButtonElement): void {
-    this.menu?.remove();
-    if (!this.layer) return;
-
-    const url = this.mediaUrl(media);
-    const menu = document.createElement('div');
-    menu.className = 'menu';
-
-    const title = document.createElement('p');
-    title.className = 'menu-title';
-    title.textContent = `${media.tagName.toLowerCase()} source`;
-    menu.appendChild(title);
-
-    const urlView = document.createElement('div');
-    urlView.className = `url${url ? '' : ' unavailable'}`;
-    urlView.textContent = url || 'No downloadable URL is currently available for this media.';
-    menu.appendChild(urlView);
-
-    const actions = document.createElement('div');
-    actions.className = 'actions';
-
-    if (url) {
-      const copy = this.actionButton('Copy URL');
-      copy.addEventListener('click', () => {
-        void navigator.clipboard.writeText(url).then(() => {
-          copy.textContent = 'Copied';
-        });
-      });
-      actions.appendChild(copy);
-
-      const open = document.createElement('a');
-      open.className = 'action';
-      open.href = url;
-      open.target = '_blank';
-      open.rel = 'noopener noreferrer';
-      open.textContent = 'Open URL';
-      actions.appendChild(open);
-
-      const download = this.actionButton('Download');
-      download.classList.add('primary');
-      download.addEventListener('click', () => {
-        void this.downloadMedia(url, media, download);
-      });
-      actions.appendChild(download);
-    }
-
-    const close = this.actionButton('Close');
-    close.addEventListener('click', () => this.closeMenu());
-    actions.appendChild(close);
-    menu.appendChild(actions);
-
-    this.layer.appendChild(menu);
-    this.menu = menu;
-
-    const buttonRect = button.getBoundingClientRect();
-    const menuWidth = Math.min(340, window.innerWidth - 24);
-    menu.style.left = `${Math.max(12, Math.min(window.innerWidth - menuWidth - 12, buttonRect.right - menuWidth))}px`;
-    menu.style.top = `${Math.min(window.innerHeight - 190, buttonRect.bottom + 8)}px`;
+    this.menu?.open(media, button);
   }
 
   private closeMenu(): void {
-    this.menu?.remove();
-    this.menu = null;
-  }
-
-  private actionButton(label: string): HTMLButtonElement {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'action';
-    button.textContent = label;
-    return button;
+    this.menu?.close();
   }
 
   private async downloadMedia(
     url: string,
     media: MediaElement,
-    button: HTMLButtonElement
+    button: HTMLButtonElement,
+    status: HTMLParagraphElement
   ): Promise<void> {
     const originalLabel = button.textContent ?? 'Download';
     button.disabled = true;
     button.textContent = 'Downloading…';
+    status.className = 'download-status';
+    status.textContent = 'Asking Chrome to start the download…';
 
     try {
       const response = await this.messageService.send<{ success: boolean; id?: number; error?: string }>({
         type: 'START_DOWNLOAD',
-        payload: { url, filename: this.downloadName(url, media) }
+        payload: { url, filename: this.sourceResolver.downloadName(url, media) }
       });
       if (!response.success) throw new Error(response.error ?? 'Chrome could not start the download');
       button.textContent = 'Added to downloads';
+      status.className = 'download-status success';
+      status.textContent = 'Chrome is managing this download.';
     } catch (error) {
       console.error('[UploadFlow] Unable to start Chrome download:', error);
       button.textContent = 'Download failed';
-      button.title = 'Chrome could not start this download.';
+      const message = error instanceof Error ? error.message : 'Chrome could not start this download.';
+      button.title = message;
+      status.className = 'download-status error';
+      status.textContent = message;
     } finally {
       button.disabled = false;
       setTimeout(() => {
@@ -450,69 +406,5 @@ export class InterceptionController {
         button.title = '';
       }, 2_000);
     }
-  }
-
-  private mediaUrl(media: MediaElement): string | null {
-    const raw =
-      media.currentSrc ||
-      media.getAttribute('src') ||
-      media.querySelector<HTMLSourceElement>('source[src]')?.src ||
-      (media instanceof HTMLImageElement ? media.src : '');
-    if (!raw) return null;
-    if (raw.startsWith('blob:') && media instanceof HTMLVideoElement) {
-      return this.capturedSourceFor(media);
-    }
-    try {
-      return new URL(raw, document.baseURI).href;
-    } catch {
-      return raw;
-    }
-  }
-
-  private capturedSourceFor(media: HTMLVideoElement): string | null {
-    const posterIds = this.mediaIds(media.poster);
-    let bestUrl: string | null = null;
-    let bestScore = Number.NEGATIVE_INFINITY;
-
-    this.capturedMediaSources.forEach((batch, batchIndex) => {
-      batch.forEach((url) => {
-        const isDirectVideo = /\.(mp4|webm)(?:\?|$)/i.test(url);
-        const sharedId = this.mediaIds(url).some((id) => posterIds.includes(id));
-        const dimensions = url.match(/\/(\d{2,4})x(\d{2,4})\//);
-        const pixels = dimensions ? Number(dimensions[1]) * Number(dimensions[2]) : 0;
-        const score = (sharedId ? 1_000_000_000 : 0) + (isDirectVideo ? 10_000_000 : 0) + pixels + batchIndex;
-        if (score > bestScore) {
-          bestScore = score;
-          bestUrl = url;
-        }
-      });
-    });
-
-    return bestUrl;
-  }
-
-  private mediaIds(url: string): string[] {
-    return url.match(/\d{6,}/g) ?? [];
-  }
-
-  private downloadName(url: string, media: MediaElement): string {
-    try {
-      const name = new URL(url).pathname.split('/').filter(Boolean).pop();
-      if (name) {
-        const decoded = decodeURIComponent(name);
-        const safeName = Array.from(decoded.replace(/[<>:"/\\|?*]/g, '_'))
-          .map((character) => (character.charCodeAt(0) < 32 ? '_' : character))
-          .join('')
-          .replace(/^\.+/, '');
-        if (safeName) return safeName;
-      }
-    } catch {
-      // Fall back to a stable generic filename below.
-    }
-    return `uploadflow-${media.tagName.toLowerCase()}`;
-  }
-
-  private isMedia(node: Node): node is MediaElement {
-    return node instanceof HTMLImageElement || node instanceof HTMLVideoElement || node instanceof HTMLAudioElement;
   }
 }

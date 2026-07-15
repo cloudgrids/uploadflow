@@ -1,6 +1,7 @@
 import type { ConfigService } from '../services/ConfigService';
 import type { StatsService } from '../services/StatsService';
 import type { StorageService } from '../services/StorageService';
+import { UrlFileLibraryService } from '../services/UrlFileLibraryService';
 import type { ExtensionMessage } from '../types/Message';
 import type { DownloadSnapshot, UploadFlowDownload } from '../types/Message';
 
@@ -11,11 +12,13 @@ export class MessageRouter {
   private readonly config: ConfigService;
   private readonly stats: StatsService;
   private readonly storage: StorageService;
+  private readonly urlFiles: UrlFileLibraryService;
 
   constructor(config: ConfigService, stats: StatsService, storage: StorageService) {
     this.config = config;
     this.stats = stats;
     this.storage = storage;
+    this.urlFiles = new UrlFileLibraryService(storage);
   }
 
   register(): void {
@@ -64,6 +67,15 @@ export class MessageRouter {
       case 'CLEAR_DOWNLOADS':
         response = this.clearDownloads();
         break;
+      case 'GET_URL_FILES':
+        response = this.urlFiles.list().then((files) => ({ files }));
+        break;
+      case 'SAVE_URL_FILE':
+        response = this.urlFiles.save(message.payload.url, message.payload.name).then((files) => ({ files }));
+        break;
+      case 'DELETE_URL_FILE':
+        response = this.urlFiles.remove(message.payload.id).then((files) => ({ files }));
+        break;
       default:
         return false;
     }
@@ -75,8 +87,28 @@ export class MessageRouter {
   }
 
   private async startDownload(url: string, filename?: string): Promise<{ success: true; id: number }> {
-    const id = await new Promise<number>((resolve, reject) => {
-      chrome.downloads.download({ url, filename, saveAs: false }, (downloadId) => {
+    let id: number;
+    try {
+      id = await this.beginDownload(url, filename);
+    } catch (error) {
+      if (!filename) throw error;
+      id = await this.beginDownload(url);
+    }
+
+    const { uploadflowDownloadIds = [] } = await this.storage.get<{ uploadflowDownloadIds?: number[] }>([DOWNLOAD_IDS_KEY]);
+    const ids = [id, ...uploadflowDownloadIds.filter((storedId) => storedId !== id)].slice(0, 100);
+    await this.storage.set({ [DOWNLOAD_IDS_KEY]: ids });
+
+    const initialItem = await this.downloadAfterStart(id);
+    if (initialItem?.state === 'interrupted') {
+      throw new Error(`Chrome interrupted the download: ${initialItem.error ?? 'unknown server or network error'}`);
+    }
+    return { success: true, id };
+  }
+
+  private beginDownload(url: string, filename?: string): Promise<number> {
+    return new Promise<number>((resolve, reject) => {
+      chrome.downloads.download({ url, filename, saveAs: false, conflictAction: 'uniquify' }, (downloadId) => {
         const error = chrome.runtime.lastError;
         if (error || downloadId === undefined) {
           reject(new Error(error?.message ?? 'Chrome could not start the download'));
@@ -85,11 +117,16 @@ export class MessageRouter {
         resolve(downloadId);
       });
     });
+  }
 
-    const { uploadflowDownloadIds = [] } = await this.storage.get<{ uploadflowDownloadIds?: number[] }>([DOWNLOAD_IDS_KEY]);
-    const ids = [id, ...uploadflowDownloadIds.filter((storedId) => storedId !== id)].slice(0, 100);
-    await this.storage.set({ [DOWNLOAD_IDS_KEY]: ids });
-    return { success: true, id };
+  private async downloadAfterStart(id: number): Promise<chrome.downloads.DownloadItem | null> {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    return new Promise((resolve) => {
+      chrome.downloads.search({ id }, (items) => {
+        if (chrome.runtime.lastError) resolve(null);
+        else resolve(items[0] ?? null);
+      });
+    });
   }
 
   private async getDownloads(): Promise<DownloadSnapshot> {

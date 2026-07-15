@@ -8,6 +8,7 @@ import { InterceptionController } from './InterceptionController';
 import { OverlayManager } from './OverlayManager';
 import { PageApiInterceptor } from './PageApiInterceptor';
 import { PasteInterceptor } from './PasteInterceptor';
+import { UrlFilePicker } from './UrlFilePicker';
 
 const overlayManager = new OverlayManager();
 const messageService = new MessageService();
@@ -26,5 +27,6 @@ new ContentController(
   new DragDropInterceptor(overlayManager, messageService, interceptionState),
   new PasteInterceptor(overlayManager, messageService, interceptionState),
   pageApiInterceptor,
-  new InterceptionController(messageService)
+  new InterceptionController(messageService),
+  new UrlFilePicker(messageService, interceptionState)
 ).initialize();

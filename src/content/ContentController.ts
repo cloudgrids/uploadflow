@@ -5,6 +5,7 @@ import type { InterceptionState } from './InterceptionState';
 import type { InterceptionController } from './InterceptionController';
 import type { PageApiInterceptor } from './PageApiInterceptor';
 import type { PasteInterceptor } from './PasteInterceptor';
+import type { UrlFilePicker } from './UrlFilePicker';
 
 export class ContentController {
   private readonly interceptionState: InterceptionState;
@@ -14,6 +15,7 @@ export class ContentController {
   private readonly pasteInterceptor: PasteInterceptor;
   private readonly pageApiInterceptor: PageApiInterceptor;
   private readonly interceptionController: InterceptionController;
+  private readonly urlFilePicker: UrlFilePicker;
 
   constructor(
     interceptionState: InterceptionState,
@@ -22,7 +24,8 @@ export class ContentController {
     dropInterceptor: DragDropInterceptor,
     pasteInterceptor: PasteInterceptor,
     pageApiInterceptor: PageApiInterceptor,
-    interceptionController: InterceptionController
+    interceptionController: InterceptionController,
+    urlFilePicker: UrlFilePicker
   ) {
     this.interceptionState = interceptionState;
     this.inputInterceptor = inputInterceptor;
@@ -31,6 +34,7 @@ export class ContentController {
     this.pasteInterceptor = pasteInterceptor;
     this.pageApiInterceptor = pageApiInterceptor;
     this.interceptionController = interceptionController;
+    this.urlFilePicker = urlFilePicker;
   }
 
   initialize(): void {
@@ -41,5 +45,6 @@ export class ContentController {
     this.dropInterceptor.register();
     this.pasteInterceptor.register();
     this.interceptionController.register();
+    this.urlFilePicker.register();
   }
 }

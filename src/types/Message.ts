@@ -18,7 +18,17 @@ export type ExtensionMessage =
   | { type: 'RESUME_DOWNLOAD'; payload: { id: number } }
   | { type: 'CANCEL_DOWNLOAD'; payload: { id: number } }
   | { type: 'SHOW_DOWNLOAD'; payload: { id: number } }
-  | { type: 'CLEAR_DOWNLOADS' };
+  | { type: 'CLEAR_DOWNLOADS' }
+  | { type: 'GET_URL_FILES' }
+  | { type: 'SAVE_URL_FILE'; payload: { url: string; name?: string } }
+  | { type: 'DELETE_URL_FILE'; payload: { id: string } };
+
+export interface UrlFileRecord {
+  id: string;
+  url: string;
+  name: string;
+  createdAt: string;
+}
 
 export interface StatsSnapshot {
   stats: Stats;
