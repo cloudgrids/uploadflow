@@ -1,4 +1,6 @@
 import { UploadFlowIcon } from '../lib/icons';
+import { copyShareUrl, SHARE_URL, shareUploadFlow } from '../utils/share';
+import { toast } from '../utils/Toaster';
 
 const tools = [
   { number: '01', label: 'Optimize', copy: 'Resize, compress, and convert images before upload.', mark: '↗' },
@@ -106,6 +108,24 @@ function ProductPreview() {
 }
 
 export function LandingPage() {
+  const handleCopy = async () => {
+    try {
+      await copyShareUrl();
+      toast.success('UploadFlow link copied.');
+    } catch {
+      toast.error('Could not copy the UploadFlow link.');
+    }
+  };
+
+  const handleShare = async () => {
+    try {
+      const result = await shareUploadFlow();
+      if (result === 'copied') toast.success('UploadFlow link copied.');
+    } catch {
+      toast.error('Could not open the share menu.');
+    }
+  };
+
   return (
     <div className="min-h-screen w-full overflow-x-clip bg-[#0b0d0f] text-white selection:bg-[#eefb7a] selection:text-[#0b0d0f]">
       <header className="sticky top-0 z-30 border-b border-white/10 bg-[#0b0d0f]/85 backdrop-blur-xl">
@@ -119,10 +139,11 @@ export function LandingPage() {
             <a href="#workflow" className="transition hover:text-white">How it works</a>
             <a href="#tools" className="transition hover:text-white">Tools</a>
             <a href="#privacy" className="transition hover:text-white">Privacy</a>
+            <a href="#share" className="transition hover:text-white">Share</a>
           </nav>
 
-          <a href="/test" className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white px-4 py-2.5 text-[9px] font-black uppercase tracking-[.08em] text-[#0b0d0f] transition hover:-translate-y-0.5 hover:bg-[#eefb7a]">
-            Open test lab <ArrowIcon />
+          <a href="/demo" className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white px-4 py-2.5 text-[9px] font-black uppercase tracking-[.08em] text-[#0b0d0f] transition hover:-translate-y-0.5 hover:bg-[#eefb7a]">
+            Open live demo <ArrowIcon />
           </a>
         </div>
       </header>
@@ -142,7 +163,7 @@ export function LandingPage() {
                 UploadFlow intercepts files at the edge of the web, gives you a private place to optimize and protect them, then returns the finished version to the original upload.
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-3">
-                <a href="/test" className="inline-flex min-h-12 items-center gap-3 rounded-full bg-[#eefb7a] px-6 text-[10px] font-black uppercase tracking-widest text-[#0b0d0f] transition hover:-translate-y-0.5 hover:bg-white">Try the interceptor <ArrowIcon /></a>
+                <a href="/demo" className="inline-flex min-h-12 items-center gap-3 rounded-full bg-[#eefb7a] px-6 text-[10px] font-black uppercase tracking-widest text-[#0b0d0f] transition hover:-translate-y-0.5 hover:bg-white">Try UploadFlow <ArrowIcon /></a>
                 <a href="#workflow" className="inline-flex min-h-12 items-center rounded-full border border-white/15 px-6 text-[10px] font-bold uppercase tracking-widest text-white/70 transition hover:border-white/35 hover:text-white">See the workflow</a>
               </div>
               <div className="mt-10 flex flex-wrap gap-x-6 gap-y-3 text-[9px] font-bold uppercase tracking-widest text-white/35">
@@ -214,13 +235,42 @@ export function LandingPage() {
           </div>
         </section>
 
+        <section id="share" className="border-y border-white/10 bg-[#111416]">
+          <div className="mx-auto grid w-full max-w-360 items-center gap-12 px-5 py-20 sm:px-8 sm:py-28 lg:grid-cols-[.72fr_1.28fr] lg:px-12">
+            <div>
+              <p className="text-[9px] font-black uppercase tracking-[.22em] text-[#eefb7a]">Share the toolkit</p>
+              <h2 className="mt-5 text-5xl leading-[.88] sm:text-6xl">A safer upload<br />is worth sharing.</h2>
+              <p className="mt-6 max-w-lg text-sm leading-6 text-white/45">Send UploadFlow to someone who wants control over files before they leave the browser. The public preview explains the workflow without requiring the extension.</p>
+
+              <div className="mt-8 overflow-hidden rounded-2xl border border-white/10 bg-black/20">
+                <div className="flex items-center justify-between gap-3 border-b border-white/10 px-4 py-3">
+                  <span className="truncate font-mono text-[9px] text-white/35">{SHARE_URL}</span>
+                  <span className="shrink-0 text-[8px] font-black uppercase tracking-wider text-emerald-400">Public link</span>
+                </div>
+                <div className="flex flex-wrap gap-2 p-3">
+                  <button type="button" onClick={() => void handleShare()} className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-xl bg-[#eefb7a] px-5 text-[9px] font-black uppercase tracking-wider text-[#101416] transition hover:bg-white">Share UploadFlow <ArrowIcon /></button>
+                  <button type="button" onClick={() => void handleCopy()} className="min-h-11 cursor-pointer rounded-xl border border-white/12 px-5 text-[9px] font-black uppercase tracking-wider text-white/55 transition hover:border-white/30 hover:text-white">Copy link</button>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative">
+              <div className="absolute -inset-10 rounded-full bg-[#eefb7a]/8 blur-3xl" />
+              <a href={SHARE_URL} target="_blank" rel="noopener noreferrer" className="group relative block overflow-hidden rounded-[26px] border border-white/15 bg-[#0b0d0f] shadow-[0_35px_100px_rgba(0,0,0,.45)]">
+                <img src="/share-preview.png" alt="Preview of the UploadFlow share card and private workspace" width="1200" height="675" loading="lazy" className="aspect-video h-auto w-full object-cover transition duration-500 group-hover:scale-[1.015]" />
+                <span className="absolute bottom-4 right-4 grid h-10 w-10 place-items-center rounded-xl bg-white text-sm font-black text-[#101416] shadow-xl transition group-hover:bg-[#eefb7a]">↗</span>
+              </a>
+            </div>
+          </div>
+        </section>
+
         <section className="px-3 pb-3 sm:px-5 sm:pb-5">
           <div className="relative overflow-hidden rounded-[28px] bg-[#eefb7a] px-6 py-16 text-center text-[#0b0d0f] sm:py-24">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,.7),transparent_25%)]" />
             <div className="relative mx-auto max-w-4xl">
               <p className="text-[9px] font-black uppercase tracking-[.22em] opacity-45">See the handoff for yourself</p>
               <h2 className="mt-5 text-5xl leading-[.88] sm:text-7xl">Make the file ready<br />before the web sees it.</h2>
-              <a href="/test" className="mt-9 inline-flex min-h-12 items-center gap-3 rounded-full bg-[#0b0d0f] px-6 text-[10px] font-black uppercase tracking-widest text-white transition hover:-translate-y-0.5">Launch the test page <ArrowIcon /></a>
+              <a href="/demo" className="mt-9 inline-flex min-h-12 items-center gap-3 rounded-full bg-[#0b0d0f] px-6 text-[10px] font-black uppercase tracking-widest text-white transition hover:-translate-y-0.5">Open the live demo <ArrowIcon /></a>
             </div>
           </div>
         </section>

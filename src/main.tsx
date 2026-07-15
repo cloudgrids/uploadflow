@@ -6,7 +6,8 @@ import App from './App.tsx'
 import { LandingPage } from './components/LandingPage.tsx'
 import { InterceptorTestPage } from './test/InterceptorTestPage.tsx'
 
-const isTestPage = window.location.pathname.replace(/\/$/, '') === '/test'
+const publicPath = window.location.pathname.replace(/\/$/, '')
+const isTestPage = publicPath === '/test' || publicPath === '/demo'
 const isExtensionPopup = window.location.protocol === 'chrome-extension:'
 if (isTestPage) {
   document.documentElement.classList.add('test-page')

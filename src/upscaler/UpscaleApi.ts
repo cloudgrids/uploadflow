@@ -2,7 +2,7 @@
 import { toast } from '../utils/Toaster';
 
 export class UpscaleApi {
-  private readonly serverUrl = (import.meta.env.VITE_SERVER_URL || 'https://uploadflow.vercel.app').replace(/\/$/, '');
+  private readonly serverUrl = (import.meta.env.VITE_SERVER_URL || 'https://uploadflow.cloudgrids.tech').replace(/\/$/, '');
 
   private readonly defaultFormValues = {
     chunk: '0',

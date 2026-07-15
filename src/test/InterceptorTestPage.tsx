@@ -122,7 +122,7 @@ export function InterceptorTestPage() {
 
   const sendWithFetch = async () => {
     if (!networkFile) {
-      addLog('fetch', 'Choose a network-test file first.', 'info');
+      addLog('fetch', 'Choose an upload file first.', 'info');
       return;
     }
     const body = new FormData();
@@ -137,7 +137,7 @@ export function InterceptorTestPage() {
 
   const sendWithXhr = () => {
     if (!networkFile) {
-      addLog('XMLHttpRequest.send', 'Choose a network-test file first.', 'info');
+      addLog('XMLHttpRequest.send', 'Choose an upload file first.', 'info');
       return;
     }
     const body = new FormData();
@@ -159,10 +159,10 @@ export function InterceptorTestPage() {
         <div className="mx-auto flex min-h-16 w-full max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-12">
           <a href="/" className="flex items-center gap-3 text-white no-underline" aria-label="Return to UploadFlow home">
             <span className="grid h-9 w-9 place-items-center rounded-xl bg-white text-[#101416]"><UploadFlowIcon /></span>
-            <span><strong className="block text-[15px] font-black uppercase italic leading-none">UploadFlow</strong><small className="mt-1 block text-[8px] font-bold uppercase tracking-[.2em] text-white/35">Interceptor lab</small></span>
+            <span><strong className="block text-[15px] font-black uppercase italic leading-none">UploadFlow</strong><small className="mt-1 block text-[8px] font-bold uppercase tracking-[.2em] text-white/35">Live demo</small></span>
           </a>
           <div className="flex items-center gap-3">
-            <span className="hidden items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-2 text-[8px] font-bold uppercase tracking-[.14em] text-emerald-300 sm:flex"><i className="h-1.5 w-1.5 rounded-full bg-emerald-400" />{tests.length} surfaces armed</span>
+            <span className="hidden items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-2 text-[8px] font-bold uppercase tracking-[.14em] text-emerald-300 sm:flex"><i className="h-1.5 w-1.5 rounded-full bg-emerald-400" />{tests.length} ways to try</span>
             <a href="/" className="inline-flex min-h-10 items-center gap-2 rounded-full border border-white/15 px-4 text-[9px] font-black uppercase tracking-[.08em] text-white/65 transition hover:bg-white hover:text-[#101416]">Back home <ArrowIcon /></a>
           </div>
         </div>
@@ -173,23 +173,23 @@ export function InterceptorTestPage() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_25%,rgba(52,211,153,.1),transparent_28%),linear-gradient(rgba(255,255,255,.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.025)_1px,transparent_1px)] bg-[size:auto,48px_48px,48px_48px]" />
           <div className="relative mx-auto grid w-full max-w-[1440px] gap-12 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-[1fr_360px] lg:items-end lg:px-12">
             <div>
-              <p className="text-[9px] font-black uppercase tracking-[.22em] text-[#eefb7a]">Real browser paths · controlled environment</p>
-              <h1 className="mt-5 max-w-5xl text-[clamp(3.5rem,7vw,7rem)] leading-[.84] tracking-[-.065em]">Break the upload<br />flow. <span className="text-[#eefb7a]">On purpose.</span></h1>
-              <p className="mt-7 max-w-2xl text-sm leading-6 text-white/45 sm:text-base sm:leading-7">Exercise every file boundary UploadFlow supports. Each action uses the browser’s real event or API path—nothing here is simulated.</p>
+              <p className="text-[9px] font-black uppercase tracking-[.22em] text-[#eefb7a]">Interactive preview · real browser actions</p>
+              <h1 className="mt-5 max-w-5xl text-[clamp(3.5rem,7vw,7rem)] leading-[.84] tracking-[-.065em]">See UploadFlow<br /><span className="text-[#eefb7a]">in action.</span></h1>
+              <p className="mt-7 max-w-2xl text-sm leading-6 text-white/45 sm:text-base sm:leading-7">Try the different ways files reach a webpage and see how UploadFlow gives you a private review step before upload.</p>
             </div>
             <div className="rounded-[24px] border border-white/12 bg-[#121618] p-5 shadow-2xl">
-              <div className="flex items-end justify-between"><div><span className="font-mono text-[8px] uppercase tracking-widest text-white/30">Current run</span><strong className="mt-2 block text-4xl tracking-[-.06em]">{passed}/{tests.length}</strong></div><span className="mb-1 text-[9px] font-bold uppercase text-emerald-300">Passed</span></div>
+              <div className="flex items-end justify-between"><div><span className="font-mono text-[8px] uppercase tracking-widest text-white/30">Demo progress</span><strong className="mt-2 block text-4xl tracking-[-.06em]">{passed}/{tests.length}</strong></div><span className="mb-1 text-[9px] font-bold uppercase text-emerald-300">Completed</span></div>
               <div className="mt-5 grid grid-cols-8 gap-1.5">
                 {tests.map((test) => <span key={test} title={test} className={`h-1.5 rounded-full ${latestResults.get(test) === 'success' ? 'bg-emerald-400' : latestResults.get(test) === 'error' ? 'bg-red-400' : latestResults.get(test) === 'info' ? 'bg-amber-300' : 'bg-white/10'}`} />)}
               </div>
-              <p className="mt-4 text-[9px] leading-4 text-white/30">Load the unpacked extension, keep upload interception enabled, then work through the matrix below.</p>
+              <p className="mt-4 text-[9px] leading-4 text-white/30">Open the installed UploadFlow extension, keep upload interception enabled, then try each upload method below.</p>
             </div>
           </div>
         </section>
 
         <section className="mx-auto grid w-full max-w-[1440px] gap-10 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-[220px_1fr] lg:px-12">
           <aside className="lg:sticky lg:top-24 lg:self-start">
-            <p className="text-[8px] font-black uppercase tracking-[.2em] text-white/30">Test matrix</p>
+            <p className="text-[8px] font-black uppercase tracking-[.2em] text-white/30">Upload methods</p>
             <div className="mt-4 border-t border-white/10">
               {tests.map((test, index) => {
                 const result = latestResults.get(test);
@@ -204,7 +204,7 @@ export function InterceptorTestPage() {
           </aside>
 
           <div className="min-w-0">
-            <div className="mb-5 flex items-end justify-between"><div><p className="text-[8px] font-black uppercase tracking-[.2em] text-emerald-400">Group A</p><h2 className="mt-2 text-3xl">Native events</h2></div><span className="font-mono text-[8px] text-white/25">INPUT · DROP · PASTE</span></div>
+            <div className="mb-5 flex items-end justify-between"><div><p className="text-[8px] font-black uppercase tracking-[.2em] text-emerald-400">Everyday uploads</p><h2 className="mt-2 text-3xl">Choose, drop, or paste</h2></div><span className="font-mono text-[8px] text-white/25">INPUT · DROP · PASTE</span></div>
             <div className="grid border-l border-t border-white/10 md:grid-cols-3">
               <article className={surfaceClass}>
                 <SurfaceHeader number="01" title="Input change" description="Choose one or more files through a standard HTML file input." />
@@ -220,7 +220,7 @@ export function InterceptorTestPage() {
               </article>
             </div>
 
-            <div className="mb-5 mt-14 flex items-end justify-between"><div><p className="text-[8px] font-black uppercase tracking-[.2em] text-emerald-400">Group B</p><h2 className="mt-2 text-3xl">Browser APIs</h2></div><span className="font-mono text-[8px] text-white/25">PICKER · HANDLE · CLIPBOARD</span></div>
+            <div className="mb-5 mt-14 flex items-end justify-between"><div><p className="text-[8px] font-black uppercase tracking-[.2em] text-emerald-400">Browser tools</p><h2 className="mt-2 text-3xl">Picker and clipboard</h2></div><span className="font-mono text-[8px] text-white/25">PICKER · HANDLE · CLIPBOARD</span></div>
             <div className="grid border-l border-t border-white/10 md:grid-cols-2">
               <article className={surfaceClass}>
                 <SurfaceHeader number="04–05" title="File System Access" description="Invoke the picker and read the returned handle as two distinct interception paths." />
@@ -233,10 +233,10 @@ export function InterceptorTestPage() {
               </article>
             </div>
 
-            <div className="mb-5 mt-14 flex items-end justify-between"><div><p className="text-[8px] font-black uppercase tracking-[.2em] text-emerald-400">Group C</p><h2 className="mt-2 text-3xl">Network handoff</h2></div><span className="font-mono text-[8px] text-white/25">FETCH · XHR</span></div>
+            <div className="mb-5 mt-14 flex items-end justify-between"><div><p className="text-[8px] font-black uppercase tracking-[.2em] text-emerald-400">Site upload requests</p><h2 className="mt-2 text-3xl">Send to the webpage</h2></div><span className="font-mono text-[8px] text-white/25">FETCH · XHR</span></div>
             <article className="border border-white/10 bg-white/[.02] p-5 sm:p-6">
               <div className="grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
-                <div><SurfaceHeader number="07–08" title="FormData upload" description="Select once, then POST the same file through fetch or XMLHttpRequest.send." /><label className="mt-6 flex cursor-pointer items-center justify-between gap-4 rounded-xl border border-dashed border-white/15 bg-black/20 p-4 transition hover:border-[#eefb7a]/40"><input type="file" className="sr-only" onChange={(event) => { const selected = event.target.files?.[0] ?? null; setNetworkFile(selected); addLog('Network file', selected ? summarizeFiles([selected]) : 'Selection cleared', selected ? 'success' : 'info'); }} /><span className="min-w-0"><strong className="block truncate text-[10px] text-white/70">{networkFile?.name ?? 'Choose network-test file'}</strong><small className="mt-1 block font-mono text-[8px] text-white/25">{networkFile ? formatBytes(networkFile.size) : 'No file selected'}</small></span><span className="rounded-lg bg-white px-3 py-2 text-[8px] font-black uppercase text-[#101416]">Browse</span></label></div>
+                <div><SurfaceHeader number="07–08" title="Webpage upload" description="Choose once, then send the same file through two common webpage upload methods." /><label className="mt-6 flex cursor-pointer items-center justify-between gap-4 rounded-xl border border-dashed border-white/15 bg-black/20 p-4 transition hover:border-[#eefb7a]/40"><input type="file" className="sr-only" onChange={(event) => { const selected = event.target.files?.[0] ?? null; setNetworkFile(selected); addLog('Upload file', selected ? summarizeFiles([selected]) : 'Selection cleared', selected ? 'success' : 'info'); }} /><span className="min-w-0"><strong className="block truncate text-[10px] text-white/70">{networkFile?.name ?? 'Choose an upload file'}</strong><small className="mt-1 block font-mono text-[8px] text-white/25">{networkFile ? formatBytes(networkFile.size) : 'No file selected'}</small></span><span className="rounded-lg bg-white px-3 py-2 text-[8px] font-black uppercase text-[#101416]">Browse</span></label></div>
                 <div className="flex flex-wrap gap-2"><button type="button" onClick={() => void sendWithFetch()} className={buttonClass}>Send fetch</button><button type="button" onClick={sendWithXhr} className={secondaryButton}>Send XHR</button></div>
               </div>
             </article>
@@ -253,7 +253,7 @@ export function InterceptorTestPage() {
                   <div key={log.id} className="grid gap-1 border-b border-white/5 px-2 py-3 text-[9px] sm:grid-cols-[72px_210px_1fr]">
                     <span className="text-white/20">{log.timestamp}</span><span className={log.status === 'error' ? 'text-red-400' : log.status === 'info' ? 'text-amber-300' : 'text-emerald-400'}>{log.source}</span><span className="break-all text-white/45">{log.detail}</span>
                   </div>
-                )) : <div className="flex min-h-40 items-center justify-center text-[9px] uppercase tracking-[.16em] text-white/20">Waiting for the first test event…</div>}
+                )) : <div className="flex min-h-40 items-center justify-center text-[9px] uppercase tracking-[.16em] text-white/20">Waiting for your first action…</div>}
               </div>
             </div>
           </div>

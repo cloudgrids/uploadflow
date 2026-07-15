@@ -62,9 +62,9 @@ export function Downloads() {
   return (
     <div className="flex min-h-full flex-col gap-3 animate-fadeIn">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-[9px] uppercase tracking-[.14em] text-white/30">Managed by Chrome · continues when UploadFlow closes</p>
+        <p className="text-[9px] uppercase tracking-[.14em] text-white/30">Downloads continue safely after UploadFlow closes</p>
         {downloads.some((item) => item.state !== 'in_progress') && (
-          <button type="button" onClick={() => void clearFinished()} className="cursor-pointer text-[9px] font-bold uppercase text-white/35 transition hover:text-white">Clear finished</button>
+          <button type="button" onClick={() => void clearFinished()} className="cursor-pointer text-[9px] font-bold uppercase text-white/35 transition hover:text-white">Clear completed</button>
         )}
       </div>
 
@@ -73,8 +73,8 @@ export function Downloads() {
       {!loading && downloads.length === 0 ? (
         <div className="flex min-h-52 flex-1 flex-col items-center justify-center rounded-2xl border border-dashed border-white/15 bg-white/2.5 p-6 text-center">
           <span className="grid h-11 w-11 place-items-center rounded-xl border border-white/10 bg-white/5 text-xl text-white/55">↓</span>
-          <h3 className="mt-4 text-sm text-white">No UploadFlow downloads yet</h3>
-          <p className="mt-1 max-w-xs text-[10px] leading-4 text-white/30">Use the download action shown while hovering over media on a webpage.</p>
+          <h3 className="mt-4 text-sm text-white">No downloads yet</h3>
+          <p className="mt-1 max-w-xs text-[10px] leading-4 text-white/30">Hover over supported media on a webpage and choose Download to start one.</p>
         </div>
       ) : (
         <div className="flex flex-col gap-2">

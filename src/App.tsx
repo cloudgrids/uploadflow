@@ -133,7 +133,7 @@ export default function App({ initialFiles = [], initialSettings, onComplete, on
     redaction: { eyebrow: 'Privacy workspace', title: 'Redact private data' },
     watermark: { eyebrow: 'Brand workspace', title: 'Apply a watermark' },
     upscale: { eyebrow: 'Resolution workspace', title: 'Upscale an image' },
-    downloads: { eyebrow: 'Chrome download manager', title: 'Downloads' },
+    downloads: { eyebrow: 'Browser-managed transfers', title: 'Download activity' },
     settings: { eyebrow: 'Workspace preferences', title: 'Settings' }
   };
   const heading = workspaceCopy[activeTab];

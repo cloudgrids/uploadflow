@@ -194,8 +194,8 @@
   box-shadow: none !important;
 }
 
-.settings-workspace h3,
-.settings-workspace label,
+.settings-workspace > div h3,
+.settings-workspace > div label,
 .settings-workspace .text-slate-950,
 .settings-workspace .text-slate-900,
 .settings-workspace .text-slate-800,
@@ -203,7 +203,7 @@
   color: rgb(255 255 255 / 82%) !important;
 }
 
-.settings-workspace p,
+.settings-workspace > div p,
 .settings-workspace .text-slate-500 {
   color: rgb(255 255 255 / 34%) !important;
 }

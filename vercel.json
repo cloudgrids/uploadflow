@@ -4,6 +4,10 @@
     {
       "source": "/test",
       "destination": "/index.html"
+    },
+    {
+      "source": "/demo",
+      "destination": "/index.html"
     }
   ]
 }
