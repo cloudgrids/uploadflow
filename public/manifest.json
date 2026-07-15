@@ -33,5 +33,6 @@
       "match_about_blank": true
     }
   ],
-  "permissions": ["activeTab", "scripting", "storage"]
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": ["https://uploadflow.vercel.app/*"]
 }
