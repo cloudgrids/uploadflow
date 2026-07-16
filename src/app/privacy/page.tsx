@@ -1,0 +1,79 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy | UploadFlow',
+  description: 'How the UploadFlow Chrome extension handles files, website content, URLs, settings, and optional network features.'
+};
+
+const updatedAt = 'July 15, 2026';
+
+export default function PrivacyPage() {
+  return (
+    <main className="min-h-screen bg-[#0b0d0f] px-5 py-12 text-white sm:px-8 sm:py-20">
+      <article className="mx-auto max-w-3xl">
+        <a href="/" className="text-[10px] font-bold uppercase tracking-[.16em] text-[#eefb7a]">← UploadFlow</a>
+        <p className="mt-12 text-[9px] font-black uppercase tracking-[.22em] text-emerald-400">Privacy policy · Updated {updatedAt}</p>
+        <h1 className="mt-5 text-5xl leading-[.9] sm:text-7xl">Your files stay<br />under your control.</h1>
+        <p className="mt-7 text-base leading-7 text-white/60">This policy explains how the UploadFlow Chrome extension handles information when you use upload interception, file editing, media inspection, URL import, downloads, and optional image upscaling.</p>
+
+        <div className="mt-14 space-y-10 text-sm leading-7 text-white/60">
+          <section>
+            <h2 className="text-xl text-white">Single purpose</h2>
+            <p className="mt-3">UploadFlow’s single purpose is to give users a review and preparation step for files they choose to upload or download in Chrome. Its related tools optimize, redact, watermark, upscale, import, and download files as part of that file-control workflow.</p>
+          </section>
+
+          <section>
+            <h2 className="text-xl text-white">Information handled</h2>
+            <ul className="mt-3 list-disc space-y-2 pl-5">
+              <li>Files that you select, paste, drop, import, edit, or approve for upload.</li>
+              <li>Website content and resources needed to detect file-upload actions and, when Inspect Mode is enabled, media URLs on the page.</li>
+              <li>URLs you explicitly save in the URL file library, limited to 20 entries.</li>
+              <li>Local settings, download identifiers, file names, file sizes, and optimization totals.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-xl text-white">Local processing and storage</h2>
+            <p className="mt-3">Image optimization, text redaction, and watermarking run locally in your browser. Settings, saved URLs, download identifiers, and aggregate file statistics are stored in Chrome’s local extension storage. UploadFlow does not operate an analytics service, advertising service, user account system, or cloud file drive.</p>
+          </section>
+
+          <section>
+            <h2 className="text-xl text-white">Network transfers</h2>
+            <p className="mt-3">UploadFlow transfers data only when needed for an action you initiate:</p>
+            <ul className="mt-3 list-disc space-y-2 pl-5">
+              <li><strong className="text-white">URL import:</strong> the extension requests the URL you provide so it can create a file for the website input. The request is sent to the source website.</li>
+              <li><strong className="text-white">AI upscaling:</strong> when you explicitly start upscaling, the selected image is sent over HTTPS to UploadFlow’s API and its image-processing provider, iLoveIMG, to produce the requested result.</li>
+              <li><strong className="text-white">Downloads:</strong> URLs you choose to download are handed to Chrome’s Downloads API and requested from the source website.</li>
+            </ul>
+            <p className="mt-3">Do not use AI upscaling for a file you do not want transmitted to the stated processing providers.</p>
+          </section>
+
+          <section>
+            <h2 className="text-xl text-white">Sharing, advertising, and sale</h2>
+            <p className="mt-3">UploadFlow does not sell user data, use it for advertising, transfer it to data brokers, or allow humans to read file contents. Data is transferred only as necessary to perform a user-requested feature, comply with law, or protect against security abuse.</p>
+          </section>
+
+          <section>
+            <h2 className="text-xl text-white">Retention and deletion</h2>
+            <p className="mt-3">Files being edited are kept in browser memory for the active workflow. Local settings and history remain until you delete them, reset history in Settings, or uninstall the extension. Saved URL records can be removed individually. Third-party source websites and the optional upscaling provider may have their own retention policies.</p>
+          </section>
+
+          <section>
+            <h2 className="text-xl text-white">Chrome Web Store Limited Use</h2>
+            <p className="mt-3">The use of information received from Google APIs will adhere to the Chrome Web Store User Data Policy, including the Limited Use requirements. UploadFlow limits use of data to providing its disclosed file-control features.</p>
+          </section>
+
+          <section>
+            <h2 className="text-xl text-white">Security and changes</h2>
+            <p className="mt-3">Network features use HTTPS. No method of storage or transmission is completely secure. This policy may be updated when UploadFlow’s behavior or legal obligations change; the updated date will appear above.</p>
+          </section>
+
+          <section>
+            <h2 className="text-xl text-white">Contact</h2>
+            <p className="mt-3">For privacy questions or deletion assistance, contact the publisher through the support email shown on UploadFlow’s Chrome Web Store listing.</p>
+          </section>
+        </div>
+      </article>
+    </main>
+  );
+}

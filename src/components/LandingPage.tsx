@@ -199,6 +199,8 @@ export function LandingPage() {
             <a href="#tools" className="transition hover:text-white">Tools</a>
             <a href="#privacy" className="transition hover:text-white">Privacy</a>
             <a href="#share" className="transition hover:text-white">Share</a>
+            <a href="/privacy" className="transition hover:text-white">Privacy policy</a>
+            <a href="/support" className="transition hover:text-white">Support</a>
           </nav>
 
           <a href="/demo" className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white px-4 py-2.5 text-[9px] font-black uppercase tracking-[.08em] text-[#0b0d0f] transition hover:-translate-y-0.5 hover:bg-[#eefb7a]">
@@ -360,6 +362,8 @@ export function LandingPage() {
       <footer className="mx-auto flex w-full max-w-360 flex-col gap-5 px-5 py-8 text-[9px] font-bold uppercase tracking-[.13em] text-white/30 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-12">
         <div className="flex items-center gap-2 text-white/70"><span className="grid h-7 w-7 place-items-center rounded-lg bg-white text-black"><UploadFlowIcon /></span>UploadFlow</div>
         <p>Private tools for files in motion.</p>
+        <a href="/privacy" className="transition hover:text-white">Privacy policy</a>
+        <a href="/support" className="transition hover:text-white">Support</a>
         <a href="#top" className="transition hover:text-white">Back to top ↑</a>
       </footer>
     </div>
