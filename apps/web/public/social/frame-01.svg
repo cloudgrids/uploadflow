@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="#fff" stroke-opacity=".045"/></pattern>
+    <radialGradient id="glow" cx="70%" cy="20%" r="65%"><stop offset="0" stop-color="#34d399" stop-opacity=".14"/><stop offset="1" stop-color="#34d399" stop-opacity="0"/></radialGradient>
+    <clipPath id="preview"><rect x="70" y="1040" width="940" height="529" rx="30"/></clipPath>
+    <filter id="shadow"><feDropShadow dx="0" dy="30" stdDeviation="30" flood-color="#000" flood-opacity=".55"/></filter>
+  </defs>
+  <rect width="1080" height="1920" fill="#0b0d0f"/><rect width="1080" height="1920" fill="url(#grid)"/><rect width="1080" height="1920" fill="url(#glow)"/>
+  <g transform="translate(70 72)">
+    <rect width="70" height="70" rx="20" fill="#fff"/>
+    <path d="M35 48V20m0 0-12 12m12-12 12 12M18 45v5a9 9 0 0 0 9 9h16a9 9 0 0 0 9-9v-5" fill="none" stroke="#101416" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="94" y="33" fill="#fff" font-family="Arial,Helvetica,sans-serif" font-size="32" font-weight="900" font-style="italic">UPLOADFLOW</text>
+    <text x="94" y="60" fill="#fff" fill-opacity=".35" font-family="Arial,Helvetica,sans-serif" font-size="12" font-weight="700" letter-spacing="4">PRIVATE UPLOAD TOOLKIT</text>
+  </g>
+  <g transform="translate(70 320)">
+    <text fill="#eefb7a" font-family="Arial,Helvetica,sans-serif" font-size="15" font-weight="800" letter-spacing="5">CONTROL EVERY UPLOAD</text>
+    <text y="130" fill="#fff" font-family="Arial,Helvetica,sans-serif" font-size="112" font-weight="900" font-style="italic" letter-spacing="-6">
+      <tspan x="0">OWN EVERY</tspan><tspan x="0" dy="112">FILE BEFORE</tspan><tspan x="0" dy="112">IT </tspan><tspan fill="#eefb7a">UPLOADS.</tspan>
+    </text>
+    <text y="520" fill="#fff" fill-opacity=".48" font-family="Arial,Helvetica,sans-serif" font-size="27">Optimize. Protect. Return to the original flow.</text>
+    <g transform="translate(0 590)"><rect width="235" height="58" rx="29" fill="#eefb7a"/><circle cx="30" cy="29" r="5" fill="#101416"/><text x="51" y="36" fill="#101416" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="900" letter-spacing="2">RUNS LOCALLY</text></g>
+  </g>
+  <g filter="url(#shadow)"><rect x="70" y="1040" width="940" height="529" rx="30" fill="#14191b" stroke="#fff" stroke-opacity=".15"/><image href="share-preview.png" x="70" y="1040" width="940" height="529" preserveAspectRatio="xMidYMid slice" clip-path="url(#preview)"/></g>
+  <text x="70" y="1770" fill="#fff" fill-opacity=".3" font-family="monospace" font-size="17">uploadflow.cloudgrids.tech</text>
+  <text x="1010" y="1770" text-anchor="end" fill="#34d399" font-family="Arial,Helvetica,sans-serif" font-size="15" font-weight="800" letter-spacing="2">01 / 03</text>
+</svg>
