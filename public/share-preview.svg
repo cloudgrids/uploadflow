@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" fill="none" stroke="#fff" stroke-opacity=".045"/>
+    </pattern>
+    <radialGradient id="glow" cx="80%" cy="20%" r="70%">
+      <stop offset="0" stop-color="#34d399" stop-opacity=".15"/>
+      <stop offset="1" stop-color="#34d399" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="24" stdDeviation="24" flood-color="#000" flood-opacity=".55"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="675" fill="#0b0d0f"/>
+  <rect width="1200" height="675" fill="url(#grid)"/>
+  <rect width="1200" height="675" fill="url(#glow)"/>
+
+  <g transform="translate(64 54)">
+    <rect width="52" height="52" rx="15" fill="#fff"/>
+    <path d="M26 35V15m0 0-9 9m9-9 9 9M14 33v4a7 7 0 0 0 7 7h10a7 7 0 0 0 7-7v-4" fill="none" stroke="#101416" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="70" y="24" fill="#fff" font-family="Arial,Helvetica,sans-serif" font-size="23" font-weight="900" font-style="italic">UPLOADFLOW</text>
+    <text x="70" y="43" fill="#fff" fill-opacity=".34" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="700" letter-spacing="3">PRIVATE UPLOAD TOOLKIT</text>
+  </g>
+
+  <g transform="translate(64 178)">
+    <text fill="#eefb7a" font-family="Arial,Helvetica,sans-serif" font-size="10" font-weight="800" letter-spacing="3">SHARE THE TOOLKIT</text>
+    <text y="68" fill="#fff" font-family="Arial,Helvetica,sans-serif" font-size="58" font-weight="900" font-style="italic" letter-spacing="-3">
+      <tspan x="0">CONTROL EVERY</tspan><tspan x="0" dy="62">FILE BEFORE IT</tspan><tspan x="0" dy="62" fill="#eefb7a">UPLOADS.</tspan>
+    </text>
+    <text y="284" fill="#fff" fill-opacity=".46" font-family="Arial,Helvetica,sans-serif" font-size="16">Optimize. Protect. Return to the original flow.</text>
+    <g transform="translate(0 330)">
+      <rect width="330" height="48" rx="14" fill="#fff" fill-opacity=".07" stroke="#fff" stroke-opacity=".12"/>
+      <circle cx="22" cy="24" r="4" fill="#34d399"/>
+      <text x="38" y="29" fill="#fff" fill-opacity=".62" font-family="monospace" font-size="12">uploadflow.cloudgrids.tech</text>
+    </g>
+    <g transform="translate(0 396)">
+      <rect width="178" height="44" rx="22" fill="#eefb7a"/>
+      <text x="29" y="27" fill="#101416" font-family="Arial,Helvetica,sans-serif" font-size="10" font-weight="900" letter-spacing="1.2">SHARE UPLOADFLOW</text>
+    </g>
+  </g>
+
+  <g transform="translate(650 112)" filter="url(#shadow)">
+    <rect width="476" height="450" rx="28" fill="#14191b" stroke="#fff" stroke-opacity=".16"/>
+    <path d="M0 58h476" stroke="#fff" stroke-opacity=".1"/>
+    <circle cx="27" cy="29" r="5" fill="#ff6b5e"/><circle cx="46" cy="29" r="5" fill="#f4c95d"/><circle cx="65" cy="29" r="5" fill="#58c477"/>
+    <text x="316" y="33" fill="#fff" fill-opacity=".3" font-family="monospace" font-size="9">PRIVATE · LOCAL</text>
+
+    <rect x="22" y="80" width="122" height="344" rx="18" fill="#fff" fill-opacity=".025" stroke="#fff" stroke-opacity=".08"/>
+    <rect x="38" y="100" width="32" height="32" rx="9" fill="#fff"/>
+    <path d="M54 122V108m0 0-6 6m6-6 6 6" fill="none" stroke="#101416" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="38" y="158" width="90" height="36" rx="10" fill="#fff"/>
+    <text x="50" y="180" fill="#101416" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="800">01  FILES</text>
+    <text x="40" y="224" fill="#fff" fill-opacity=".3" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="700">02  OPTIMIZE</text>
+    <text x="40" y="260" fill="#fff" fill-opacity=".3" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="700">03  REDACT</text>
+    <text x="40" y="296" fill="#fff" fill-opacity=".3" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="700">04  WATERMARK</text>
+    <text x="40" y="332" fill="#fff" fill-opacity=".3" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="700">05  SETTINGS</text>
+
+    <g transform="translate(170 94)">
+      <text fill="#34d399" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="800" letter-spacing="2">2 FILES INTERCEPTED</text>
+      <text y="38" fill="#fff" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="900" font-style="italic">REVIEW BEFORE UPLOAD</text>
+      <rect y="64" width="266" height="204" rx="18" fill="#20272a" stroke="#fff" stroke-opacity=".1"/>
+      <rect x="14" y="78" width="238" height="112" rx="12" fill="#91aaa0"/>
+      <circle cx="133" cy="132" r="31" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="13"/>
+      <rect x="14" y="208" width="154" height="7" rx="3.5" fill="#fff" fill-opacity=".72"/>
+      <rect x="14" y="224" width="98" height="5" rx="2.5" fill="#fff" fill-opacity=".22"/>
+      <circle cx="230" cy="224" r="16" fill="#eefb7a"/>
+      <path d="m223 224 5 5 9-12" fill="none" stroke="#101416" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M0 296h266" stroke="#fff" stroke-opacity=".1"/>
+      <text y="330" fill="#fff" fill-opacity=".28" font-family="monospace" font-size="8" letter-spacing="1">ORIGINALS STAY UNTOUCHED</text>
+      <rect x="170" y="308" width="96" height="34" rx="10" fill="#fff"/>
+      <text x="188" y="329" fill="#101416" font-family="Arial,Helvetica,sans-serif" font-size="8" font-weight="900">CONTINUE</text>
+    </g>
+  </g>
+
+  <g transform="translate(1020 532) rotate(5)">
+    <rect width="124" height="100" rx="22" fill="#eefb7a"/>
+    <text x="18" y="35" fill="#101416" font-family="Arial,Helvetica,sans-serif" font-size="10" font-weight="800">PRIVATE</text>
+    <text x="18" y="64" fill="#101416" font-family="Arial,Helvetica,sans-serif" font-size="17" font-weight="900">BY DESIGN</text>
+  </g>
+</svg>
