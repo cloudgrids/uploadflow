@@ -318,6 +318,22 @@ export function LandingPage() {
           </div>
         </section>
 
+        <section className="border-t border-white/10 bg-[#0f1214]">
+          <div className="mx-auto grid w-full max-w-360 items-center gap-10 px-5 py-14 sm:px-8 sm:py-18 lg:grid-cols-[1fr_auto] lg:px-12">
+            <div className="flex items-start gap-5">
+              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-[#eefb7a]/25 bg-[#eefb7a]/10 text-sm font-black text-[#eefb7a]">CG</span>
+              <div>
+                <p className="text-[9px] font-black uppercase tracking-[.22em] text-emerald-400">Published by CloudGrids</p>
+                <h2 className="mt-3 text-3xl leading-none sm:text-4xl">Practical tools.<br />Clear boundaries.</h2>
+                <p className="mt-4 max-w-2xl text-sm leading-6 text-white/45">CloudGrids builds privacy-conscious browser tools and web applications with local-first processing, transparent permissions, and user-controlled actions.</p>
+              </div>
+            </div>
+            <a href="https://cloudgrids.tech/" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full border border-white/15 px-6 text-[10px] font-black uppercase tracking-widest text-white/65 transition hover:border-[#eefb7a]/40 hover:bg-[#eefb7a] hover:text-[#101416]">
+              Visit cloudgrids.tech <ArrowIcon />
+            </a>
+          </div>
+        </section>
+
         <section id="share" className="border-y border-white/10 bg-[#111416]">
           <div className="mx-auto grid w-full max-w-360 items-center gap-12 px-5 py-20 sm:px-8 sm:py-28 lg:grid-cols-[.72fr_1.28fr] lg:px-12">
             <div>
@@ -361,7 +377,7 @@ export function LandingPage() {
 
       <footer className="mx-auto flex w-full max-w-360 flex-col gap-5 px-5 py-8 text-[9px] font-bold uppercase tracking-[.13em] text-white/30 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-12">
         <div className="flex items-center gap-2 text-white/70"><span className="grid h-7 w-7 place-items-center rounded-lg bg-white text-black"><UploadFlowIcon /></span>UploadFlow</div>
-        <p>Private tools for files in motion.</p>
+        <a href="https://cloudgrids.tech/" target="_blank" rel="noopener noreferrer" className="transition hover:text-white">Published by CloudGrids</a>
         <a href="/privacy" className="transition hover:text-white">Privacy policy</a>
         <a href="/support" className="transition hover:text-white">Support</a>
         <a href="#top" className="transition hover:text-white">Back to top ↑</a>

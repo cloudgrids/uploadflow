@@ -4,6 +4,8 @@
 
 UploadFlow is a Chrome extension that intercepts files before they leave the browser. Review, optimize, redact, watermark, or upscale a file in a private workspace, then return the finished file to the webpage that requested it.
 
+UploadFlow is developed and maintained by [CloudGrids](https://cloudgrids.tech/), a publisher of privacy-conscious browser tools and web applications.
+
 Everything except optional AI upscaling runs locally. Original files remain untouched until you approve the result.
 
 [Visit UploadFlow](https://uploadflow.cloudgrids.tech) · [Watch the vertical demo](public/media/uploadflow-social-vertical.mp4)
