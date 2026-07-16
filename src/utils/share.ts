@@ -1,6 +1,6 @@
 export const SHARE_URL = 'https://uploadflow.cloudgrids.tech/';
-export const SHARE_TITLE = 'UploadFlow — Private Upload Toolkit';
-export const SHARE_TEXT = 'Optimize and protect files privately before they reach the web.';
+export const SHARE_TITLE = 'UploadFlow — Move media between websites';
+export const SHARE_TEXT = 'Capture authorized media on one webpage and send it into another site’s upload flow without downloading it first.';
 
 export async function copyShareUrl(): Promise<void> {
   if (navigator.clipboard?.writeText) {

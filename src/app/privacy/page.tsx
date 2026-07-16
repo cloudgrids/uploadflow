@@ -19,7 +19,7 @@ export default function PrivacyPage() {
         <div className="mt-14 space-y-10 text-sm leading-7 text-white/60">
           <section>
             <h2 className="text-xl text-white">Single purpose</h2>
-            <p className="mt-3">UploadFlow’s single purpose is to give users a review and preparation step for files they choose to upload or download in Chrome. Its related tools optimize, redact, watermark, upscale, import, and download files as part of that file-control workflow.</p>
+            <p className="mt-3">UploadFlow’s single purpose is to let users move media they own or are authorized to use from one webpage into another website’s upload flow without first downloading a permanent local copy. URL capture, on-demand fetching, review, editing, upload interception, and optional Chrome downloads are related parts of that cross-site media handoff.</p>
           </section>
 
           <section>
@@ -27,7 +27,7 @@ export default function PrivacyPage() {
             <ul className="mt-3 list-disc space-y-2 pl-5">
               <li>Files that you select, paste, drop, import, edit, or approve for upload.</li>
               <li>Website content and resources needed to detect file-upload actions and, when Inspect Mode is enabled, media URLs on the page.</li>
-              <li>URLs you explicitly save in the URL file library, limited to 20 entries.</li>
+              <li>Media URLs you explicitly capture or save for use on another website, limited to 20 entries.</li>
               <li>Local settings, download identifiers, file names, file sizes, and optimization totals.</li>
             </ul>
           </section>
@@ -41,11 +41,12 @@ export default function PrivacyPage() {
             <h2 className="text-xl text-white">Network transfers</h2>
             <p className="mt-3">UploadFlow transfers data only when needed for an action you initiate:</p>
             <ul className="mt-3 list-disc space-y-2 pl-5">
-              <li><strong className="text-white">URL import:</strong> the extension requests the URL you provide so it can create a file for the website input. The request is sent to the source website.</li>
+              <li><strong className="text-white">Cross-site media handoff:</strong> the extension requests the source URL you selected so it can create a temporary file for the destination website’s input. The request is sent to the source website only when you choose that item.</li>
               <li><strong className="text-white">AI upscaling:</strong> when you explicitly start upscaling, the selected image is sent over HTTPS to UploadFlow’s API and its image-processing provider, iLoveIMG, to produce the requested result.</li>
               <li><strong className="text-white">Downloads:</strong> URLs you choose to download are handed to Chrome’s Downloads API and requested from the source website.</li>
             </ul>
             <p className="mt-3">Do not use AI upscaling for a file you do not want transmitted to the stated processing providers.</p>
+            <p className="mt-3">UploadFlow does not grant rights to media. You are responsible for ensuring you own or are authorized to reuse and upload the selected content.</p>
           </section>
 
           <section>

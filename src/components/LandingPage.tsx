@@ -13,15 +13,15 @@ const tools = [
 ];
 
 const workflow = [
-  ['01', 'Choose a source', 'Use a normal file input, paste or drop files, or pick from URLs you saved while browsing.'],
-  ['02', 'Review', 'A private workspace opens with the original files visible first. Choose only the tools you need.'],
-  ['03', 'Return', 'Approve the result and UploadFlow returns the processed file to the exact upload flow you started.']
+  ['01', 'Capture the source', 'Hover media you are authorized to reuse and save its available URL to your private UploadFlow list.'],
+  ['02', 'Open the destination', 'Click a file input on another website and choose the saved media from the UploadFlow URL picker.'],
+  ['03', 'Fetch and send', 'UploadFlow creates the file on demand, lets you review or edit it, and returns it to the destination input.']
 ];
 
 const browserFeatures = [
-  ['01', 'Inspect media', 'Hover a webpage image, video, or audio element to reveal its available source without covering the page.'],
-  ['02', 'Hand off downloads', 'Send detected media to Chrome so downloads remain visible and manageable in the browser.'],
-  ['03', 'Save URL files', 'Keep up to 20 remote file URLs with previews, then fetch one only when a website asks for a file.']
+  ['01', 'Capture media URLs', 'Hover an image, video, or audio element and save its source without downloading the complete file.'],
+  ['02', 'Carry them between sites', 'Keep up to 20 authorized media URLs with previews, ready for a different website’s file input.'],
+  ['03', 'Fetch only when needed', 'The destination click triggers the fetch, review workspace, and final upload handoff.']
 ];
 
 function ArrowIcon() {
@@ -218,17 +218,17 @@ export function LandingPage() {
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_12px_#34d399]" /> Runs locally in your browser
               </div>
               <h1 className="max-w-190 text-[clamp(3.6rem,7.4vw,7.8rem)] leading-[.83] tracking-[-.07em]">
-                Own every<br />file <span className="text-[#eefb7a]">before</span><br />it uploads.
+                Move media<br /><span className="text-[#eefb7a]">between sites.</span><br />Skip Downloads.
               </h1>
               <p className="mt-8 max-w-xl text-sm leading-6 text-white/50 sm:text-base sm:leading-7">
-                Intercept uploads, inspect media already on the page, and reuse files from saved URLs—all from one private browser workspace.
+                Capture media you are authorized to use on one webpage, then send it directly into another website’s file input without saving a local copy first.
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-3">
                 <a href="/demo" className="inline-flex min-h-12 items-center gap-3 rounded-full bg-[#eefb7a] px-6 text-[10px] font-black uppercase tracking-widest text-[#0b0d0f] transition hover:-translate-y-0.5 hover:bg-white">Try UploadFlow <ArrowIcon /></a>
                 <a href="#workflow" className="inline-flex min-h-12 items-center rounded-full border border-white/15 px-6 text-[10px] font-bold uppercase tracking-widest text-white/70 transition hover:border-white/35 hover:text-white">See the workflow</a>
               </div>
               <div className="mt-10 flex flex-wrap gap-x-6 gap-y-3 text-[9px] font-bold uppercase tracking-widest text-white/35">
-                {['No account', 'URL file picker', 'Chrome-managed downloads'].map((item) => <span key={item} className="flex items-center gap-2"><span className="text-[#eefb7a]"><CheckIcon /></span>{item}</span>)}
+                {['No local download', 'Private URL list', 'Review before upload'].map((item) => <span key={item} className="flex items-center gap-2"><span className="text-[#eefb7a]"><CheckIcon /></span>{item}</span>)}
               </div>
             </div>
             <ProductPreview />
@@ -237,7 +237,7 @@ export function LandingPage() {
 
         <div className="overflow-hidden border-b border-white/10 bg-[#eefb7a] py-3 text-[#0b0d0f]">
           <div className="flex min-w-max items-center justify-center gap-8 px-4 text-[10px] font-black uppercase italic tracking-[.12em] sm:gap-14">
-            <span>Intercept</span><span>✦</span><span>Inspect media</span><span>✦</span><span>Save URL</span><span>✦</span><span>Protect</span><span>✦</span><span>Return</span>
+            <span>Capture</span><span>✦</span><span>Save URL</span><span>✦</span><span>Open destination</span><span>✦</span><span>Review</span><span>✦</span><span>Upload</span>
           </div>
         </div>
 
@@ -248,7 +248,7 @@ export function LandingPage() {
             <div className="lg:sticky lg:top-28 lg:self-start">
               <p className="text-[9px] font-bold uppercase tracking-[.22em] text-[#eefb7a]">How it works</p>
               <h2 className="mt-4 max-w-sm text-4xl leading-[.95] sm:text-5xl">One pause.<br />Total control.</h2>
-              <p className="mt-5 max-w-sm text-sm leading-6 text-white/40">The page never needs to change its upload flow. UploadFlow pauses, processes, and safely continues it.</p>
+              <p className="mt-5 max-w-sm text-sm leading-6 text-white/40">Source and destination stay separate. UploadFlow holds the URL, fetches the file only when requested, and safely continues the destination upload.</p>
             </div>
             <div className="border-t border-white/15">
               {workflow.map(([number, title, copy]) => (
@@ -260,14 +260,28 @@ export function LandingPage() {
               ))}
             </div>
           </div>
+
+          <figure className="mt-16 overflow-hidden rounded-[28px] border border-white/15 bg-[#111416] shadow-[0_35px_100px_rgba(0,0,0,.4)]">
+            <img
+              src="/uploadflow-cross-site-master.png"
+              alt="Diagram showing UploadFlow saving an authorized media URL from a source website and supplying it to a destination website upload field without a local download"
+              width="1731"
+              height="909"
+              className="h-auto w-full"
+            />
+            <figcaption className="flex flex-col gap-2 border-t border-white/10 px-5 py-4 text-[9px] uppercase tracking-[.12em] text-white/35 sm:flex-row sm:items-center sm:justify-between">
+              <span>Source website → UploadFlow URL bridge → destination upload</span>
+              <span className="text-[#eefb7a]">Use only media you own or are authorized to reuse</span>
+            </figcaption>
+          </figure>
         </section>
 
         <section id="extension" className="border-y border-white/10 bg-[#111416]">
           <div className="mx-auto grid w-full max-w-360 items-center gap-14 px-5 py-20 sm:px-8 sm:py-28 lg:grid-cols-[.82fr_1.18fr] lg:px-12">
             <div>
-              <p className="text-[9px] font-black uppercase tracking-[.22em] text-emerald-400">Beyond the upload button</p>
-              <h2 className="mt-5 max-w-xl text-5xl leading-[.9] sm:text-6xl">Files you find.<br /><span className="text-[#eefb7a]">Ready when needed.</span></h2>
-              <p className="mt-6 max-w-lg text-sm leading-6 text-white/45">Inspect mode adds one small control only while you hover media. Download it through Chrome or save the URL for a future upload—without permanently storing the file in UploadFlow.</p>
+              <p className="text-[9px] font-black uppercase tracking-[.22em] text-emerald-400">From source to destination</p>
+              <h2 className="mt-5 max-w-xl text-5xl leading-[.9] sm:text-6xl">Find it once.<br /><span className="text-[#eefb7a]">Upload it elsewhere.</span></h2>
+              <p className="mt-6 max-w-lg text-sm leading-6 text-white/45">Inspect Mode reveals a small control only while you hover media. Save an authorized source URL, move to another website, and choose it when that site asks for a file. UploadFlow fetches it only at that moment.</p>
 
               <div className="mt-10 border-t border-white/15">
                 {browserFeatures.map(([number, title, copy]) => (

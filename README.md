@@ -1,31 +1,33 @@
 # UploadFlow
 
-![UploadFlow — control every upload](public/og-image.png)
+![UploadFlow — move media between websites](public/og-image.png)
 
-UploadFlow is a Chrome extension that intercepts files before they leave the browser. Review, optimize, redact, watermark, or upscale a file in a private workspace, then return the finished file to the webpage that requested it.
+UploadFlow is a Chrome extension for moving media you are authorized to use from one webpage into another website’s upload flow without downloading it first. Capture the media URL, open the destination file input, review the fetched file, and send it directly into that upload.
 
 UploadFlow is developed and maintained by [CloudGrids](https://cloudgrids.tech/), a publisher of privacy-conscious browser tools and web applications.
 
-Everything except optional AI upscaling runs locally. Original files remain untouched until you approve the result.
+UploadFlow stores the URL rather than a permanent copy of the source file. It fetches the media only when a destination website requests a file. Everything except URL retrieval and optional AI upscaling runs locally.
 
 [Visit UploadFlow](https://uploadflow.cloudgrids.tech) · [Watch the vertical demo](public/media/uploadflow-social-vertical.mp4)
 
 ## Preview
 
-[![Watch the UploadFlow product demo](public/social/share-preview.png)](public/media/uploadflow-social-vertical.mp4)
+![UploadFlow source-to-destination media handoff](public/share-preview.png)
 
-The demo follows the complete flow: intercept a file, review it in the workspace, apply an edit, and return it to the original page. Select the image above to play the MP4.
+The visual shows the primary flow: save an authorized media URL on a source webpage, open a different website, and supply the fetched file directly to its upload input without first saving it to the Downloads folder.
 
 ![UploadFlow demo states](public/social/demo-contact-sheet.png)
 
 ## Features
 
+- Captures authorized webpage image, video, and audio URLs through an optional hover control.
+- Keeps up to 20 media URLs with previews for use on another website.
+- Fetches the selected URL only when a destination file input requests it.
 - Intercepts file inputs, drag and drop, paste, and supported page API uploads.
 - Optimizes and converts PNG, JPEG, and WebP images before upload.
 - Redacts email addresses, phone numbers, payment-card numbers, and IP addresses.
 - Adds configurable text watermarks with a live preview.
 - Upscales images through the UploadFlow API when enabled.
-- Detects webpage images, video, and audio through an optional media inspector.
 - Hands downloads to Chrome so progress and completed transfers remain visible in the browser.
 - Offers either the native file picker or an UploadFlow URL picker.
 - Stores settings and statistics in Chrome extension storage.
@@ -34,14 +36,15 @@ The demo follows the complete flow: intercept a file, review it in the workspace
 
 ```mermaid
 flowchart LR
-    A[Choose, drop, or paste a file] --> B[UploadFlow intercepts the event]
-    B --> C[Review and edit locally]
-    C -->|Continue| D[Return the processed File]
-    D --> E[Original webpage upload resumes]
-    C -->|Cancel| F[Discard the result]
+    A[Hover authorized media on source site] --> B[Save its URL]
+    B --> C[Open file input on destination site]
+    C --> D[Choose URL from UploadFlow]
+    D --> E[Fetch and review file]
+    E -->|Continue| F[Return File to destination input]
+    E -->|Cancel| G[Discard temporary result]
 ```
 
-UploadFlow listens before the website receives the file event. When you continue, it supplies the processed `File` back to the original input or page API. Cancelling closes the workspace without uploading the edited result.
+UploadFlow keeps the source URL until another website asks for a file. It then fetches the media, creates a browser `File`, opens the review workspace, and supplies the approved result to the destination input. It does not bypass authentication, paywalls, access controls, or usage rights.
 
 ## Install locally
 
@@ -94,6 +97,7 @@ Image optimization, redaction, and watermarking happen on the device. UploadFlow
 
 - [Open Graph image](public/og-image.png)
 - [Landscape share preview](public/share-preview.png)
+- [Cross-site handoff master](public/uploadflow-cross-site-master.png)
 - [Vertical video poster](public/media/uploadflow-social-poster.jpg)
 - [Vertical social video](public/media/uploadflow-social-vertical.mp4)
 - [Storyboard](public/social/storyboard-contact-sheet.png)
