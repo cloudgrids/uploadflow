@@ -53,20 +53,20 @@ pnpm dev
 ## Development
 
 ```bash
-pnpm dev       # start the public Vite web app
-pnpm build     # type-check and build the website
+pnpm dev       # start the public Next.js app
+pnpm build     # build the Next.js website
 pnpm lint      # run ESLint
 pnpm preview   # preview the production build
 ```
 
-The local Vite server provides both the landing and test routes. This public repository contains no Chrome extension source.
+The Next.js development server provides both the landing and test routes. This public repository contains no Chrome extension source.
 
 Vercel can deploy this directory directly; `vercel.json`, API routes, and the production build are self-contained.
 
 ## Project structure
 
 ```text
-api/                    serverless API routes
+src/app/                App Router pages, layouts, and route handlers
 public/                 screenshots, social media, and site assets
 src/components/         landing-page components
 src/test/               browser upload test page

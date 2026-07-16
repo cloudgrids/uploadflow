@@ -24,13 +24,11 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.025em;
 }
 
-#root {
+body {
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
   min-height: 100svh;
-  display: flex;
-  flex-direction: column;
   box-sizing: border-box;
 }
 
@@ -45,32 +43,12 @@ h1, h2, h3, h4, h5, h6 {
 
 html,
 body {
-  width: 560px;
-  height: 600px;
+  width: 100%;
+  min-height: 100svh;
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
+  overflow-x: clip;
   background-color: var(--background);
-}
-
-html.test-page,
-body.test-page {
-  width: 100%;
-  height: auto;
-  min-height: 100svh;
-  overflow: auto;
-}
-
-html.landing-page,
-body.landing-page {
-  width: 100%;
-  height: auto;
-  min-height: 100svh;
-  overflow: auto;
-}
-
-body.landing-page #root {
-  min-height: 100svh;
 }
 
 button, select, input { font: inherit; }

@@ -1,3 +1,5 @@
+'use client';
+
 import { UploadFlowIcon } from '../lib/icons';
 import { copyShareUrl, SHARE_URL, shareUploadFlow } from '../utils/share';
 import { toast } from '../utils/Toaster';

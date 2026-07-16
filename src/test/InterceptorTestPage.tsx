@@ -1,3 +1,5 @@
+'use client';
+
 import { useMemo, useState } from 'react';
 import { UploadFlowIcon } from '../lib/icons';
 import { formatBytes } from '../utils/helpers';
