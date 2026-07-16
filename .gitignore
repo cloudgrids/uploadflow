@@ -8,8 +8,11 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+.pnpm-store
 dist
 dist-ssr
+apps/*/dist
+apps/extension
 *.local
 
 # Editor directories and files

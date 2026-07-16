@@ -1,20 +1,20 @@
 # UploadFlow
 
-![UploadFlow — control every upload](public/og-image.png)
+![UploadFlow — control every upload](apps/web/public/og-image.png)
 
 UploadFlow is a Chrome extension that intercepts files before they leave the browser. Review, optimize, redact, watermark, or upscale a file in a private workspace, then return the finished file to the webpage that requested it.
 
 Everything except optional AI upscaling runs locally. Original files remain untouched until you approve the result.
 
-[Visit UploadFlow](https://uploadflow.cloudgrids.tech) · [Watch the vertical demo](public/media/uploadflow-social-vertical.mp4)
+[Visit UploadFlow](https://uploadflow.cloudgrids.tech) · [Watch the vertical demo](apps/web/public/media/uploadflow-social-vertical.mp4)
 
 ## Preview
 
-[![Watch the UploadFlow product demo](public/social/share-preview.png)](public/media/uploadflow-social-vertical.mp4)
+[![Watch the UploadFlow product demo](apps/web/public/social/share-preview.png)](apps/web/public/media/uploadflow-social-vertical.mp4)
 
 The demo follows the complete flow: intercept a file, review it in the workspace, apply an edit, and return it to the original page. Select the image above to play the MP4.
 
-![UploadFlow demo states](public/social/demo-contact-sheet.png)
+![UploadFlow demo states](apps/web/public/social/demo-contact-sheet.png)
 
 ## Features
 
@@ -55,7 +55,7 @@ Then install the generated extension:
 1. Open `chrome://extensions`.
 2. Enable **Developer mode**.
 3. Select **Load unpacked**.
-4. Choose this project's `dist` directory.
+4. Choose this project's `apps/extension/dist` directory.
 5. Pin UploadFlow and enable upload interception from its popup.
 
 After rebuilding, select **Reload** on the extension card. Existing tabs may also need to be refreshed because their old content-script context is no longer valid.
@@ -63,26 +63,29 @@ After rebuilding, select **Reload** on the extension card. Existing tabs may als
 ## Development
 
 ```bash
-npm run dev       # start the Vite web app
-npm run build     # type-check and build web, content, and main-world bundles
+npm run dev              # start the public Vite web app
+npm run build            # build both workspace applications
+npm run build:web        # build only the landing and test website
+npm run build:extension  # build only the Chrome extension
 npm run lint      # run ESLint
 npm run preview   # preview the production web build
 ```
 
 The local Vite page is useful for the landing and test routes. Chrome runs the production extension from `dist`; it does not depend on the Vite development server after `npm run build`.
 
+For Vercel, set the project **Root Directory** to `apps/web`. Its `vercel.json`, API routes, and production output are contained inside that workspace. The extension source is not included in the website bundle.
+
 ## Project structure
 
 ```text
-api/                    optional serverless API routes
-public/                 manifest, icons, screenshots, and social media
-src/background/         service worker, downloads, and URL file fetching
-src/content/            DOM interception, overlay, media inspector, URL picker
-src/main-world/         wrappers that run in the webpage's JavaScript world
-src/components/         workspace, landing page, editors, and downloads UI
-src/settings/           extension settings panels and models
-src/services/           storage, configuration, statistics, and API clients
-src/upscaler/           image upscaling integration
+apps/web/               public landing page, test page, social assets, and APIs
+apps/extension/         Chrome popup, manifest, background, and interception code
+  src/background/       service worker, downloads, and URL file fetching
+  src/content/          DOM interception, overlay, media inspector, URL picker
+  src/main-world/       wrappers that run in the webpage's JavaScript world
+  src/components/       workspace, editors, and downloads UI
+  src/settings/         extension settings panels and models
+  src/services/         storage, configuration, statistics, and API clients
 ```
 
 ## Permissions
@@ -102,8 +105,8 @@ Image optimization, redaction, and watermarking happen on the device. UploadFlow
 
 ## Social assets
 
-- [Open Graph image](public/og-image.png)
-- [Landscape share preview](public/share-preview.png)
-- [Vertical video poster](public/media/uploadflow-social-poster.jpg)
-- [Vertical social video](public/media/uploadflow-social-vertical.mp4)
-- [Storyboard](public/social/storyboard-contact-sheet.png)
+- [Open Graph image](apps/web/public/og-image.png)
+- [Landscape share preview](apps/web/public/share-preview.png)
+- [Vertical video poster](apps/web/public/media/uploadflow-social-poster.jpg)
+- [Vertical social video](apps/web/public/media/uploadflow-social-vertical.mp4)
+- [Storyboard](apps/web/public/social/storyboard-contact-sheet.png)
