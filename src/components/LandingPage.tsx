@@ -1,8 +1,8 @@
 'use client';
 
+import { useState } from 'react';
 import { UploadFlowIcon } from '../lib/icons';
 import { copyShareUrl, SHARE_URL, shareUploadFlow } from '../utils/share';
-import { toast } from '../utils/Toaster';
 import { LaunchCountdown } from './LaunchCountdown';
 
 const tools = [
@@ -153,26 +153,39 @@ function BrowserToolsPreview() {
 }
 
 export function LandingPage() {
+  const [shareNotice, setShareNotice] = useState<{ message: string; error?: boolean } | null>(null);
+
+  const showShareNotice = (message: string, error = false) => {
+    setShareNotice({ message, error });
+    window.setTimeout(() => setShareNotice(null), 3000);
+  };
+
   const handleCopy = async () => {
     try {
       await copyShareUrl();
-      toast.success('UploadFlow link copied.');
+      showShareNotice('UploadFlow link copied.');
     } catch {
-      toast.error('Could not copy the UploadFlow link.');
+      showShareNotice('Could not copy the UploadFlow link.', true);
     }
   };
 
   const handleShare = async () => {
     try {
       const result = await shareUploadFlow();
-      if (result === 'copied') toast.success('UploadFlow link copied.');
+      if (result === 'copied') showShareNotice('UploadFlow link copied.');
     } catch {
-      toast.error('Could not open the share menu.');
+      showShareNotice('Could not open the share menu.', true);
     }
   };
 
   return (
     <div className="min-h-screen w-full overflow-x-clip bg-[#0b0d0f] text-white selection:bg-[#eefb7a] selection:text-[#0b0d0f]">
+      {shareNotice && (
+        <div role="status" aria-live="polite" className={`fixed right-4 top-20 z-50 flex max-w-xs items-center gap-2 rounded-xl border px-4 py-3 text-xs font-semibold shadow-xl animate-fadeIn ${shareNotice.error ? 'border-red-500/25 bg-red-950 text-red-100' : 'border-emerald-500/25 bg-emerald-950 text-emerald-100'}`}>
+          <span className={`h-2 w-2 shrink-0 rounded-full ${shareNotice.error ? 'bg-red-400' : 'bg-emerald-400'}`} />
+          {shareNotice.message}
+        </div>
+      )}
       <header className="sticky top-0 z-30 border-b border-white/10 bg-[#0b0d0f]/85 backdrop-blur-xl">
         <div className="mx-auto flex min-h-16 w-full max-w-360 items-center justify-between px-5 sm:px-8 lg:px-12">
           <a href="#top" className="flex items-center gap-3 text-white no-underline" aria-label="UploadFlow home">
