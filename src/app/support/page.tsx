@@ -32,8 +32,15 @@ export default function SupportPage() {
 
           <section className="rounded-2xl border border-white/10 bg-white/3 p-6">
             <h2 className="text-xl">Report a problem</h2>
-            <p className="mt-4 text-sm leading-6 text-white/55">Use the support contact shown on UploadFlow&apos;s Chrome Web Store listing. Include the website, Chrome version, expected behavior, actual behavior, and reproducible steps. Replace private URLs with safe examples and never attach confidential files.</p>
-            <p className="mt-4 rounded-xl border border-amber-400/20 bg-amber-400/8 px-4 py-3 text-xs leading-5 text-amber-100">Public issue creation is not currently available in the website repository, so the previous GitHub issue link has been removed.</p>
+            <p className="mt-4 text-sm leading-6 text-white/55">Open a GitHub issue and include the website, Chrome version, expected behavior, actual behavior, and reproducible steps. Replace private URLs with safe examples and never attach confidential files.</p>
+            <a
+              href="https://github.com/cloudgrids/uploadflow/issues/new"
+              target="_blank"
+              rel="noreferrer"
+              className="mt-5 inline-flex min-h-11 items-center rounded-full bg-[#eefb7a] px-5 text-[9px] font-black uppercase tracking-wider text-[#0b0d0f]"
+            >
+              Open a GitHub issue ↗
+            </a>
           </section>
 
           <p className="text-sm text-white/45">For privacy information, see the <a href="/privacy" className="text-[#eefb7a] underline underline-offset-2">UploadFlow privacy policy</a>.</p>

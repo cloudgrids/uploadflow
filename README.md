@@ -6,6 +6,8 @@ The public Next.js website for [UploadFlow](https://uploadflow.cloudgrids.tech),
 
 This repository contains the website, public documentation, privacy and support pages, upload-interception demo, and social assets. The Chrome extension source is maintained separately in a private repository.
 
+Report public issues in [cloudgrids/uploadflow](https://github.com/cloudgrids/uploadflow/issues).
+
 ## Product overview
 
 UploadFlow connects three surfaces around one local media shelf:
