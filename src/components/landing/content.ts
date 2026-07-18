@@ -139,14 +139,15 @@ export const mediaMemoryPillars = [
 ];
 
 export const mediaMemoryRoadmap = [
-  'Media lineage and version families',
-  'Source tracking and find-original',
-  'Explicit upload history',
-  'Duplicate-post warnings',
-  'Local visual search',
-  'Reusable previous workflows',
-  'Optional cross-device handoff'
-];
+  { label: 'Media lineage and version families', status: 'beta' },
+  { label: 'Source tracking and find-original', status: 'beta' },
+  { label: 'Explicit upload history', status: 'beta' },
+  { label: 'Duplicate-post warnings', status: 'beta' },
+  { label: 'Local visual search', status: 'beta' },
+  { label: 'Reusable previous workflows', status: 'beta' },
+  { label: 'Local retention, export, and deletion', status: 'beta' },
+  { label: 'Optional cross-device handoff', status: 'planned' }
+] satisfies Array<{ label: string; status: ProductStatus }>;
 
 export const browserFeatures = [
   ['01', 'Capture media URLs', 'Hover or right-click an image, video, audio element, or media link and save its source.'],

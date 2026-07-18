@@ -8,15 +8,15 @@ export function MediaMemorySection() {
           <div>
             <div className="flex flex-wrap items-center gap-3">
               <p className="text-[9px] font-black uppercase tracking-[.22em] text-[#eefb7a]">The browser&apos;s missing media layer</p>
-              <StatusBadge status="planned" />
+              <StatusBadge status="beta" />
             </div>
             <h2 className="mt-5 text-4xl leading-[.92] sm:text-6xl">UploadFlow remembers your media so you do not have to.</h2>
             <p className="mt-6 max-w-xl text-sm leading-6 text-white/45">
-              The planned media-memory layer will connect each user-approved capture to where it came from, how it changed, and where the
-              user chose to deliver it.
+              The development build connects each user-approved capture to where it came from, how it changed, and where the user chose to
+              deliver it. It remains in beta until storage migrations and real cross-site workflows complete manual verification.
             </p>
             <p className="mt-4 text-[9px] font-bold uppercase tracking-wider text-white/30">
-              Planned roadmap · Not included in the current pre-release build
+              Working development build · Not included in the public release
             </p>
           </div>
           <div className="border-t border-white/15">
@@ -31,8 +31,11 @@ export function MediaMemorySection() {
         </div>
         <div className="mt-12 flex flex-wrap gap-2">
           {mediaMemoryRoadmap.map((feature) => (
-            <span key={feature} className="rounded-full border border-white/15 bg-white/3 px-3 py-2 text-[8px] font-bold uppercase tracking-wider text-white/45">
-              {feature}
+            <span
+              key={feature.label}
+              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/3 px-3 py-2 text-[8px] font-bold uppercase tracking-wider text-white/45"
+            >
+              {feature.label} <StatusBadge status={feature.status} />
             </span>
           ))}
         </div>

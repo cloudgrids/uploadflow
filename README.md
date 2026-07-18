@@ -6,7 +6,7 @@
 
 [UploadFlow](https://uploadflow.cloudgrids.tech) is the browser’s missing media layer: move, prepare, track, and find media across the web without managing folders or filenames.
 
-The current pre-release extension moves media you own or are authorized to reuse from one website into another website’s upload flow without first saving a permanent Downloads copy. The planned media-memory layer will connect a source, its prepared versions, and the destinations a user explicitly records.
+The current pre-release extension moves media you own or are authorized to reuse from one website into another website’s upload flow without first saving a permanent Downloads copy. Its development build now connects a source, its prepared versions, and the destinations a user explicitly records.
 
 It brings capture, organization, preparation, review, and upload handoff into one private browser workspace. UploadFlow does not bypass authentication, paywalls, expiring signatures, hotlink protection, access controls, or usage rights.
 
@@ -20,7 +20,7 @@ UploadFlow should feel simple: **it remembers your media so you do not have to.*
 4. **Recall.** Find media by source, date, destination, description, or local visual similarity.
 5. **Protect.** Keep the history local, bounded, user-controlled, exportable, and easy to erase.
 
-Capture and cross-site delivery work in the current pre-release build. Full lineage, recall, visual search, destination history, and cross-device handoff are **planned capabilities**, not released features.
+Capture and cross-site delivery work in the current pre-release build. Local lineage, recall, visual similarity, destination history, workflow reuse, retention, export, and deletion are **in beta and awaiting manual release verification**. Cross-device handoff remains planned and unavailable.
 
 ## How UploadFlow works
 
