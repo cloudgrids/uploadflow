@@ -1,4 +1,45 @@
-import { editorTools, productStatus, productSurfaces, type ProductStatus } from './content';
+import { editorTools, mediaMemoryPillars, mediaMemoryRoadmap, productStatus, productSurfaces, type ProductStatus } from './content';
+
+export function MediaMemorySection() {
+  return (
+    <section className="border-b border-white/10 bg-[#0d1012]">
+      <div className="mx-auto w-full max-w-360 px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
+        <div className="grid gap-10 lg:grid-cols-[.75fr_1.25fr]">
+          <div>
+            <div className="flex flex-wrap items-center gap-3">
+              <p className="text-[9px] font-black uppercase tracking-[.22em] text-[#eefb7a]">The browser&apos;s missing media layer</p>
+              <StatusBadge status="planned" />
+            </div>
+            <h2 className="mt-5 text-4xl leading-[.92] sm:text-6xl">UploadFlow remembers your media so you do not have to.</h2>
+            <p className="mt-6 max-w-xl text-sm leading-6 text-white/45">
+              The planned media-memory layer will connect each user-approved capture to where it came from, how it changed, and where the
+              user chose to deliver it.
+            </p>
+            <p className="mt-4 text-[9px] font-bold uppercase tracking-wider text-white/30">
+              Planned roadmap · Not included in the current pre-release build
+            </p>
+          </div>
+          <div className="border-t border-white/15">
+            {mediaMemoryPillars.map(([number, title, copy]) => (
+              <article key={number} className="grid gap-3 border-b border-white/15 py-6 sm:grid-cols-[55px_140px_1fr]">
+                <span className="font-mono text-[9px] text-[#eefb7a]">/{number}</span>
+                <h3 className="text-lg">{title}</h3>
+                <p className="text-xs leading-5 text-white/40">{copy}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+        <div className="mt-12 flex flex-wrap gap-2">
+          {mediaMemoryRoadmap.map((feature) => (
+            <span key={feature} className="rounded-full border border-white/15 bg-white/3 px-3 py-2 text-[8px] font-bold uppercase tracking-wider text-white/45">
+              {feature}
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export function ProductSurfaceSection() {
   return (

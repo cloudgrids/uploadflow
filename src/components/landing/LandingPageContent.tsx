@@ -1,7 +1,7 @@
 import { LandingFooter, LandingHeader } from './LandingChrome';
 import { AvailableTodaySection, ExtensionSection, HeroSection, TrustSections, WorkflowSection } from './LandingCoreSections';
 import { ShareAndCtaSections } from './LandingShare';
-import { EditorToolsSection, ProductSurfaceSection } from './ProductSections';
+import { EditorToolsSection, MediaMemorySection, ProductSurfaceSection } from './ProductSections';
 
 export function LandingPageContent() {
   return (
@@ -10,6 +10,7 @@ export function LandingPageContent() {
       <main id="top">
         <HeroSection />
         <AvailableTodaySection />
+        <MediaMemorySection />
         <WorkflowSection />
         <ProductSurfaceSection />
         <ExtensionSection />

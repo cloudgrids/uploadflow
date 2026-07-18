@@ -2,9 +2,25 @@
 
 ![UploadFlow moving authorized media between websites](public/features/product-overview-actual.png)
 
-[UploadFlow](https://uploadflow.cloudgrids.tech) is a local-first Chrome extension for moving media you own or are authorized to reuse from one website into another website’s upload flow—without first saving a permanent copy in Downloads.
+> **Never download it. Never lose it.**
+
+[UploadFlow](https://uploadflow.cloudgrids.tech) is the browser’s missing media layer: move, prepare, track, and find media across the web without managing folders or filenames.
+
+The current pre-release extension moves media you own or are authorized to reuse from one website into another website’s upload flow without first saving a permanent Downloads copy. The planned media-memory layer will connect a source, its prepared versions, and the destinations a user explicitly records.
 
 It brings capture, organization, preparation, review, and upload handoff into one private browser workspace. UploadFlow does not bypass authentication, paywalls, expiring signatures, hotlink protection, access controls, or usage rights.
+
+## The product model
+
+UploadFlow should feel simple: **it remembers your media so you do not have to.** It is not a cloud drive or a traditional digital asset manager.
+
+1. **Capture.** Know where authorized media came from.
+2. **Transform.** Connect edits, crops, compression, watermarks, redactions, and generated versions.
+3. **Deliver.** Remember destinations the user explicitly confirms.
+4. **Recall.** Find media by source, date, destination, description, or local visual similarity.
+5. **Protect.** Keep the history local, bounded, user-controlled, exportable, and easy to erase.
+
+Capture and cross-site delivery work in the current pre-release build. Full lineage, recall, visual search, destination history, and cross-device handoff are **planned capabilities**, not released features.
 
 ## How UploadFlow works
 

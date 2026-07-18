@@ -12,14 +12,19 @@ export function HeroSection() {
               Pre-release · Not yet on the Chrome Web Store
             </span>
             <h1 className="mt-8 text-[clamp(2.55rem,10vw,7rem)] leading-[.86] tracking-[-.065em]">
-              Move media
+              Never download it.
               <br />
-              <span className="text-[#eefb7a]">between sites.</span>
-              <br />
-              Skip Downloads.
+              <span className="text-[#eefb7a]">Never lose it.</span>
             </h1>
-            <p className="mt-8 max-w-xl text-sm leading-6 text-white/50 sm:text-base">
-              Capture it once, review it privately, and use it in another upload field—without managing a Downloads folder.
+            <h2 className="mt-8 max-w-xl text-2xl leading-tight tracking-tight sm:text-3xl">
+              Move media between sites. <span className="text-white/45">Skip Downloads.</span>
+            </h2>
+            <p className="mt-5 max-w-xl text-sm leading-6 text-white/50 sm:text-base">
+              Move, prepare, track, and find media across the web—without managing folders or filenames.
+            </p>
+            <p className="mt-3 max-w-xl text-xs leading-5 text-white/35">
+              UploadFlow remembers your media so you do not have to. Cross-site handoff works in the current pre-release build; private media
+              memory and recall are planned for a future release.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <a
@@ -56,11 +61,11 @@ export function HeroSection() {
         <div className="flex min-w-max justify-center gap-10 text-[10px] font-black uppercase italic tracking-widest">
           <span>Capture</span>
           <span>✦</span>
-          <span>Prepare</span>
+          <span>Transform</span>
           <span>✦</span>
-          <span>Review</span>
+          <span>Deliver</span>
           <span>✦</span>
-          <span>Upload</span>
+          <span>Recall</span>
         </div>
       </div>
     </>

@@ -130,6 +130,24 @@ export const availableToday = [
   ['Prepare common image files', 'Optimize, redact, and watermark supported images before handoff.']
 ];
 
+export const mediaMemoryPillars = [
+  ['01', 'Capture', 'Keep the source, capture date, and original reference attached to authorized media.'],
+  ['02', 'Transform', 'Connect crops, compression, watermarks, redactions, and generated outputs as one version family.'],
+  ['03', 'Deliver', 'Record the destinations a user explicitly confirms for each prepared version.'],
+  ['04', 'Recall', 'Find media again by source, date, destination, description, or local visual similarity.'],
+  ['05', 'Protect', 'Keep media memory local, bounded, user-controlled, exportable, and easy to erase.']
+];
+
+export const mediaMemoryRoadmap = [
+  'Media lineage and version families',
+  'Source tracking and find-original',
+  'Explicit upload history',
+  'Duplicate-post warnings',
+  'Local visual search',
+  'Reusable previous workflows',
+  'Optional cross-device handoff'
+];
+
 export const browserFeatures = [
   ['01', 'Capture media URLs', 'Hover or right-click an image, video, audio element, or media link and save its source.'],
   ['02', 'Manage a persistent shelf', 'Search, tag, favorite, collect, and reorder up to 20 authorized media references across tabs.'],
