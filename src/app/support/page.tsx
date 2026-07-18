@@ -27,13 +27,13 @@ export default function SupportPage() {
 
           <section className="rounded-2xl border border-white/10 bg-white/3 p-6">
             <h2 className="text-xl">Delete local data</h2>
-            <p className="mt-4 text-sm leading-6 text-white/55">Delete optimization history from UploadFlow Settings. Remove saved URLs individually from the URL library. To remove every setting and local record, uninstall UploadFlow from <code className="text-white">chrome://extensions</code>.</p>
+            <p className="mt-4 text-sm leading-6 text-white/55">Private workflow history is disabled by default and can be cleared completely or per destination from UploadFlow Settings. Remove shelf records individually, or uninstall UploadFlow from <code className="text-white">chrome://extensions</code> to remove every extension setting and local record.</p>
           </section>
 
           <section className="rounded-2xl border border-white/10 bg-white/3 p-6">
             <h2 className="text-xl">Report a problem</h2>
-            <p className="mt-4 text-sm leading-6 text-white/55">Open a public issue with the website, Chrome version, expected behavior, actual behavior, and reproducible steps. Replace private URLs with safe examples.</p>
-            <a href="https://github.com/arijitchhatui/uploadflow/issues" target="_blank" rel="noreferrer" className="mt-5 inline-flex rounded-full bg-[#eefb7a] px-5 py-3 text-[10px] font-black uppercase tracking-wider text-[#101416]">Open GitHub issues ↗</a>
+            <p className="mt-4 text-sm leading-6 text-white/55">Use the support contact shown on UploadFlow&apos;s Chrome Web Store listing. Include the website, Chrome version, expected behavior, actual behavior, and reproducible steps. Replace private URLs with safe examples and never attach confidential files.</p>
+            <p className="mt-4 rounded-xl border border-amber-400/20 bg-amber-400/8 px-4 py-3 text-xs leading-5 text-amber-100">Public issue creation is not currently available in the website repository, so the previous GitHub issue link has been removed.</p>
           </section>
 
           <p className="text-sm text-white/45">For privacy information, see the <a href="/privacy" className="text-[#eefb7a] underline underline-offset-2">UploadFlow privacy policy</a>.</p>

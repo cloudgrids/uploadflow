@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description: 'How the UploadFlow Chrome extension handles files, website content, URLs, settings, and optional network features.'
 };
 
-const updatedAt = 'July 15, 2026';
+const updatedAt = 'July 18, 2026';
 
 export default function PrivacyPage() {
   return (
@@ -29,12 +29,13 @@ export default function PrivacyPage() {
               <li>Website content and resources needed to detect file-upload actions and, when Inspect Mode is enabled, media URLs on the page.</li>
               <li>Media URLs you explicitly capture or save for use on another website, limited to 20 entries.</li>
               <li>Local settings, download identifiers, file names, file sizes, and optimization totals.</li>
+              <li>If you explicitly enable Private Workflow History, bounded local records containing destination hostname, source filename reference, editor tool, output metadata, and timestamp.</li>
             </ul>
           </section>
 
           <section>
             <h2 className="text-xl text-white">Local processing and storage</h2>
-            <p className="mt-3">Image optimization, text redaction, and watermarking run locally in your browser. Settings, saved URLs, download identifiers, and aggregate file statistics are stored in Chrome’s local extension storage. UploadFlow does not operate an analytics service, advertising service, user account system, or cloud file drive.</p>
+            <p className="mt-3">Image optimization, privacy scanning and redaction, smart cropping, background tools, watermarking, duplicate fingerprints, platform-pack creation, ZIP assembly, and packaged FFmpeg Wasm video editing run locally in your browser. Settings, saved URLs, download identifiers, presets, brand kits, platform packs, and aggregate file statistics are stored in Chrome’s local extension storage. Duplicate fingerprints, scan findings, video frames, and temporary output bytes are not persisted. UploadFlow does not operate an analytics service, advertising service, user account system, or cloud file drive.</p>
           </section>
 
           <section>
@@ -56,7 +57,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-xl text-white">Retention and deletion</h2>
-            <p className="mt-3">Files being edited are kept in browser memory for the active workflow. Local settings and history remain until you delete them, reset history in Settings, or uninstall the extension. Saved URL records can be removed individually. Third-party source websites and the optional upscaling provider may have their own retention policies.</p>
+            <p className="mt-3">Files being edited are kept in browser memory for the active workflow. Private Workflow History is disabled by default; if enabled, it uses the retention period you select—7, 30, or 90 days—and supports per-destination and clear-all deletion. Other local settings and aggregate statistics remain until you delete or reset them, or uninstall the extension. Saved URL records can be removed individually. Third-party source websites and the optional upscaling provider may have their own retention policies.</p>
           </section>
 
           <section>
@@ -71,7 +72,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-xl text-white">Contact</h2>
-            <p className="mt-3">For privacy questions or deletion assistance, contact the publisher through the support email shown on UploadFlow’s Chrome Web Store listing.</p>
+            <p className="mt-3">For privacy questions or deletion assistance, use the publisher support contact shown on UploadFlow’s Chrome Web Store listing or visit the <a href="/support" className="text-[#eefb7a] underline underline-offset-2">support page</a>.</p>
           </section>
         </div>
       </article>

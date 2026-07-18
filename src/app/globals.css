@@ -17,6 +17,17 @@
 
 * { box-sizing: border-box; }
 
+html {
+  overflow-x: hidden;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-weight: 900;
   font-style: italic;
@@ -30,6 +41,7 @@ body {
   margin: 0 auto;
   min-height: 100svh;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 @keyframes fadeIn {
@@ -47,7 +59,6 @@ body {
   min-height: 100svh;
   margin: 0;
   padding: 0;
-  overflow-x: clip;
   background-color: var(--background);
 }
 
