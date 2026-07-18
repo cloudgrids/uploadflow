@@ -20,7 +20,10 @@ UploadFlow should feel simple: **it remembers your media so you do not have to.*
 4. **Recall.** Find media by source, date, destination, description, or local visual similarity.
 5. **Protect.** Keep the history local, bounded, user-controlled, exportable, and easy to erase.
 
-Capture and cross-site delivery work in the current pre-release build. Post Bundles, Site presets, connected pending-draft replacement, local lineage, recall, visual similarity, destination history, workflow reuse, retention, export, and deletion are **in beta and awaiting manual release verification**. Cross-device Handoff has a development foundation but remains unavailable as a live transport until its pairing, relay, privacy, and security requirements are completed.
+Capture and cross-site delivery work in the current pre-release build. Post Bundles, Site presets, local lineage, recall, visual similarity, destination history, workflow reuse, retention, export, and deletion are **in beta and awaiting manual release verification**.
+
+- **Handoff — Early Access:** secure pairing groundwork is available; live encrypted file transfer is still being completed.
+- **Live Draft Sync — Experimental:** disabled by default and intended only for supported upload flows before uploading starts. Some sites do not expose upload state reliably; unsupported sites ask the user to replace a newer attachment manually.
 
 ## How UploadFlow works
 
@@ -60,9 +63,9 @@ A Site preset prepares and fills a destination draft only after an explicit Uplo
 
 ### Connected pending drafts
 
-Live Draft Sync tracks only files that UploadFlow placed into currently connected, unsubmitted upload inputs. The side panel distinguishes these as pending local attachments. A user can select one corrected file, review every matching destination, and explicitly confirm which open drafts should receive it.
+When explicitly enabled, experimental Live Draft Sync tracks only files that UploadFlow placed into supported, currently connected, unsubmitted upload inputs before uploading starts. The side panel distinguishes these as pending local attachments. A user can select one corrected file, review every matching destination, and explicitly confirm which open drafts should receive it.
 
-Immediately before replacement, UploadFlow verifies the exact file identity again. Each destination reports success or failure independently, and the previous local attachment remains available for rollback while that receiver stays connected. Submitted, reloaded, disconnected, changed, or identity-mismatched inputs are excluded.
+Immediately before replacement, UploadFlow verifies the exact file identity again. Each destination reports success or failure independently, and the previous local attachment remains available for rollback while that receiver stays connected. Submitted, reloaded, disconnected, changed, identity-mismatched, and unsupported inputs are excluded. Do not use replacement after an upload starts: websites do not always expose that state to extensions. Unsupported sites show that a newer version is available and require manual replacement.
 
 ## One workspace, three surfaces
 

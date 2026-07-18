@@ -1,8 +1,13 @@
-export type ProductStatus = 'available' | 'beta' | 'next' | 'planned';
+export type ProductStatus = 'available' | 'beta' | 'early' | 'experimental' | 'next' | 'planned';
 
 export const productStatus: Record<ProductStatus, { label: string; detail: string }> = {
   available: { label: 'Ready in build', detail: 'Working in the current pre-release extension build.' },
   beta: { label: 'In beta', detail: 'Working in the current development build and still being hardened.' },
+  early: { label: 'Early Access', detail: 'Security and pairing groundwork exists; the complete user workflow is not yet available.' },
+  experimental: {
+    label: 'Experimental',
+    detail: 'Opt-in development feature for supported upload flows; website compatibility varies.'
+  },
   next: { label: 'Coming next', detail: 'Actively being prepared for the next public release.' },
   planned: { label: 'Planned', detail: 'Part of the roadmap, with scope still subject to change.' }
 };
@@ -146,7 +151,8 @@ export const mediaMemoryRoadmap = [
   { label: 'Local visual search', status: 'beta' },
   { label: 'Reusable previous workflows', status: 'beta' },
   { label: 'Local retention, export, and deletion', status: 'beta' },
-  { label: 'Optional cross-device handoff', status: 'planned' }
+  { label: 'UploadFlow Handoff pairing groundwork', status: 'early' },
+  { label: 'Live Draft Sync on supported fields', status: 'experimental' }
 ] satisfies Array<{ label: string; status: ProductStatus }>;
 
 export const browserFeatures = [

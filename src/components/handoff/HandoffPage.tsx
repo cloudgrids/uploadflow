@@ -31,7 +31,7 @@ export function HandoffPage() {
   return (
     <main className="min-h-screen bg-[#080c0d] px-5 py-10 text-white">
       <section className="mx-auto max-w-lg rounded-[28px] border border-white/10 bg-[#111617] p-6 shadow-2xl">
-        <p className="text-xs font-black uppercase tracking-[.2em] text-emerald-400">UploadFlow Handoff</p>
+        <p className="text-xs font-black uppercase tracking-[.2em] text-emerald-400">UploadFlow Handoff · Early Access</p>
         <h1 className="mt-4 text-4xl font-black italic leading-none">Phone to website, without sending it to yourself.</h1>
         {invalid ? (
           <p className="mt-6 rounded-xl border border-red-400/20 bg-red-400/10 p-4 text-sm text-red-100">

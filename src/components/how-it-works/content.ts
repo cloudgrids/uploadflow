@@ -55,6 +55,28 @@ export const configurationGroups = [
     ]
   },
   {
+    id: 'live-draft-sync',
+    title: 'Live Draft Sync — Experimental',
+    summary:
+      'Opt in to track files that UploadFlow placed into supported, connected upload fields before those files start uploading.',
+    choices: [
+      'Replacement requires explicit confirmation and never submits or publishes a form.',
+      'Compatibility varies because websites may keep attachment state outside the native file input.',
+      'Unsupported destinations show that a newer version is available and ask you to replace the attachment manually.',
+      'Keep this disabled for the stable launch workflow.'
+    ]
+  },
+  {
+    id: 'cross-device-handoff',
+    title: 'UploadFlow Handoff — Early Access',
+    summary: 'Short-lived encrypted pairing groundwork is available; live phone-to-browser file transfer is still being completed.',
+    choices: [
+      'Pairing sessions are temporary and can be cancelled explicitly.',
+      'Do not expect live encrypted file delivery in the current build.',
+      'Handoff remains separate from the local-only core and will require its own reviewed privacy boundary.'
+    ]
+  },
+  {
     id: 'language',
     title: 'Language',
     summary: 'Choose whether UploadFlow follows the browser language or uses a supported language explicitly.',

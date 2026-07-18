@@ -154,6 +154,8 @@ function StatusBadge({ status }: { status: ProductStatus }) {
   const styles: Record<ProductStatus, string> = {
     available: 'border-emerald-400/35 bg-emerald-400/10 text-emerald-300',
     beta: 'border-sky-400/35 bg-sky-400/10 text-sky-300',
+    early: 'border-violet-400/35 bg-violet-400/10 text-violet-300',
+    experimental: 'border-amber-400/35 bg-amber-400/10 text-amber-300',
     next: 'border-[#eefb7a]/35 bg-[#eefb7a]/10 text-[#eefb7a]',
     planned: 'border-white/20 bg-white/5 text-white/45'
   };

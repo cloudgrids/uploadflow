@@ -59,7 +59,7 @@ export default function PrivacyPage() {
               </li>
               <li>Local settings, download identifiers, file names, file types, file sizes, and optimization totals.</li>
               <li>
-                While Live Draft Sync is active, session-only records identifying connected destination tabs, frames, upload inputs,
+                If you explicitly enable experimental Live Draft Sync, session-only records identifying connected destination tabs, frames, upload inputs,
                 accepted file types, file metadata, exact file fingerprints, and destination page URL. These records describe pending local
                 attachments and do not indicate that a post was published.
               </li>
@@ -82,7 +82,7 @@ export default function PrivacyPage() {
               Sync file bytes, rollback file bytes, and temporary editor output bytes are not written to persistent extension storage.
             </p>
             <p className="mt-3">
-              Live Draft Sync keeps its connected-input registry in Chrome session storage and keeps a reversible previous{' '}
+              Experimental Live Draft Sync is disabled by default. When enabled, it keeps its connected-input registry in Chrome session storage and keeps a reversible previous{' '}
               <code className="text-white/80">FileList</code> only in the receiving content script’s memory. Corrected file bytes pass
               temporarily between UploadFlow extension contexts so the selected open draft can be updated; they are not sent to an
               UploadFlow server by that feature. UploadFlow does not operate an analytics service, advertising service, user account system,
@@ -108,14 +108,15 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-xl text-white">Pending attachments and Live Draft Sync</h2>
             <p className="mt-3">
-              UploadFlow tracks an attachment only when it placed the file into a currently connected webpage input and the input still
+              Live Draft Sync is an opt-in experimental feature whose compatibility varies by website. UploadFlow tracks an attachment only when it placed the file into a supported, currently connected webpage input and the input still
               contains the exact expected files after its change handlers run. Before replacing a file, UploadFlow checks the exact
               fingerprint again and requires you to select and confirm the connected destinations.
             </p>
             <p className="mt-3">
               Tracking stops when the input changes, its form is submitted, the tab or frame disconnects, UploadFlow is disabled, or you
               clear the draft session. UploadFlow does not use Live Draft Sync to alter submitted, published, scheduled, reloaded,
-              disconnected, or identity-mismatched content.
+              disconnected, identity-mismatched, or unsupported content. A site that manages attachments outside its file input requires
+              manual replacement.
             </p>
           </section>
 
