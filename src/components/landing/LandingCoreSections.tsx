@@ -121,7 +121,7 @@ export function ExtensionSection() {
             </article>
           ))}
         </div>
-        <img src="/features/media-shelf-actual.png" alt="Actual UploadFlow side panel showing saved media beside the landing page" width="2808" height="1498" loading="lazy" className="h-auto w-full rounded-[24px] border border-white/15 object-contain object-top lg:col-span-2" />
+        <img src="/features/media-shelf-actual.png" alt="Actual UploadFlow side panel showing saved media beside the landing page" width="2808" height="1498" loading="lazy" className="h-auto w-full rounded-3xl border border-white/15 object-contain object-top lg:col-span-2" />
       </div>
     </section>
   );

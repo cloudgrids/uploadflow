@@ -65,7 +65,7 @@ export function EditorToolsSection() {
         </div>
         <div className="mt-12 grid gap-5 lg:grid-cols-2">
           {editorTools.filter((tool) => tool.image).map((tool) => (
-            <figure key={`${tool.number}-preview`} className="overflow-hidden rounded-[24px] border border-white/15 bg-black/20">
+            <figure key={`${tool.number}-preview`} className="overflow-hidden rounded-3xl border border-white/15 bg-black/20">
               <img src={tool.image} alt={`Actual UploadFlow ${tool.label} workspace`} width="2880" height="1800" loading="lazy" className="h-auto w-full object-contain object-top" />
               <figcaption className="flex items-center justify-between gap-3 border-t border-white/10 px-4 py-3 text-[8px] font-bold uppercase tracking-wider text-white/35">
                 <span>Actual extension workspace</span>
@@ -74,7 +74,7 @@ export function EditorToolsSection() {
             </figure>
           ))}
         </div>
-        <figure className="mt-12 overflow-hidden rounded-[24px] border border-white/15 bg-black/20">
+        <figure className="mt-12 overflow-hidden rounded-3xl border border-white/15 bg-black/20">
           <img src="/features/workspace-settings-actual.png" alt="Actual UploadFlow full workspace settings screen" width="2880" height="1558" loading="lazy" className="h-auto w-full object-contain object-top" />
           <figcaption className="border-t border-white/10 px-4 py-3 text-[8px] font-bold uppercase tracking-wider text-white/35">Actual extension workspace · Settings shown</figcaption>
         </figure>
