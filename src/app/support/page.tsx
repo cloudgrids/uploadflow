@@ -34,12 +34,12 @@ export default function SupportPage() {
             <h2 className="text-xl">Report a problem</h2>
             <p className="mt-4 text-sm leading-6 text-white/55">Open a GitHub issue and include the website, Chrome version, expected behavior, actual behavior, and reproducible steps. Replace private URLs with safe examples and never attach confidential files.</p>
             <a
-              href="https://github.com/cloudgrids/uploadflow/issues/new"
+              href="https://github.com/cloudgrids/uploadflow/issues/new/choose"
               target="_blank"
               rel="noreferrer"
               className="mt-5 inline-flex min-h-11 items-center rounded-full bg-[#eefb7a] px-5 text-[9px] font-black uppercase tracking-wider text-[#0b0d0f]"
             >
-              Open a GitHub issue ↗
+              Open an issue or feature request ↗
             </a>
           </section>
 

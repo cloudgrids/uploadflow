@@ -1,0 +1,81 @@
+name: Bug report
+description: Report a reproducible problem with the UploadFlow extension or website.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve UploadFlow. Never include private files, signed media URLs, passwords, cookies, tokens, or personal information.
+
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Affected surface
+      options:
+        - Chrome extension popup
+        - Media shelf side panel
+        - Full editor
+        - Upload interception or URL picker
+        - Downloads
+        - UploadFlow website
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: UploadFlow version
+      description: Find this in the extension workspace footer or Chrome extension details.
+      placeholder: "1.0.0"
+    validations:
+      required: true
+
+  - type: input
+    id: chrome
+    attributes:
+      label: Chrome and operating-system version
+      placeholder: "Chrome 140 on macOS 16"
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Explain the actual result and what you expected instead.
+      placeholder: "Expected…\nActual…"
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      description: Use a public test URL or replace private URLs with safe examples.
+      placeholder: |
+        1. Open…
+        2. Select…
+        3. Click…
+    validations:
+      required: true
+
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Relevant diagnostics
+      description: Add sanitized console messages, screenshots, or a short recording. Remove sensitive information first.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Safety checks
+      options:
+        - label: I refreshed the affected webpage after installing or reloading the extension.
+          required: true
+        - label: I removed private files, credentials, tokens, signed URLs, and personal information.
+          required: true
+        - label: I searched existing issues for this problem.
+          required: true

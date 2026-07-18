@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: UploadFlow support
+    url: https://uploadflow.cloudgrids.tech/support
+    about: Check troubleshooting, compatibility guidance, and safe reporting instructions.
+  - name: Privacy policy
+    url: https://uploadflow.cloudgrids.tech/privacy
+    about: Review UploadFlow data handling, local processing, and network boundaries.

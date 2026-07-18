@@ -1,0 +1,72 @@
+name: Feature request
+description: Suggest a focused improvement to UploadFlow’s capture, preparation, or upload workflow.
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the workflow problem first, then the proposed feature. UploadFlow will not add features that bypass access controls or media usage rights.
+
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Product area
+      options:
+        - Capture and Inspect Mode
+        - URL picker and upload handoff
+        - Media shelf
+        - Image preparation
+        - Video preparation
+        - Batch and platform packs
+        - Downloads
+        - Settings and privacy
+        - Website and documentation
+        - New product area
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: Explain the current workflow and where it becomes difficult or repetitive.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed experience
+      description: Describe how the feature should behave from the user’s perspective.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Mention any current workaround or simpler alternative.
+
+  - type: dropdown
+    id: processing
+    attributes:
+      label: Expected processing boundary
+      options:
+        - Fully local in the browser
+        - Explicit network action is acceptable
+        - No processing or network access required
+        - Unsure
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Confirmation
+      options:
+        - label: This request does not depend on bypassing authentication, paywalls, access controls, or usage rights.
+          required: true
+        - label: I searched existing issues and feature requests.
+          required: true

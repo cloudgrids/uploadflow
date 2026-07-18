@@ -1,85 +1,114 @@
-# UploadFlow Website
+# UploadFlow
 
-![UploadFlow — capture, prepare, and hand off media](public/og-image.png)
+![UploadFlow moving authorized media between websites](public/features/product-overview-actual.png)
 
-The public Next.js website for [UploadFlow](https://uploadflow.cloudgrids.tech), a local-first Chrome extension for capturing media users own or are authorized to reuse, preparing it in a private workspace, and supplying it to another website’s file input.
+[UploadFlow](https://uploadflow.cloudgrids.tech) is a local-first Chrome extension for moving media you own or are authorized to reuse from one website into another website’s upload flow—without first saving a permanent copy in Downloads.
 
-This repository contains the website, public documentation, privacy and support pages, upload-interception demo, and social assets. The Chrome extension source is maintained separately in a private repository.
+It brings capture, organization, preparation, review, and upload handoff into one private browser workspace. UploadFlow does not bypass authentication, paywalls, expiring signatures, hotlink protection, access controls, or usage rights.
 
-Report public issues in [cloudgrids/uploadflow](https://github.com/cloudgrids/uploadflow/issues).
+## How UploadFlow works
 
-## Product overview
+1. **Capture the source.** Hover or right-click supported media, use Inspect Mode, or paste a direct HTTP/HTTPS media URL.
+2. **Save the reference.** UploadFlow keeps a bounded URL reference in the local media shelf instead of silently downloading every file.
+3. **Prepare the media.** Optimize, crop, redact, watermark, upscale, batch-process, or trim supported files before upload.
+4. **Open the destination.** Click a file input on another website and select the saved media through the UploadFlow picker.
+5. **Review and hand off.** UploadFlow fetches the source when requested, checks compatibility, and returns the approved `File` to the original upload flow.
 
-UploadFlow connects three surfaces around one local media shelf:
+![Cross-site capture and upload handoff](public/features/cross-site-handoff.png)
 
-- A small popup for quick capture, recent items, enablement, and navigation.
-- A persistent side panel for shelf organization, batches, platform packs, and queue status across tabs.
-- A full editor for image optimization, crop/background work, privacy review and redaction, watermark/brand-kit application, upscaling, and supported browser-native video editing.
+## One workspace, three surfaces
 
-The primary handoff remains simple: capture an authorized source URL, prepare it if needed, open a destination input, fetch the source on demand, review compatibility, and return the approved `File` to the destination page. UploadFlow does not bypass authentication, paywalls, expiring signatures, hotlink protection, or usage rights.
+### Quick popup
 
-## Website routes
+Capture a URL, inspect recent media, enable or disable interception, and move directly into the appropriate editor.
 
-- `/` — product landing page
-- `/how-it-works` — detailed capture, preparation, privacy, batch, video, and handoff guide
-- `/demo` — upload-interception test and product demonstration
-- `/privacy` — public privacy policy
-- `/support` — support and compatibility guidance
-- `/api/upscale` — disclosed optional upscaling API route
+### Persistent media shelf
 
-## Development
+The Chrome side panel keeps authorized media references available while moving between tabs. Search, tag, favourite, collect, reorder, select, batch-process, and prepare destination-specific variants.
 
-Requirements: Node.js 20+, pnpm, and a modern browser.
+![UploadFlow persistent media shelf](public/features/media-shelf-actual.png)
 
-```bash
-pnpm install
-pnpm dev
-```
+### Full preparation editor
 
-```bash
-pnpm lint
-pnpm build
-pnpm start
-```
+The full workspace provides focused editors while preserving the original file. A completed output can be passed into any compatible editor before it is handed to a destination website.
 
-The website uses Next.js App Router and Tailwind CSS. Configure the deployment root to this `web/` directory so the platform detects the local `next` dependency and `package.json`.
+![UploadFlow workspace settings](public/features/workspace-settings-actual.png)
 
-## Structure
+## Preparation tools
 
-```text
-src/app/                 App Router pages, metadata, policies, and API routes
-src/components/          Public page composition
-src/components/landing/ Landing content and reusable visual modules
-src/test/                Modular upload-interception demo
-src/utils/               Public sharing and small browser helpers
-public/                  Verification file, screenshots, video, and social assets
-```
+### Optimize
 
-## Privacy boundary
+Resize, compress, rename, convert between supported image formats, inspect metadata, and export a clean upload-ready image.
 
-Local image transforms, privacy review, crop/background work, watermarks, batch/platform-pack work, duplicate fingerprints, and supported video editing run in the extension. Network access occurs when the user explicitly retrieves a source URL or invokes optional AI upscaling. Optional private workflow history is disabled by default, bounded, retained for the selected period, and user-deletable.
+![UploadFlow image optimization workspace](public/features/optimize-actual.png)
 
-See the live [privacy policy](https://uploadflow.cloudgrids.tech/privacy) for the public disclosure that governs the published extension.
+### Crop and compose
 
-## Public assets
+Create square, portrait, landscape, and thumbnail compositions with adjustable focus and preview controls.
 
-- [Open Graph image](public/og-image.png)
-- [Landscape share preview](public/share-preview.png)
-- [Cross-site handoff diagram](public/uploadflow-cross-site-master.png)
-- [Cross-site feature illustration](public/features/cross-site-handoff.png)
-- [Actual product overview with workspace and shelf](public/features/product-overview-actual.png)
-- [Actual populated media shelf](public/features/media-shelf-actual.png)
-- [Actual batch and platform-pack controls](public/features/batch-packs-actual.png)
-- [Actual full workspace settings](public/features/workspace-settings-actual.png)
-- [Actual Optimize workspace](public/features/optimize-actual.png)
-- [Actual Crop workspace](public/features/crop-actual.png)
-- [Actual Redact workspace](public/features/redact-actual.png)
-- [Actual Watermark workspace](public/features/watermark-actual.png)
-- [Actual Upscale workspace](public/features/upscale-actual.png)
-- [Actual Downloads workspace](public/features/downloads-actual.png)
-- [Coming-soon editor concept](public/features/editor-workspace.png)
-- [Vertical demo video](public/media/uploadflow-social-vertical.mp4)
-- [Vertical video poster](public/media/uploadflow-social-poster.jpg)
-- [Demo contact sheet](public/social/demo-contact-sheet.png)
+![UploadFlow crop workspace](public/features/crop-actual.png)
 
-UploadFlow is developed and published by [CloudGrids](https://cloudgrids.tech/).
+### Redact private regions
+
+Blur or cover selected regions, review the cleaned preview, and apply the result only after confirming the before-and-after view.
+
+![UploadFlow redaction workspace](public/features/redact-actual.png)
+
+### Apply watermarks and brand kits
+
+Reuse text or saved brand variants with configurable position, font, colour, alignment, and baseline.
+
+![UploadFlow watermark workspace](public/features/watermark-actual.png)
+
+### Upscale images
+
+Choose a supported enlargement factor, review estimated output dimensions, and compare the generated result with the original. Upscaling is an explicit network action.
+
+![UploadFlow upscaling workspace](public/features/upscale-actual.png)
+
+### Prepare video
+
+Trim MP4 files through fast stream copying when no transformation is needed. Crop, resize, speed, bitrate, audio, and format changes use the locally packaged FFmpeg Wasm renderer. Cover frames can be selected independently.
+
+### Batch and platform packs
+
+Process compatible selected media through a bounded queue, generate reusable destination variants, and download completed outputs together as a ZIP.
+
+![UploadFlow batch and platform-pack workspace](public/features/batch-packs-actual.png)
+
+### Browser-managed downloads
+
+Explicit downloads are handed to Chrome so progress and saving continue safely after UploadFlow closes.
+
+![UploadFlow download activity](public/features/downloads-actual.png)
+
+## Privacy and permissions
+
+Image preparation, metadata review, redaction, cropping, watermarking, duplicate checks, ZIP assembly, batches, platform packs, and FFmpeg Wasm video processing run locally in the extension.
+
+Network access occurs only when the user explicitly retrieves a saved source URL or invokes optional AI upscaling. Private workflow history is disabled by default, bounded by the selected retention period, and user-deletable. UploadFlow does not operate an analytics service, advertising service, account system, or cloud media drive.
+
+The extension requests website access to detect upload inputs and provide user-triggered media inspection across source and destination websites. Storage keeps extension preferences and bounded shelf records. Downloads lets explicit saves continue through Chrome. Side Panel provides the persistent shelf.
+
+Read the complete [privacy policy](https://uploadflow.cloudgrids.tech/privacy).
+
+## Compatibility boundaries
+
+- Direct public HTTP and HTTPS media URLs work best.
+- Signed or temporary URLs stop working after their source-defined expiry.
+- Authenticated, protected, hotlink-blocked, blob, or streamed media might not be retrievable.
+- Fast video trimming is available for compatible MP4 streams; transformations require local re-encoding.
+- UploadFlow never grants permission to reuse media and does not circumvent source restrictions.
+
+## Publishing and public resources
+
+UploadFlow is developed and published by [CloudGrids](https://cloudgrids.tech/) under the publisher name **CLOUDGRIDS TECH**.
+
+- [Official website](https://uploadflow.cloudgrids.tech/)
+- [Detailed product guide](https://uploadflow.cloudgrids.tech/how-it-works)
+- [Live demonstration](https://uploadflow.cloudgrids.tech/demo)
+- [Privacy policy](https://uploadflow.cloudgrids.tech/privacy)
+- [Support](https://uploadflow.cloudgrids.tech/support)
+- [Report an issue or request a feature](https://github.com/cloudgrids/uploadflow/issues/new/choose)
+
+Public listing and social assets are maintained in [`public/`](public/), including the Open Graph image, share preview, screenshots, workflow diagrams, posters, and demonstration video.
