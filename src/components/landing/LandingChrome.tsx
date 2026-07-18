@@ -1,5 +1,6 @@
 import { UploadFlowIcon } from '../../lib/icons';
 import { ArrowIcon } from './icons';
+import { primaryCta } from './content';
 
 export function LandingHeader() {
   return (
@@ -25,10 +26,12 @@ export function LandingHeader() {
           <a href="/support">Support</a>
         </nav>
         <a
-          href="/demo"
+          href={primaryCta.href}
+          target={primaryCta.href.startsWith('http') ? '_blank' : undefined}
+          rel={primaryCta.href.startsWith('http') ? 'noreferrer' : undefined}
           className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-[9px] font-black uppercase text-black"
         >
-          Open demo <ArrowIcon />
+          {primaryCta.label} <ArrowIcon />
         </a>
       </div>
     </header>

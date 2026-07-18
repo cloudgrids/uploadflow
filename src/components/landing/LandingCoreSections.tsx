@@ -1,4 +1,4 @@
-import { browserFeatures, compatibilityNotes, permissions, workflow } from './content';
+import { availableToday, browserFeatures, compatibilityNotes, permissions, primaryCta, workflow } from './content';
 import { ArrowIcon, CheckIcon } from './icons';
 
 export function HeroSection() {
@@ -9,7 +9,7 @@ export function HeroSection() {
         <div className="relative mx-auto grid min-h-[calc(100svh-65px)] max-w-360 items-center gap-14 px-5 py-16 sm:px-8 lg:grid-cols-[.9fr_1.1fr] lg:px-12">
           <div>
             <span className="rounded-full border border-emerald-400/25 bg-emerald-400/10 px-3 py-2 text-[9px] font-bold uppercase tracking-widest text-emerald-300">
-              Runs locally in your browser
+              Pre-release · Not yet on the Chrome Web Store
             </span>
             <h1 className="mt-8 text-[clamp(2.55rem,10vw,7rem)] leading-[.86] tracking-[-.065em]">
               Move media
@@ -19,20 +19,22 @@ export function HeroSection() {
               Skip Downloads.
             </h1>
             <p className="mt-8 max-w-xl text-sm leading-6 text-white/50 sm:text-base">
-              Capture authorized media, prepare it in a private workspace, and hand it directly to another website’s file input.
+              Capture it once, review it privately, and use it in another upload field—without managing a Downloads folder.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <a
-                href="/demo"
+                href={primaryCta.href}
+                target={primaryCta.href.startsWith('http') ? '_blank' : undefined}
+                rel={primaryCta.href.startsWith('http') ? 'noreferrer' : undefined}
                 className="inline-flex min-h-12 items-center gap-3 rounded-full bg-[#eefb7a] px-6 text-[10px] font-black uppercase text-black"
               >
-                Try UploadFlow <ArrowIcon />
+                {primaryCta.label} <ArrowIcon />
               </a>
               <a
-                href="#workflow"
+                href="/how-it-works"
                 className="inline-flex min-h-12 items-center rounded-full border border-white/15 px-6 text-[10px] font-bold uppercase"
               >
-                See workflow
+                See how it works
               </a>
             </div>
           </div>
@@ -44,6 +46,9 @@ export function HeroSection() {
               height="1530"
               className="h-auto w-full object-contain object-top"
             />
+            <figcaption className="border-t border-white/10 px-4 py-3 text-[8px] font-bold uppercase tracking-wider text-white/40">
+              Working development build · Popup, editor, and side-panel architecture
+            </figcaption>
           </figure>
         </div>
       </section>
@@ -59,6 +64,32 @@ export function HeroSection() {
         </div>
       </div>
     </>
+  );
+}
+
+export function AvailableTodaySection() {
+  return (
+    <section className="border-b border-white/10 bg-[#111416]">
+      <div className="mx-auto max-w-360 px-5 py-20 sm:px-8 lg:px-12">
+        <p className="text-[9px] font-black uppercase tracking-[.22em] text-emerald-400">Current development build</p>
+        <h2 className="mt-5 text-4xl sm:text-6xl">What is already working</h2>
+        <p className="mt-5 max-w-2xl text-sm leading-6 text-white/45">
+          UploadFlow has not been publicly released. These capabilities work in the current pre-release build and are being prepared for the
+          first Chrome Web Store version.
+        </p>
+        <div className="mt-10 grid border-l border-t border-white/15 sm:grid-cols-2">
+          {availableToday.map(([title, copy]) => (
+            <article key={title} className="border-b border-r border-white/15 p-6 sm:p-8">
+              <span className="rounded-full border border-emerald-400/25 bg-emerald-400/10 px-2.5 py-1 text-[7px] font-black uppercase tracking-wider text-emerald-300">
+                Ready in build
+              </span>
+              <h3 className="mt-7 text-2xl">{title}</h3>
+              <p className="mt-3 text-xs leading-5 text-white/40">{copy}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -121,7 +152,14 @@ export function ExtensionSection() {
             </article>
           ))}
         </div>
-        <img src="/features/media-shelf-actual.png" alt="Actual UploadFlow side panel showing saved media beside the landing page" width="2808" height="1498" loading="lazy" className="h-auto w-full rounded-3xl border border-white/15 object-contain object-top lg:col-span-2" />
+        <img
+          src="/features/media-shelf-actual.png"
+          alt="Actual UploadFlow side panel showing saved media beside the landing page"
+          width="2808"
+          height="1498"
+          loading="lazy"
+          className="h-auto w-full rounded-3xl border border-white/15 object-contain object-top lg:col-span-2"
+        />
       </div>
     </section>
   );

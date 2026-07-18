@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { copyShareUrl, SHARE_URL, shareUploadFlow } from '../../utils/share';
+import { primaryCta } from './content';
 import { ArrowIcon } from './icons';
 
 export function ShareAndCtaSections() {
@@ -71,12 +72,22 @@ export function ShareAndCtaSections() {
             <br />
             before the web sees it.
           </h2>
-          <a
-            href="/demo"
-            className="mt-9 inline-flex min-h-12 items-center gap-3 rounded-full bg-black px-6 text-[10px] font-black uppercase text-white"
-          >
-            Open live demo <ArrowIcon />
-          </a>
+          <div className="mt-9 flex flex-wrap justify-center gap-3">
+            <a
+              href={primaryCta.href}
+              target={primaryCta.href.startsWith('http') ? '_blank' : undefined}
+              rel={primaryCta.href.startsWith('http') ? 'noreferrer' : undefined}
+              className="inline-flex min-h-12 items-center gap-3 rounded-full bg-black px-6 text-[10px] font-black uppercase text-white"
+            >
+              {primaryCta.label} <ArrowIcon />
+            </a>
+            <a
+              href="/how-it-works"
+              className="inline-flex min-h-12 items-center rounded-full border border-black/25 px-6 text-[10px] font-black uppercase text-black"
+            >
+              See how it works
+            </a>
+          </div>
         </div>
       </section>
     </>
