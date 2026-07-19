@@ -11,20 +11,23 @@ export function HeroSection() {
             <span className="rounded-full border border-emerald-400/25 bg-emerald-400/10 px-3 py-2 text-[9px] font-bold uppercase tracking-widest text-emerald-300">
               Pre-release · Not yet on the Chrome Web Store
             </span>
-            <h1 className="mt-8 text-[clamp(2.55rem,10vw,7rem)] leading-[.86] tracking-[-.065em]">
-              Never download it.
+            <h1 className="mt-8 text-[clamp(2.55rem,8vw,6.5rem)] leading-[.86] tracking-[-.065em]">
+              Move images &amp; videos
               <br />
-              <span className="text-[#eefb7a]">Never lose it.</span>
+              <span className="text-[#eefb7a]">between websites</span>
+              <br />
+              without downloading.
             </h1>
             <h2 className="mt-8 max-w-xl text-2xl leading-tight tracking-tight sm:text-3xl">
-              Move media between sites. <span className="text-white/45">Skip Downloads.</span>
+              Capture it on one site. <span className="text-white/45">Prepare it. Upload it on another.</span>
             </h2>
             <p className="mt-5 max-w-xl text-sm leading-6 text-white/50 sm:text-base">
-              Move, prepare, track, and find media across the web—without managing folders or filenames.
+              UploadFlow lets you capture authorized media from one webpage, crop, optimize, watermark, or redact it privately, and deliver
+              it directly to another website&apos;s upload field—without cluttering your Downloads folder.
             </p>
             <p className="mt-3 max-w-xl text-xs leading-5 text-white/35">
-              UploadFlow remembers your media so you do not have to. Cross-site media movement works in the current pre-release build;
-              optional Private Media Memory and recall are available in the development build and still require release verification.
+              Never download it. Never lose it. UploadFlow remembers the media you explicitly save so you do not have to manage folders or
+              filenames.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <a
