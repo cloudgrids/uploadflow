@@ -23,8 +23,8 @@ export function HeroSection() {
               Move, prepare, track, and find media across the web—without managing folders or filenames.
             </p>
             <p className="mt-3 max-w-xl text-xs leading-5 text-white/35">
-              UploadFlow remembers your media so you do not have to. Cross-site handoff works in the current pre-release build; private media
-              memory and recall are planned for a future release.
+              UploadFlow remembers your media so you do not have to. Cross-site media movement works in the current pre-release build;
+              optional Private Media Memory and recall are available in the development build and still require release verification.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <a
