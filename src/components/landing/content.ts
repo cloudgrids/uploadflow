@@ -28,7 +28,7 @@ export const editorTools = [
     mark: '↗',
     image: '/features/optimize-actual.png',
     status: 'available',
-    screenshot: 'Released feature · Current extension UI'
+    screenshot: 'Available in current build · Current extension UI'
   },
   {
     number: '02',
@@ -46,7 +46,7 @@ export const editorTools = [
     mark: '✦',
     image: '/features/redact-actual.png',
     status: 'available',
-    screenshot: 'Released feature · Current extension UI'
+    screenshot: 'Available in current build · Current extension UI'
   },
   {
     number: '04',
@@ -55,7 +55,7 @@ export const editorTools = [
     mark: 'A',
     image: '/features/watermark-actual.png',
     status: 'available',
-    screenshot: 'Released feature · Current extension UI'
+    screenshot: 'Available in current build · Current extension UI'
   },
   {
     number: '05',

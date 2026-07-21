@@ -217,7 +217,7 @@ export const featureGroups = [
     eyebrow: '04 · Optimize',
     title: 'Make images upload-ready',
     image: '/features/optimize-actual.png',
-    imageLabel: 'Released feature · Current Optimize workspace',
+    imageLabel: 'Available in current build · Current Optimize workspace',
     copy: 'Resize, compress, convert, rename, and remove supported metadata while comparing the current output against the original.',
     points: ['JPEG, PNG, and WebP output choices', 'Independent dimension and quality controls', 'Local metadata scan and clean export']
   },
@@ -240,7 +240,7 @@ export const featureGroups = [
     eyebrow: '06 · Protect',
     title: 'Redact private regions',
     image: '/features/redact-actual.png',
-    imageLabel: 'Released feature · Current Redact workspace',
+    imageLabel: 'Available in current build · Current Redact workspace',
     copy: 'Draw blur or cover regions on the original, preview the cleaned result, and apply only after reviewing the before-and-after workspace.',
     points: ['Manual privacy regions', 'Undo, redo, and clear-region controls', 'Temporary preview before applying the output']
   },
@@ -249,7 +249,7 @@ export const featureGroups = [
     eyebrow: '07 · Brand',
     title: 'Apply a reusable watermark',
     image: '/features/watermark-actual.png',
-    imageLabel: 'Released feature · Current Watermark workspace',
+    imageLabel: 'Available in current build · Current Watermark workspace',
     copy: 'Use custom text or a saved brand-kit variant, then control placement, font, colour, alignment, and baseline against a live preview.',
     points: ['Text and brand-kit variants', 'Nine-point positioning', 'Reusable visual identity across outputs']
   },
@@ -281,15 +281,15 @@ export const featureGroups = [
     eyebrow: '10 · Video',
     title: 'Trim and prepare video locally',
     image: '/features/editor-workspace.png',
-    imageLabel: 'Prototype interface · Planned presentation',
+    imageLabel: 'Illustrative interface · Working development feature',
     concept: true,
-    copy: 'The video workspace is being moved to a packaged FFmpeg Wasm pipeline for deterministic trimming, crop, resize, speed, audio, cover-frame, and broadly playable MP4 output.',
+    copy: 'The development build uses a packaged FFmpeg Wasm pipeline for trimming, crop, resize, speed, audio, cover-frame selection, and broadly playable MP4 output.',
     points: [
       'Locally bundled worker and Wasm assets',
       'Frame-accurate processing without real-time playback capture',
       'Cancellable jobs with explicit progress'
     ],
-    status: 'planned'
+    status: 'beta'
   },
   {
     id: 'handoff',
@@ -308,7 +308,7 @@ export const featureGroups = [
     eyebrow: '12 · Download',
     title: 'Let Chrome own long-running saves',
     image: '/features/downloads-actual.png',
-    imageLabel: 'Released feature · Current Downloads workspace',
+    imageLabel: 'Available in current build · Current Downloads workspace',
     copy: 'Explicit downloads continue through Chrome after the UploadFlow window closes. The activity view keeps their progress and completed state visible.',
     points: ['Browser-managed progress', 'Completed download history and Show file', 'Clear completed items without deleting saved files']
   },
