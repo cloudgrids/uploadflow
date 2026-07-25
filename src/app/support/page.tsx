@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { LandingFooter, LandingHeader } from '../../components/landing/LandingChrome';
+import { ContentCard, PageHero, StatusLine } from '../../components/ui/PageChrome';
 
 export const metadata: Metadata = {
   title: 'Support | UploadFlow',
@@ -8,91 +9,87 @@ export const metadata: Metadata = {
 
 export default function SupportPage() {
   return (
-    <div className="min-h-screen bg-[#0b0d0f] text-white">
+    <div className="min-h-screen bg-[#080b0d]/70 text-white">
       <LandingHeader />
-      <main className="px-5 pt-28 pb-16 sm:px-8 sm:py-24">
-        <article className="mx-auto max-w-3xl">
-          <a href="/" className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#eefb7a] hover:underline">
-            ← UploadFlow
-          </a>
-          <p className="mt-12 text-xs font-bold uppercase tracking-wider text-emerald-400">Extension support</p>
-          <h1 className="mt-5 text-5xl leading-[.9] sm:text-7xl">
-            Help with files
-            <br />
-            in motion.
-          </h1>
-          <p className="mt-7 text-base sm:text-lg leading-relaxed text-white/60">
-            Use the steps below before reporting an issue. Never include private files, signed media URLs, passwords, tokens, or personal
-            information in a public report.
-          </p>
+      <main className="mx-auto max-w-360 px-5 pt-20 pb-16 sm:px-8 lg:px-12">
+        <PageHero
+          eyebrow="Extension support"
+          title={<>Help with files<br /><span className="text-[#eefb7a]">in motion.</span></>}
+          description="Start with the safe checks below, verify the behaviour on UploadFlow’s test page, and report only the details needed to reproduce the problem. Never include private files, signed URLs, passwords, tokens, or personal information in a public report."
+          aside={
+            <div className="content-card">
+              <StatusLine label="Install source" value="Chrome Web Store" />
+              <StatusLine label="Processing" value="Local-first" tone="green" />
+              <StatusLine label="Reports" value="Sanitised" tone="violet" />
+            </div>
+          }
+        />
 
-          <div className="mt-14 space-y-8">
-            <section id="install" className="rounded-2xl border border-emerald-500/25 bg-emerald-950/30 p-6 sm:p-8">
-              <p className="text-xs font-bold uppercase tracking-wider text-emerald-400">Chrome Web Store</p>
-              <h2 className="mt-3 text-xl sm:text-2xl font-bold">Install UploadFlow</h2>
-              <p className="mt-4 text-sm sm:text-base leading-relaxed text-white/60">
-                Install the UploadFlow extension directly from the official Chrome Web Store listing.
-              </p>
-              <a
-                href="https://chromewebstore.google.com/detail/uploadflow/geaebpfeoobmmdodclaglapichfalifh"
-                target="_blank"
-                rel="noreferrer"
-                className="mt-5 inline-flex min-h-11 items-center rounded-full bg-[#eefb7a] px-6 text-xs sm:text-sm font-extrabold uppercase tracking-wider text-[#0b0d0f] transition hover:bg-[#f4ff94]"
-              >
+        <div className="grid gap-5 py-14 md:grid-cols-2">
+          <ContentCard id="install" className="md:col-span-2 border-emerald-500/22 bg-emerald-950/18">
+            <div className="grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
+              <div>
+                <p className="eyebrow text-emerald-400">Official distribution</p>
+                <h2 className="mt-4 text-3xl sm:text-4xl">Install UploadFlow from Chrome Web Store.</h2>
+                <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/58 sm:text-base">
+                  Use the official listing so Chrome owns installation, updates, permission review, and extension integrity.
+                </p>
+              </div>
+              <a href="https://chromewebstore.google.com/detail/uploadflow/geaebpfeoobmmdodclaglapichfalifh" target="_blank" rel="noreferrer" className="hover-lift inline-flex min-h-12 items-center justify-center rounded-full bg-[#eefb7a] px-6 text-xs font-extrabold uppercase tracking-wider text-[#0b0d0f] transition hover:bg-[#f4ff94] sm:text-sm">
                 Add to Chrome ↗
               </a>
-            </section>
+            </div>
+          </ContentCard>
 
-            <section className="rounded-2xl border border-white/10 bg-white/3 p-6 sm:p-8">
-              <h2 className="text-xl sm:text-2xl font-bold">Troubleshooting</h2>
-              <ol className="mt-4 list-decimal space-y-3 pl-5 text-sm sm:text-base leading-relaxed text-white/60">
-                <li>Open UploadFlow Settings and confirm upload interception is enabled.</li>
-                <li>After an extension update, reload the extension and refresh existing webpage tabs.</li>
-                <li>Confirm the source URL is direct, still valid, and allows browser access.</li>
-                <li>
-                  Try the supported flows at{' '}
-                  <a href="/test" className="text-[#eefb7a] underline underline-offset-2">
-                    the test page
-                  </a>
-                  .
-                </li>
-              </ol>
-            </section>
+          <ContentCard>
+            <div className="flex items-start justify-between gap-5">
+              <div>
+                <p className="eyebrow">01 · Diagnose</p>
+                <h2 className="mt-4 text-2xl">Troubleshooting</h2>
+              </div>
+              <span className="grid h-11 w-11 place-items-center rounded-2xl border border-white/12 bg-white/4 text-[#eefb7a]">⌁</span>
+            </div>
+            <ol className="mt-6 list-decimal space-y-3 pl-5 text-sm leading-relaxed text-white/58 sm:text-base">
+              <li>Open UploadFlow Settings and confirm upload interception is enabled.</li>
+              <li>After an extension update, reload the extension and refresh existing webpage tabs.</li>
+              <li>Confirm the source URL is direct, still valid, and allows browser access.</li>
+              <li>Try the supported flows on <a href="/test" className="text-[#eefb7a] underline underline-offset-2">the test page</a>.</li>
+            </ol>
+          </ContentCard>
 
-            <section className="rounded-2xl border border-white/10 bg-white/3 p-6 sm:p-8">
-              <h2 className="text-xl sm:text-2xl font-bold">Delete local data</h2>
-              <p className="mt-4 text-sm sm:text-base leading-relaxed text-white/60">
-                Private workflow history is disabled by default and can be cleared completely or per destination from UploadFlow Settings.
-                Remove shelf records individually, or uninstall UploadFlow from <code className="text-white">chrome://extensions</code> to
-                remove every extension setting and local record.
-              </p>
-            </section>
-
-            <section className="rounded-2xl border border-white/10 bg-white/3 p-6 sm:p-8">
-              <h2 className="text-xl sm:text-2xl font-bold">Report a problem</h2>
-              <p className="mt-4 text-sm sm:text-base leading-relaxed text-white/60">
-                Open a GitHub issue and include the website, Chrome version, expected behavior, actual behavior, and reproducible steps.
-                Replace private URLs with safe examples and never attach confidential files.
-              </p>
-              <a
-                href="https://github.com/cloudgrids/uploadflow/issues/new/choose"
-                target="_blank"
-                rel="noreferrer"
-                className="mt-5 inline-flex min-h-11 items-center rounded-full bg-[#eefb7a] px-6 text-xs sm:text-sm font-extrabold uppercase tracking-wider text-[#0b0d0f] transition hover:bg-[#f4ff94]"
-              >
-                Open an issue or feature request ↗
-              </a>
-            </section>
-
-            <p className="text-sm sm:text-base text-white/50">
-              For privacy information, see the{' '}
-              <a href="/privacy" className="text-[#eefb7a] underline underline-offset-2">
-                UploadFlow privacy policy
-              </a>
-              .
+          <ContentCard>
+            <div className="flex items-start justify-between gap-5">
+              <div>
+                <p className="eyebrow text-emerald-400">02 · Privacy</p>
+                <h2 className="mt-4 text-2xl">Delete local data</h2>
+              </div>
+              <span className="grid h-11 w-11 place-items-center rounded-2xl border border-white/12 bg-white/4 text-emerald-300">×</span>
+            </div>
+            <p className="mt-6 text-sm leading-relaxed text-white/58 sm:text-base">
+              Private workflow history is disabled by default and can be cleared completely or per destination from UploadFlow Settings.
+              Remove shelf records individually, or uninstall UploadFlow from <code className="text-white">chrome://extensions</code> to remove every extension setting and local record.
             </p>
-          </div>
-        </article>
+          </ContentCard>
+
+          <ContentCard className="md:col-span-2">
+            <div className="grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
+              <div>
+                <p className="eyebrow text-violet-300">03 · Report</p>
+                <h2 className="mt-4 text-3xl">Report a reproducible problem.</h2>
+                <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/58 sm:text-base">
+                  Include the website, Chrome version, expected behaviour, actual behaviour, and reproducible steps. Replace private URLs with safe examples and never attach confidential files.
+                </p>
+              </div>
+              <a href="https://github.com/cloudgrids/uploadflow/issues/new/choose" target="_blank" rel="noreferrer" className="hover-lift inline-flex min-h-12 items-center justify-center rounded-full border border-white/15 bg-white/4 px-6 text-xs font-extrabold uppercase tracking-wider text-white transition hover:border-[#eefb7a]/35 hover:text-[#eefb7a] sm:text-sm">
+                Open issue or request ↗
+              </a>
+            </div>
+          </ContentCard>
+        </div>
+
+        <p className="pb-8 text-sm text-white/48" data-reveal>
+          For privacy information, see the <a href="/privacy" className="text-[#eefb7a] underline underline-offset-2">UploadFlow privacy policy</a>.
+        </p>
       </main>
       <LandingFooter />
     </div>

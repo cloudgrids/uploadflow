@@ -6,7 +6,7 @@ import { EditorToolsSection, MediaMemorySection, ProductSurfaceSection } from '.
 
 export function LandingPageContent() {
   return (
-    <div className="min-h-screen w-full bg-[#0b0d0f] text-white selection:bg-[#eefb7a] selection:text-[#0b0d0f]">
+    <div className="min-h-screen w-full bg-[#080b0d]/72 text-white selection:bg-[#eefb7a] selection:text-[#0b0d0f]">
       <LandingHeader />
       <main id="top" className="pt-20">
         <HeroSection />

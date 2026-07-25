@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
+import { AmbientBackground } from '../components/ui/AmbientBackground';
+import { MotionSystem } from '../components/ui/MotionSystem';
 import './globals.css';
 
 const siteUrl = 'https://uploadflow.cloudgrids.tech';
@@ -36,7 +38,11 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>{children}</body>
+      <body>
+        <AmbientBackground />
+        <MotionSystem />
+        <div className="site-content">{children}</div>
+      </body>
     </html>
   );
 }

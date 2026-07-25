@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { LandingFooter, LandingHeader } from '../../components/landing/LandingChrome';
+import { PageHero, StatusLine } from '../../components/ui/PageChrome';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | UploadFlow',
@@ -11,28 +12,26 @@ const updatedAt = 'July 18, 2026';
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-[#0b0d0f] text-white">
+    <div className="min-h-screen bg-[#080b0d]/70 text-white">
       <LandingHeader />
-      <main className="px-5 pt-28 pb-16 sm:px-8 sm:py-24">
-        <article className="mx-auto max-w-3xl">
-          <a href="/" className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#eefb7a] hover:underline">
-            ← UploadFlow
-          </a>
-          <p className="mt-12 text-xs font-bold uppercase tracking-wider text-emerald-400">Privacy policy · Updated {updatedAt}</p>
-          <h1 className="mt-5 text-5xl leading-[.9] sm:text-7xl">
-            Your files stay
-            <br />
-            under your control.
-          </h1>
-          <p className="mt-7 text-base leading-7 text-white/60">
-            This policy explains how the UploadFlow Chrome extension handles information when you use upload interception, file editing, media
-            inspection, URL import, Post Bundles, Site presets, pending-draft replacement, downloads, optional Media Memory, and optional
-            image upscaling.
-          </p>
+      <main className="mx-auto max-w-360 px-5 pt-20 pb-16 sm:px-8 lg:px-12">
+        <article>
+          <PageHero
+            eyebrow={`Privacy policy · Updated ${updatedAt}`}
+            title={<>Your files stay<br /><span className="text-[#eefb7a]">under your control.</span></>}
+            description="This policy explains how the UploadFlow Chrome extension handles information when you use upload interception, file editing, media inspection, URL import, Post Bundles, Site presets, pending-draft replacement, downloads, optional Media Memory, and optional image upscaling."
+            aside={
+              <div className="content-card">
+                <StatusLine label="Default processing" value="Local" />
+                <StatusLine label="Media Memory" value="Optional" tone="green" />
+                <StatusLine label="Publishing" value="Never automatic" tone="violet" />
+              </div>
+            }
+          />
 
-          <div className="mt-14 space-y-10 text-sm leading-7 text-white/60">
-            <section>
-              <h2 className="text-xl text-white">Single purpose</h2>
+          <div className="mx-auto mt-14 grid max-w-5xl gap-5 text-sm leading-7 text-white/60">
+            <section id="purpose" className="content-card scroll-mt-28">
+              <h2 className="text-xl text-white sm:text-2xl">Single purpose</h2>
               <p className="mt-3">
                 UploadFlow’s single purpose is to let users move and prepare media they own or are authorized to use for another website’s
                 upload flow without first managing a permanent local download. URL capture, Post Bundles, Site presets, on-demand fetching,
@@ -41,8 +40,8 @@ export default function PrivacyPage() {
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl text-white">Information handled</h2>
+            <section id="information" className="content-card scroll-mt-28">
+              <h2 className="text-xl text-white sm:text-2xl">Information handled</h2>
               <ul className="mt-3 list-disc space-y-2 pl-5">
                 <li>Files that you select, paste, drop, import, edit, or approve for upload.</li>
                 <li>
@@ -74,8 +73,8 @@ export default function PrivacyPage() {
               </ul>
             </section>
 
-            <section>
-              <h2 className="text-xl text-white">Local processing and storage</h2>
+            <section id="local-processing" className="content-card scroll-mt-28">
+              <h2 className="text-xl text-white sm:text-2xl">Local processing and storage</h2>
               <p className="mt-3">
                 Image optimization, privacy scanning and redaction, smart cropping, background tools, watermarking, fingerprint calculation,
                 Post Bundle assembly, platform-pack creation, ZIP assembly, and packaged FFmpeg Wasm video editing run locally in your
@@ -93,8 +92,8 @@ export default function PrivacyPage() {
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl text-white">Post Bundles, Site presets, and draft insertion</h2>
+            <section id="bundles-presets" className="content-card scroll-mt-28">
+              <h2 className="text-xl text-white sm:text-2xl">Post Bundles, Site presets, and draft insertion</h2>
               <p className="mt-3">
                 Post capture begins only after you choose UploadFlow’s capture action. UploadFlow detects the nearest supported post or
                 carousel and presents the detected media and text fields for review. Only the fields you approve are saved to the bundle. A
@@ -108,8 +107,8 @@ export default function PrivacyPage() {
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl text-white">Pending attachments and Live Draft Sync</h2>
+            <section id="live-draft-sync" className="content-card scroll-mt-28">
+              <h2 className="text-xl text-white sm:text-2xl">Pending attachments and Live Draft Sync</h2>
               <p className="mt-3">
                 Live Draft Sync is an opt-in experimental feature whose compatibility varies by website. UploadFlow tracks an attachment only when it placed the file into a supported, currently connected webpage input and the input still
                 contains the exact expected files after its change handlers run. Before replacing a file, UploadFlow checks the exact
@@ -123,8 +122,8 @@ export default function PrivacyPage() {
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl text-white">Network transfers</h2>
+            <section id="network-transfers" className="content-card scroll-mt-28">
+              <h2 className="text-xl text-white sm:text-2xl">Network transfers</h2>
               <p className="mt-3">UploadFlow transfers data only when needed for an action you initiate:</p>
               <ul className="mt-3 list-disc space-y-2 pl-5">
                 <li>
@@ -148,8 +147,8 @@ export default function PrivacyPage() {
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl text-white">Sharing, advertising, and sale</h2>
+            <section id="sharing" className="content-card scroll-mt-28">
+              <h2 className="text-xl text-white sm:text-2xl">Sharing, advertising, and sale</h2>
               <p className="mt-3">
                 UploadFlow does not sell user data, use it for advertising, transfer it to data brokers, or allow humans to read file
                 contents. Data is transferred only as necessary to perform a user-requested feature, comply with law, or protect against
@@ -157,8 +156,8 @@ export default function PrivacyPage() {
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl text-white">Retention and deletion</h2>
+            <section id="retention" className="content-card scroll-mt-28">
+              <h2 className="text-xl text-white sm:text-2xl">Retention and deletion</h2>
               <p className="mt-3">
                 Files being edited and Live Draft Sync rollback files are kept in browser memory for the active connected workflow.
                 Pending-draft registry records use session storage and are removed when their receiver disconnects or another clearing
@@ -173,24 +172,24 @@ export default function PrivacyPage() {
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl text-white">Chrome Web Store Limited Use</h2>
+            <section id="limited-use" className="content-card scroll-mt-28">
+              <h2 className="text-xl text-white sm:text-2xl">Chrome Web Store Limited Use</h2>
               <p className="mt-3">
                 The use of information received from Google APIs will adhere to the Chrome Web Store User Data Policy, including the Limited
                 Use requirements. UploadFlow limits use of data to providing its disclosed file-control features.
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl text-white">Security and changes</h2>
+            <section id="security" className="content-card scroll-mt-28">
+              <h2 className="text-xl text-white sm:text-2xl">Security and changes</h2>
               <p className="mt-3">
                 Network features use HTTPS. No method of storage or transmission is completely secure. This policy may be updated when
                 UploadFlow’s behavior or legal obligations change; the updated date will appear above.
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl text-white">Contact</h2>
+            <section id="contact" className="content-card scroll-mt-28">
+              <h2 className="text-xl text-white sm:text-2xl">Contact</h2>
               <p className="mt-3">
                 For privacy questions or deletion assistance, use the publisher support contact shown on UploadFlow’s Chrome Web Store listing
                 or visit the{' '}

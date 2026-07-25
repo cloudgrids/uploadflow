@@ -8,7 +8,7 @@ export function InterceptorTestPage() {
   const test = useInterceptorTests();
 
   return (
-    <div className="min-h-screen w-full bg-[#0b0d0f] text-white selection:bg-[#eefb7a] selection:text-[#0b0d0f]">
+    <div className="min-h-screen w-full bg-[#080b0d]/72 text-white selection:bg-[#eefb7a] selection:text-[#0b0d0f]">
       <TestHeader />
       <main className="pt-20">
         <TestHero passed={test.passed} results={test.latestResults} />

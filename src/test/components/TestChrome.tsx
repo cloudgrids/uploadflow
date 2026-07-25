@@ -31,12 +31,12 @@ export function TestHero({ passed, results }: { passed: number; results: Map<str
     <section className="relative overflow-hidden border-b border-white/10">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_25%,rgba(52,211,153,.1),transparent_28%),linear-gradient(rgba(255,255,255,.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.025)_1px,transparent_1px)] bg-size-[auto,48px_48px,48px_48px]" />
       <div className="relative mx-auto grid w-full max-w-360 gap-12 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-[1fr_360px] lg:items-end lg:px-12">
-        <div>
+        <div data-reveal="left">
           <p className="text-xs font-bold uppercase tracking-wider text-[#eefb7a]">Interactive preview · real browser actions</p>
           <h1 className="mt-5 max-w-5xl text-[clamp(3.5rem,7vw,7rem)] leading-[.84] tracking-[-.065em]">See UploadFlow<br /><span className="text-[#eefb7a]">in action.</span></h1>
           <p className="mt-7 max-w-2xl text-base sm:text-lg leading-relaxed text-white/60">Try the different ways files reach a webpage and see how UploadFlow gives you a private review step before upload.</p>
         </div>
-        <div className="rounded-3xl border border-white/12 bg-[#121618] p-6 shadow-2xl">
+        <div className="content-card" data-reveal="right">
           <div className="flex items-end justify-between"><div><span className="font-mono text-xs uppercase tracking-wider text-white/40">Demo progress</span><strong className="mt-2 block text-4xl tracking-[-.06em]">{passed}/{TEST_METHODS.length}</strong></div><span className="mb-1 text-xs font-bold uppercase text-emerald-300">Completed</span></div>
           <div className="mt-5 grid grid-cols-8 gap-1.5">
             {TEST_METHODS.map((test) => <span key={test} title={test} className={`h-2 rounded-full ${results.get(test) === 'success' ? 'bg-emerald-400' : results.get(test) === 'error' ? 'bg-red-400' : results.get(test) === 'info' ? 'bg-amber-300' : 'bg-white/10'}`} />)}
@@ -53,7 +53,7 @@ export function TestHero({ passed, results }: { passed: number; results: Map<str
 
 export function TestMethodSidebar({ results }: { results: Map<string, TestStatus> }) {
   return (
-    <aside className="lg:sticky lg:top-28 lg:self-start">
+    <aside className="lg:sticky lg:top-28 lg:self-start" data-reveal="left">
       <p className="text-xs font-bold uppercase tracking-wider text-white/40">Upload methods</p>
       <div className="mt-4 border-t border-white/10">
         {TEST_METHODS.map((test, index) => {

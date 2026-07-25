@@ -1,37 +1,66 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UploadFlowIcon } from '../../lib/icons';
 import { ArrowIcon } from './icons';
 import { primaryCta } from './content';
 
+const navigation = [
+  { href: '/how-it-works', label: 'How it works' },
+  { href: '/#extension', label: 'Extension' },
+  { href: '/#tools', label: 'Tools' },
+  { href: '/#privacy', label: 'Privacy' },
+  { href: '/support', label: 'Support' }
+];
+
 export function LandingHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMobileMenuOpen(false);
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#0b0d0f]/90 backdrop-blur-xl transition-all">
-      <div className="mx-auto flex min-h-16 sm:min-h-20 w-full max-w-360 items-center justify-between px-4 sm:px-8 lg:px-12">
-        <a href="/#top" className="flex min-w-0 shrink items-center gap-2.5 sm:gap-3.5 text-white transition-opacity hover:opacity-90" aria-label="UploadFlow home">
-          <span className="grid h-8 w-8 sm:h-10 sm:w-10 shrink-0 place-items-center rounded-xl bg-white text-black shadow-md">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 ${
+        scrolled ? 'border-white/12 bg-[#080b0d]/92 shadow-[0_18px_60px_rgba(0,0,0,.25)] backdrop-blur-2xl' : 'border-white/8 bg-[#080b0d]/76 backdrop-blur-xl'
+      }`}
+    >
+      <div className={`mx-auto flex w-full max-w-360 items-center justify-between px-4 transition-all duration-300 sm:px-8 lg:px-12 ${scrolled ? 'min-h-16' : 'min-h-16 sm:min-h-20'}`}>
+        <a href="/#top" className="group flex min-w-0 shrink items-center gap-2.5 text-white sm:gap-3.5" aria-label="UploadFlow home">
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white text-black shadow-[0_10px_30px_rgba(255,255,255,.12)] transition duration-300 group-hover:-rotate-3 group-hover:scale-105 group-hover:bg-[#eefb7a] sm:h-10 sm:w-10">
             <UploadFlowIcon />
           </span>
           <span className="min-w-0">
-            <strong className="block text-sm sm:text-base lg:text-lg font-black uppercase italic tracking-tight truncate">UploadFlow</strong>
-            <small className="hidden min-[420px]:block text-[10px] sm:text-[11px] font-bold uppercase tracking-[.18em] text-white/50 truncate">Private upload toolkit</small>
+            <strong className="block truncate text-sm font-black uppercase italic tracking-tight sm:text-base lg:text-lg">UploadFlow</strong>
+            <small className="hidden truncate text-[10px] font-bold uppercase tracking-[.18em] text-white/45 min-[420px]:block sm:text-[11px]">
+              The browser&apos;s missing media layer
+            </small>
           </span>
         </a>
 
-        {/* Desktop Navigation */}
-        <nav
-          className="hidden items-center gap-8 text-xs font-semibold uppercase tracking-[.12em] text-white/70 md:flex"
-          aria-label="Main navigation"
-        >
-          <a href="/test" className="text-[#eefb7a] font-extrabold hover:text-[#f4ff94] transition-colors">Test</a>
-          <a href="/how-it-works" className="hover:text-white transition-colors">How it works</a>
-          <a href="/#extension" className="hover:text-white transition-colors">Extension</a>
-          <a href="/#tools" className="hover:text-white transition-colors">Tools</a>
-          <a href="/#privacy" className="hover:text-white transition-colors">Privacy</a>
-          <a href="/support" className="hover:text-white transition-colors">Support</a>
+        <nav className="hidden items-center gap-7 text-[11px] font-semibold uppercase tracking-[.14em] text-white/62 md:flex" aria-label="Main navigation">
+          {navigation.map((item) => (
+            <a key={item.href} href={item.href} className="group relative py-2 transition-colors hover:text-white">
+              {item.label}
+              <span className="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-[#eefb7a] transition-transform duration-300 group-hover:scale-x-100" />
+            </a>
+          ))}
+          <a href="/test" className="rounded-full border border-[#eefb7a]/30 bg-[#eefb7a]/8 px-4 py-2 font-extrabold text-[#eefb7a] transition hover:bg-[#eefb7a]/15">
+            Test layer
+          </a>
         </nav>
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
@@ -39,103 +68,76 @@ export function LandingHeader() {
             href={primaryCta.href}
             target={primaryCta.href.startsWith('http') ? '_blank' : undefined}
             rel={primaryCta.href.startsWith('http') ? 'noreferrer' : undefined}
-            className="inline-flex shrink-0 whitespace-nowrap items-center gap-1 sm:gap-2 rounded-full bg-white px-2.5 sm:px-5 py-1.5 sm:py-2.5 text-[10px] sm:text-xs font-extrabold uppercase tracking-wide text-black transition-all hover:bg-[#eefb7a] hover:scale-105 active:scale-95"
+            className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-full bg-white px-3 py-2 text-[10px] font-extrabold uppercase tracking-wide text-black transition-all duration-300 hover:scale-[1.03] hover:bg-[#eefb7a] active:scale-95 sm:gap-2 sm:px-5 sm:py-2.5 sm:text-xs"
           >
             {primaryCta.label} <ArrowIcon />
           </a>
 
-          {/* Mobile Hamburger Toggle */}
           <button
             type="button"
-            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            onClick={() => setMobileMenuOpen((previous) => !previous)}
             aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-navigation"
             aria-label="Toggle navigation menu"
-            className="grid h-8 w-8 sm:h-10 sm:w-10 shrink-0 place-items-center rounded-xl border border-white/15 bg-white/5 text-white transition hover:bg-white/10 md:hidden"
+            className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-white/15 bg-white/5 text-white transition hover:border-[#eefb7a]/35 hover:bg-white/10 md:hidden sm:h-10 sm:w-10"
           >
-            {mobileMenuOpen ? (
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            )}
+            <span className="sr-only">Menu</span>
+            <span className="relative block h-4 w-5">
+              <span className={`absolute left-0 top-0 h-0.5 w-5 bg-current transition ${mobileMenuOpen ? 'translate-y-1.75 rotate-45' : ''}`} />
+              <span className={`absolute left-0 top-1.75 h-0.5 w-5 bg-current transition ${mobileMenuOpen ? 'opacity-0' : ''}`} />
+              <span className={`absolute left-0 top-3.5 h-0.5 w-5 bg-current transition ${mobileMenuOpen ? '-translate-y-1.75 -rotate-45' : ''}`} />
+            </span>
           </button>
         </div>
       </div>
 
-      {/* Mobile Navigation Drawer */}
-      {mobileMenuOpen && (
-        <nav
-          className="border-t border-white/10 bg-[#0b0d0f]/95 px-5 py-5 backdrop-blur-2xl md:hidden animate-fadeIn"
-          aria-label="Mobile navigation"
-        >
-          <div className="flex flex-col gap-2 text-sm font-semibold uppercase tracking-wider">
+      <div
+        id="mobile-navigation"
+        className={`overflow-hidden border-t border-white/10 bg-[#080b0d]/96 backdrop-blur-2xl transition-[max-height,opacity] duration-300 md:hidden ${
+          mobileMenuOpen ? 'max-h-112 opacity-100' : 'pointer-events-none max-h-0 opacity-0'
+        }`}
+      >
+        <nav className="mx-auto grid max-w-360 gap-1 px-5 py-5 text-sm font-semibold uppercase tracking-wider" aria-label="Mobile navigation">
+          <a href="/test" onClick={() => setMobileMenuOpen(false)} className="rounded-xl bg-[#eefb7a]/10 px-4 py-3 font-extrabold text-[#eefb7a] hover:bg-[#eefb7a]/18">
+            Test upload layer
+          </a>
+          {navigation.map((item, index) => (
             <a
-              href="/test"
+              key={item.href}
+              href={item.href}
               onClick={() => setMobileMenuOpen(false)}
-              className="rounded-lg bg-[#eefb7a]/10 px-4 py-3 font-extrabold text-[#eefb7a] hover:bg-[#eefb7a]/20"
+              className="flex items-center justify-between rounded-xl px-4 py-3 text-white/75 transition hover:bg-white/5 hover:text-white"
             >
-              Test
+              {item.label}
+              <span className="font-mono text-[10px] text-white/25">/{String(index + 1).padStart(2, '0')}</span>
             </a>
-            <a
-              href="/how-it-works"
-              onClick={() => setMobileMenuOpen(false)}
-              className="rounded-lg px-4 py-3 text-white/80 hover:bg-white/5 hover:text-white"
-            >
-              How it works
-            </a>
-            <a
-              href="/#extension"
-              onClick={() => setMobileMenuOpen(false)}
-              className="rounded-lg px-4 py-3 text-white/80 hover:bg-white/5 hover:text-white"
-            >
-              Extension
-            </a>
-            <a
-              href="/#tools"
-              onClick={() => setMobileMenuOpen(false)}
-              className="rounded-lg px-4 py-3 text-white/80 hover:bg-white/5 hover:text-white"
-            >
-              Tools
-            </a>
-            <a
-              href="/#privacy"
-              onClick={() => setMobileMenuOpen(false)}
-              className="rounded-lg px-4 py-3 text-white/80 hover:bg-white/5 hover:text-white"
-            >
-              Privacy
-            </a>
-            <a
-              href="/support"
-              onClick={() => setMobileMenuOpen(false)}
-              className="rounded-lg px-4 py-3 text-white/80 hover:bg-white/5 hover:text-white"
-            >
-              Support
-            </a>
-          </div>
+          ))}
         </nav>
-      )}
+      </div>
     </header>
   );
 }
 
 export function LandingFooter() {
   return (
-    <footer className="mx-auto flex w-full max-w-360 flex-col gap-6 px-5 py-10 text-xs font-semibold uppercase tracking-wider text-white/40 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-12">
-      <span className="flex items-center gap-2.5 text-sm font-bold text-white/80">
-        <span className="grid h-8 w-8 place-items-center rounded-lg bg-white text-black">
-          <UploadFlowIcon />
+    <footer className="border-t border-white/8 bg-[#070a0b]/80">
+      <div className="mx-auto flex w-full max-w-360 flex-col gap-8 px-5 py-10 text-xs font-semibold uppercase tracking-wider text-white/38 sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:px-12">
+        <span className="flex items-center gap-3 text-sm font-bold text-white/82">
+          <span className="grid h-9 w-9 place-items-center rounded-xl bg-white text-black transition hover:rotate-3 hover:bg-[#eefb7a]">
+            <UploadFlowIcon />
+          </span>
+          <span>
+            <strong className="block">UploadFlow</strong>
+            <small className="mt-1 block text-[9px] tracking-[.18em] text-white/30">Private media in motion</small>
+          </span>
         </span>
-        UploadFlow
-      </span>
-      <div className="flex flex-wrap gap-6 sm:gap-8">
-        <a href="https://cloudgrids.tech/" className="hover:text-white transition-colors">Published by CloudGrids</a>
-        <a href="/how-it-works" className="hover:text-white transition-colors">How it works</a>
-        <a href="/privacy" className="hover:text-white transition-colors">Privacy policy</a>
-        <a href="/support" className="hover:text-white transition-colors">Support</a>
-        <a href="#top" className="hover:text-white transition-colors text-[#eefb7a]">Back to top ↑</a>
+        <div className="flex flex-wrap gap-x-6 gap-y-4 sm:gap-x-8">
+          <a href="https://cloudgrids.tech/" className="transition-colors hover:text-white">CloudGrids</a>
+          <a href="/how-it-works" className="transition-colors hover:text-white">How it works</a>
+          <a href="/privacy" className="transition-colors hover:text-white">Privacy</a>
+          <a href="/support" className="transition-colors hover:text-white">Support</a>
+          <a href="#top" className="text-[#eefb7a] transition-colors hover:text-[#f4ff94]">Back to top ↑</a>
+        </div>
       </div>
     </footer>
   );
