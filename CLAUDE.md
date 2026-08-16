@@ -60,6 +60,8 @@ Four traps produce overflow at the floor, and all four have bitten this codebase
 3. **Flex rows of label + value.** A leading `<b>` and its trailing text are two flex items and sit side by side. `.uf-limit` is `display: block` for exactly this reason; `.uf-statline`, `.uf-rel-head` and `.uf-handoff-foot` stack at the floor and go horizontal at 380/620.
 4. **`white-space: nowrap`** on chips and buttons — set to `normal` at the floor, `nowrap` only once there is room.
 
+**Source order matters as much as specificity.** Component base rules must sit *above* the `@container` bands in the file. A base rule appended at the end of `globals.css` beats a same-specificity override inside an earlier band, because later wins — this silently hid the theme toggle at every width, and the layout audit then passed precisely *because* the element had disappeared. If an audit starts passing right after you change a component's visibility, confirm the element still renders before believing it.
+
 When auditing, compare each element's width against the container **and** check `scrollWidth > clientWidth` (children spilling out of their own parent); a width-only check misses case 3, because each flex item is individually narrower than the page. Skip elements inside an `overflow-x: auto` scroller (`.uf-toc`) — those legitimately scroll.
 
 ## Structure
