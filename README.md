@@ -27,7 +27,7 @@ Capture and cross-site delivery work in the current pre-release build. Post Bund
 
 ## How UploadFlow works
 
-1. **Capture the source.** Hover or right-click supported media, use Inspect Mode, or paste a direct HTTP/HTTPS media URL.
+1. **Capture the source.** Hover or right-click supported media, use Inspect Mode, or paste a direct HTTP/HTTPS media URL. Capture complete post also reads media a page delivers as a CSS background, a lazy-loaded image, or content inside a web component, and captures a text-free post at its own container rather than borrowing a neighbouring post's caption.
 2. **Save the reference.** UploadFlow keeps a bounded URL reference in the local media shelf instead of silently downloading every file.
 3. **Prepare the media.** Optimize, crop, redact, watermark, upscale, batch-process, or trim supported files before upload.
 4. **Open the destination.** Click a file input on another website and select the saved media through the UploadFlow picker.
@@ -71,7 +71,7 @@ Immediately before replacement, UploadFlow verifies the exact file identity agai
 
 ### Quick popup
 
-Capture a URL, inspect recent media, enable or disable interception, and move directly into the appropriate editor.
+Capture a URL, inspect recent media, enable or disable interception, and move directly into the appropriate editor. Workspaces are reached through a compact icon rail that names each tile in a flyout on hover and on keyboard focus; arrow keys move through the grid, tab names remain the accessible names, and unavailable tabs still explain why.
 
 ### Persistent media shelf
 
@@ -84,6 +84,16 @@ The Chrome side panel keeps authorized media references available while moving b
 The full workspace provides focused editors while preserving the original file. A completed output can be passed into any compatible editor before it is handed to a destination website.
 
 ![UploadFlow workspace settings](public/features/workspace-settings-actual.png)
+
+## Make the workspace yours
+
+The profile studio adds animated nameplates — Aurora, Comet, Prism, Ember, and Circuit — behind your display name, and Gold, Neon, Holographic, and Stealth frames around the full and compact profile cards. Avatar decorations, profile effects, and banner styles are chosen the same way.
+
+Every selection is stored with your profile, so the workspace looks the same the next time you open it. Animated treatments follow the reduced-motion preference your operating system already provides. These are local display choices: nothing about your profile reaches a destination website. Badges are issued by UploadFlow and shown as-is.
+
+## Release notes
+
+Every catalogued release is listed newest-first on the [What's new page](https://uploadflow.cloudgrids.tech/whats-new) and inside the extension itself, reachable from the workspace header. The version in development sits at the head of the timeline, and the build you are running is marked.
 
 ## Preparation tools
 
@@ -101,15 +111,19 @@ Create square, portrait, landscape, and thumbnail compositions with adjustable f
 
 ### Redact private regions
 
-Blur or cover selected regions, review the cleaned preview, and apply the result only after confirming the before-and-after view.
+Blur or cover selected regions, review the cleaned preview, and apply the result only after confirming the before-and-after view. Each region covers exactly the pixels the overlay shows, and region drags track the cursor one-to-one at any image aspect ratio.
 
 ![UploadFlow redaction workspace](public/features/redact-actual.png)
 
 ### Apply watermarks and brand kits
 
-Reuse text or saved brand variants with configurable position, font, colour, alignment, and baseline.
+Reuse text or saved brand variants with configurable position, font, colour, alignment, and baseline. Place the watermark from a nine-point grid or by clicking the preview against a visible placement marker; clicks on the letterbox margin pan the view instead of snapping the watermark to an edge.
 
 ![UploadFlow watermark workspace](public/features/watermark-actual.png)
+
+### Remove a background
+
+Cutout separates a subject from its background and previews the result live, so the isolated target is visible and selectable before it replaces the current draft. The output stays available to crop, watermark, or hand off.
 
 ### Upscale images
 
@@ -159,6 +173,7 @@ UploadFlow is developed and published by [CloudGrids](https://cloudgrids.tech/) 
 
 - [Official website](https://uploadflow.cloudgrids.tech/)
 - [Detailed product guide](https://uploadflow.cloudgrids.tech/how-it-works)
+- [Release notes](https://uploadflow.cloudgrids.tech/whats-new)
 - [Live demonstration](https://uploadflow.cloudgrids.tech/demo)
 - [Privacy policy](https://uploadflow.cloudgrids.tech/privacy)
 - [Support](https://uploadflow.cloudgrids.tech/support)

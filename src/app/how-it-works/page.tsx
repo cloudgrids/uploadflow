@@ -1,9 +1,7 @@
 import type { Metadata } from 'next';
-import { ConfigurationGuide } from '../../components/how-it-works/ConfigurationGuide';
-import { FeatureSection } from '../../components/how-it-works/FeatureSection';
-import { featureGroups } from '../../components/how-it-works/content';
-import { LandingFooter, LandingHeader } from '../../components/landing/LandingChrome';
-import { PageHero, StatusLine } from '../../components/ui/PageChrome';
+import { configurationGroups, featureGroups } from '../../components/how-it-works/content';
+import { productStatus, type ProductStatus } from '../../components/landing/content';
+import { PageHero, SitePage, StatusLine } from '../../components/site/SiteChrome';
 
 export const metadata: Metadata = {
   title: 'How UploadFlow Works',
@@ -11,57 +9,114 @@ export const metadata: Metadata = {
     'A detailed guide to UploadFlow capture, configuration, media shelf, preparation tools, privacy review, batches, video editing, and cross-site handoff.'
 };
 
+const statusChip: Record<ProductStatus, string> = {
+  available: 'uf-chip-ok',
+  beta: 'uf-chip-beta',
+  early: 'uf-chip-beta',
+  experimental: 'uf-chip-exp',
+  next: 'uf-chip',
+  planned: 'uf-chip'
+};
+
 export default function HowItWorksPage() {
   return (
-    <div className="min-h-screen bg-[#080b0d]/70 text-white">
-      <LandingHeader />
-      <main className="mx-auto max-w-360 px-5 pt-20 sm:px-8 lg:px-12">
-        <PageHero
-          eyebrow="Product guide"
-          title={
-            <>
-              From a webpage
-              <br />
-              <span className="text-[#eefb7a]">to a ready upload.</span>
-            </>
-          }
-          description="Follow the complete local-first workflow, understand every major configuration boundary, and see how the popup, side panel, editor, background worker, and destination website work together."
-          aside={
-            <div className="content-card min-w-0">
-              <StatusLine label="Capture" value="Source retained" />
-              <StatusLine label="Prepare" value="Local-first" tone="green" />
-              <StatusLine label="Deliver" value="User confirmed" tone="violet" />
-            </div>
-          }
-        />
+    <SitePage>
+      <PageHero
+        eyebrow="Product guide"
+        title={
+          <>
+            From a webpage <span className="uf-hl">to a ready upload.</span>
+          </>
+        }
+        lede="Follow the complete local-first workflow, understand every major configuration boundary, and see how the popup, side panel, editor, background worker, and destination website work together."
+        aside={
+          <div className="uf-card">
+            <StatusLine label="Capture" value="Source retained" />
+            <StatusLine label="Prepare" value="Local-first" />
+            <StatusLine label="Deliver" value="User confirmed" />
+          </div>
+        }
+      />
 
-        <nav
-          className="sticky top-16 z-30 -mx-5 flex gap-2 overflow-x-auto border-y border-white/10 bg-[#080b0d]/88 px-5 py-3 backdrop-blur-2xl sm:-mx-8 sm:px-8 lg:-mx-12 lg:px-12"
-          aria-label="Page sections"
-        >
-          <a
-            href="#configuration"
-            className="shrink-0 rounded-full border border-[#eefb7a]/40 bg-[#eefb7a]/12 px-4 py-2 text-xs font-bold uppercase tracking-wider text-[#eefb7a] transition hover:bg-[#eefb7a]/20"
-          >
-            Configuration
+      <nav className="uf-toc" aria-label="Page sections">
+        <a href="#configuration">Configuration</a>
+        {featureGroups.map((feature) => (
+          <a key={feature.id} href={`#${feature.id}`}>
+            {feature.title}
           </a>
-          {featureGroups.map((feature) => (
-            <a
-              key={feature.id}
-              href={`#${feature.id}`}
-              className="shrink-0 rounded-full border border-white/15 bg-white/3 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-white/60 transition hover:border-[#eefb7a]/40 hover:text-[#eefb7a]"
-            >
-              {feature.title}
-            </a>
-          ))}
-        </nav>
-
-        <ConfigurationGuide />
-        {featureGroups.map((feature, index) => (
-          <FeatureSection key={feature.id} feature={feature} index={index} />
         ))}
-      </main>
-      <LandingFooter />
-    </div>
+      </nav>
+
+      <section className="uf-wrap uf-section" id="configuration">
+        <div className="uf-stack-l">
+          <div className="uf-stack-6">
+            <span className="uf-eyebrow">Settings</span>
+            <h2>Every switch, and what it changes.</h2>
+            <p className="uf-lede">
+              Each of these lives in UploadFlow Settings. Read the boundaries — several of them decide whether a feature runs at all.
+            </p>
+          </div>
+          <div className="uf-grid uf-grid-2">
+            {configurationGroups.map((group) => (
+              <div key={group.id} className="uf-card uf-stack" id={group.id}>
+                <h3>{group.title}</h3>
+                <p className="uf-small">{group.summary}</p>
+                <ul className="uf-dots">
+                  {group.choices.map((choice) => (
+                    <li key={choice}>{choice}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="uf-wrap uf-section">
+        <div className="uf-stack-l">
+          <div className="uf-stack-6">
+            <span className="uf-eyebrow">The workflow</span>
+            <h2>Capture, prepare, deliver.</h2>
+          </div>
+
+          {featureGroups.map((feature, index) => {
+            const status = feature.status ?? (feature.comingSoon ? 'beta' : 'available');
+            return (
+              <div key={feature.id} className="uf-card uf-stack" id={feature.id}>
+                <div className="uf-row-top">
+                  <span className="uf-eyebrow uf-eyebrow-dim">{feature.eyebrow}</span>
+                  <span className={`uf-chip ${statusChip[status]}`}>{productStatus[status].label}</span>
+                </div>
+                <div className={index % 2 === 1 ? 'uf-split uf-split-rev' : 'uf-split'}>
+                  <div className="uf-stack">
+                    <h3>{feature.title}</h3>
+                    <p className="uf-small">{feature.copy}</p>
+                    <ul className="uf-dots">
+                      {feature.points.map((point) => (
+                        <li key={point}>{point}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  {feature.image ? (
+                    <figure className="uf-shot">
+                      <div className="uf-shot-frame">
+                        <img
+                          src={feature.image}
+                          alt={feature.imageLabel ?? `${feature.title} in the UploadFlow workspace`}
+                          width={1500}
+                          height={1120}
+                          loading="lazy"
+                        />
+                      </div>
+                      {feature.imageLabel ? <figcaption className="uf-shot-cap">{feature.imageLabel}</figcaption> : null}
+                    </figure>
+                  ) : null}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+    </SitePage>
   );
 }

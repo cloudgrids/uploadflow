@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
-import { AmbientBackground } from '../components/ui/AmbientBackground';
-import { MotionSystem } from '../components/ui/MotionSystem';
+import { ThemeProvider } from '../components/site/ThemeProvider';
 import './globals.css';
 
 const siteUrl = 'https://uploadflow.cloudgrids.tech';
@@ -32,16 +31,19 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#0b0d0f'
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f6f7f4' },
+    { media: '(prefers-color-scheme: dark)', color: '#101416' }
+  ]
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <AmbientBackground />
-        <MotionSystem />
-        <div className="site-content">{children}</div>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

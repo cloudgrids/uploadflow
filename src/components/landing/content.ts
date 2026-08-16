@@ -84,6 +84,13 @@ export const editorTools = [
     copy: 'Generate reusable destination variants and download completed outputs together as a ZIP.',
     mark: '⊞',
     status: 'beta'
+  },
+  {
+    number: '09',
+    label: 'Cutout',
+    copy: 'Remove a background and review the live preview before the result replaces the current draft.',
+    mark: '◐',
+    status: 'beta'
   }
 ] satisfies Array<{
   number: string;
@@ -114,7 +121,7 @@ export const productSurfaces = [
   {
     number: '01',
     title: 'Quick popup',
-    copy: 'Capture, review files, and open the workspace from the extension action.',
+    copy: 'Capture, review files, and move between workspaces through a compact icon rail that names each tile on hover and on keyboard focus.',
     status: 'available'
   },
   {

@@ -77,6 +77,28 @@ export const configurationGroups = [
     ]
   },
   {
+    id: 'profile-studio',
+    title: 'Profile studio',
+    summary: 'Choose how your profile looks inside the UploadFlow workspace. These are local display choices and never travel to a destination website.',
+    choices: [
+      'Pick a nameplate — Aurora, Comet, Prism, Ember, or Circuit — to sit behind your display name.',
+      'Wrap the profile card in a Gold, Neon, Holographic, or Stealth frame.',
+      'Add an avatar decoration, profile effect, or banner style, and preview the result before keeping it.',
+      'Every choice is saved with your profile, so the workspace looks the same the next time you open it.',
+      'Badges are issued by UploadFlow and shown as-is; they are not something you add yourself.'
+    ]
+  },
+  {
+    id: 'motion',
+    title: 'Motion and accessibility',
+    summary: 'Animated profile treatments follow the reduced-motion setting your operating system already provides.',
+    choices: [
+      'The preview starts from your system reduced-motion preference and follows it when you change it.',
+      'Workspace navigation is reachable by keyboard: arrow keys move through the icon rail, and every tile keeps its name for screen readers.',
+      'Unavailable tabs still explain why they cannot be opened.'
+    ]
+  },
+  {
     id: 'language',
     title: 'Language',
     summary: 'Choose whether UploadFlow follows the browser language or uses a supported language explicitly.',
@@ -182,6 +204,8 @@ export const featureGroups = [
     points: [
       'Images, video, audio, and media links',
       'Optional hover inspection and right-click capture',
+      'Capture complete post reads media a page delivers as a CSS background, a lazy-loaded image, or content inside a web component',
+      'A post with images but no text is captured at its own container, so it never borrows a neighbouring post’s caption',
       'Signed and protected URLs remain subject to source access rules'
     ]
   },
@@ -242,7 +266,12 @@ export const featureGroups = [
     image: '/features/redact-actual.png',
     imageLabel: 'UploadFlow Extension · Redact workspace',
     copy: 'Draw blur or cover regions on the original, preview the cleaned result, and apply only after reviewing the before-and-after workspace.',
-    points: ['Manual privacy regions', 'Undo, redo, and clear-region controls', 'Temporary preview before applying the output']
+    points: [
+      'Manual privacy regions that cover exactly the pixels the overlay shows',
+      'Region drags track the cursor one-to-one at any image aspect ratio',
+      'Undo, redo, and clear-region controls',
+      'Temporary preview before applying the output'
+    ]
   },
   {
     id: 'watermark',
@@ -251,7 +280,12 @@ export const featureGroups = [
     image: '/features/watermark-actual.png',
     imageLabel: 'UploadFlow Extension · Watermark workspace',
     copy: 'Use custom text or a saved brand-kit variant, then control placement, font, colour, alignment, and baseline against a live preview.',
-    points: ['Text and brand-kit variants', 'Nine-point positioning', 'Reusable visual identity across outputs']
+    points: [
+      'Text and brand-kit variants',
+      'Nine-point positioning, or click the preview to place the watermark against a visible marker',
+      'Clicks on the letterbox margin pan the view instead of snapping the watermark to an edge',
+      'Reusable visual identity across outputs'
+    ]
   },
   {
     id: 'upscale',
@@ -323,5 +357,30 @@ export const featureGroups = [
       'No persisted fingerprints, scan findings, video frames, or temporary output bytes'
     ],
     comingSoon: true
+  },
+  {
+    id: 'cutout',
+    eyebrow: '14 · Isolate',
+    title: 'Remove a background',
+    copy: 'Cutout separates a subject from its background and previews the result live, so the target is visible and selectable before you apply it rather than after.',
+    points: [
+      'Live preview alongside every other image tool',
+      'Review the isolated result before it replaces the current draft',
+      'The output stays available to crop, watermark, or hand off'
+    ],
+    status: 'beta'
+  },
+  {
+    id: 'profile',
+    eyebrow: '15 · Personalise',
+    title: 'Make the workspace yours',
+    copy: 'The profile studio adds animated nameplates, frames, decorations, and banners to your workspace profile. Choices are stored with the profile and stay put between sessions.',
+    points: [
+      'Aurora, Comet, Prism, Ember, and Circuit nameplates',
+      'Gold, Neon, Holographic, and Stealth frames on the full and compact cards',
+      'Animation follows your system reduced-motion preference',
+      'Local display choices only — nothing about your profile reaches a destination website'
+    ],
+    status: 'next'
   }
 ] satisfies GuideFeature[];
