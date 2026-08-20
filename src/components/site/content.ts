@@ -119,8 +119,8 @@ export const tools = [
     alt: 'The upscale workspace comparing an enlarged result against the original',
     copy: 'Pick 2× or supported 4×, review the estimated dimensions, and compare against the original.',
     limit: {
-      lead: 'The one network tool.',
-      text: 'Your image is sent over HTTPS to UploadFlow’s API and iLoveIMG. Don’t upscale anything you wouldn’t send there — or keep it switched off entirely.'
+      lead: 'Runs on your device.',
+      text: 'Enlarging is done locally in the browser, so the image is never uploaded and the tool works with no network at all.'
     }
   },
   {
@@ -140,11 +140,6 @@ export const transfers = [
     title: 'Fetching a source',
     copy: 'The media URL you picked is requested from its own site, only when you choose that item.',
     target: '→ source site'
-  },
-  {
-    title: 'AI upscaling',
-    copy: 'The selected image goes to UploadFlow’s API and iLoveIMG to be enlarged.',
-    target: '→ iLoveIMG'
   },
   {
     title: 'Explicit downloads',

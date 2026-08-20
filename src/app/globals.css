@@ -1054,3 +1054,55 @@ a.uf-card:hover h3 { color: var(--uf-accent-ink); }
 
 /* neutral plan chip — a tier is not a status, so it must not read as one */
 .uf-chip-plan { color: var(--uf-text-2); border-color: var(--uf-border-hover); }
+
+/* ---------- maintenance overlay ----------
+   Covers a region that is shown but not operable. Base rules first, bands after —
+   a base rule below a band would win at every width and silently flatten it. */
+.uf-maint { position: relative; isolation: isolate; }
+/* The region keeps its own height, so nothing below it moves when the overlay lifts. */
+.uf-maint-body { filter: blur(3px) saturate(0.6); opacity: 0.5; }
+.uf-maint-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--uf-bg) 72%, transparent);
+}
+/* Centred on the region rather than the viewport: this is a section that is out of
+   service, not a modal, and a fixed layer would follow the reader down the page. */
+.uf-maint-panel {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: min(420px, calc(100% - 24px));
+  padding: 20px 16px;
+  text-align: center;
+  border: 1px solid var(--uf-border-hover);
+  border-radius: var(--radius);
+  background: var(--uf-bg);
+  box-shadow: 0 18px 50px rgb(0 0 0 / 0.28);
+}
+/* min-width:0 so the panel can shrink inside its own flex column at the floor,
+   and anywhere so a long word cannot push it past the region's width. */
+.uf-maint-panel > * { min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
+.uf-maint-title { font-size: 17px; margin: 0; }
+/* At the floor the panel is wider than the blurred region is tall, so it stops
+   being an overlay and simply sits in flow above it. */
+@container uf (max-width: 199px) {
+  .uf-maint-body { display: none; }
+  .uf-maint-veil { display: none; }
+  .uf-maint-panel { position: static; transform: none; width: 100%; }
+}
+@container uf (min-width: 620px) {
+  .uf-maint-panel { padding: 26px 24px; gap: 12px; }
+  .uf-maint-title { font-size: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .uf-maint-body { filter: none; opacity: 0.35; }
+}
