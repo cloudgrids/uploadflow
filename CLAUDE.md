@@ -8,7 +8,7 @@ The public marketing/product site for UploadFlow (a Chrome extension), served at
 
 This directory is its own git repository (`arijitchhatui/uploadflow`), separate from the sibling `extension/` and `server/` trees. Run all git commands from `web/`, never from the parent directory. See the parent `../CLAUDE.md` for the container layout.
 
-**Content boundary:** `extension/` is a private repo. Product copy and feature claims come from `web/README.md` and the `content.ts` modules. Do not copy extension source, architecture, internal docs, or its theme registry into this repo — a previous attempt to ship the extension's 18 theme palettes here was explicitly reverted as "keep it internal".
+**Content boundary:** all three repos are private, so reading across them is fine — but this one is *published*. The test before moving anything here from `extension/` is not "is that repo private" but "should a visitor see this". Product copy and feature claims come from `web/README.md` and the `content.ts` modules. Do not ship extension source, architecture, internal docs, or its theme registry — a previous attempt to ship the extension's 18 theme palettes here was explicitly reverted as "keep it internal".
 
 ## Commands
 
@@ -101,6 +101,27 @@ privacy scanner are switched off in 2.2.1 while they are rebuilt.
 Before changing a feature claim, check `planRequirements` and the maturity ladder rather than the
 feature's name, and mirror `changelog.upcoming` in `packages/i18n/src/locales/en.ts` — that is the
 curated list of what a stable build actually offers.
+
+### Coming: this site is about to be selling the wrong product
+
+A decision has been taken to move entitlement authority into `server/`. A server-issued token becomes
+required for the extension to function **at all**, which reverses the local-first line this site is
+built on. It is not shipped yet, so nothing here is wrong today — but on the day it lands, several
+claims across `README.md`, `src/components/site/content.ts` and the landing page become false:
+
+- **"Local-first", "no account needed", "free needs no account and no server"** — a signed-out user
+  still gets the free tier, but only by holding a token the server issued, so the extension no longer
+  works with no network on first run.
+- **"The history stays local, bounded, user-controlled"** — feature preferences move to the account
+  so the server can state why something is unavailable. The privacy copy and whatever policy the
+  store listing points at both have to change with it.
+- **The free/silver/gold/platinum split above** is resolved from a bundled map today. It will come
+  from the server, so this section stops being the way to check a claim.
+
+What does *not* change: a user can still stay logged out on free, and offline holds the last
+entitlement rather than degrading — a paying customer is never dropped to free by losing signal.
+Do not pre-emptively rewrite copy for this. The site must describe what ships, and today that is
+still the local-first product.
 
 ## Prices
 
