@@ -129,15 +129,14 @@ export default function PrivacyPage() {
                   choose that item.
                 </li>
                 <li>
-                  <strong>AI upscaling:</strong> when you explicitly start upscaling, the selected image is sent over
-                  HTTPS to UploadFlow’s API and its image-processing provider, iLoveIMG, to produce the requested result.
-                </li>
-                <li>
                   <strong>Downloads:</strong> URLs you choose to download are handed to Chrome’s Downloads API and
                   requested from the source website.
                 </li>
               </ul>
-              <p>Do not use AI upscaling for a file you do not want transmitted to the stated processing providers.</p>
+              <p>
+                Upscaling no longer appears in this list. It once used an external image-processing provider and now runs
+                entirely in your browser, so the image is not transmitted anywhere.
+              </p>
               <p>
                 UploadFlow does not grant rights to media. You are responsible for ensuring you own or are authorized to reuse and upload the
                 selected content.

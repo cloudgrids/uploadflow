@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { PageHero, SitePage, StoreLink } from '../../components/site/SiteChrome';
 import { PlanExplorer } from '../../components/site/PlanExplorer';
 import { PlanMarquee } from '../../components/site/PlanMarquee';
+import { MaintenanceOverlay } from '../../components/site/MaintenanceOverlay';
 import { planNotes } from '../../components/site/plansContent';
 
 export const metadata: Metadata = {
@@ -34,10 +35,14 @@ export default function PlansPage() {
         }
       />
 
-      <PlanMarquee />
-
       <section className="uf-wrap uf-section">
-        <PlanExplorer />
+        <MaintenanceOverlay
+          title="Plans aren't open for sign-up yet"
+          note="The tiers and prices below are real, but subscribing isn't switched on. Free needs no account and works today."
+        >
+          <PlanMarquee />
+          <PlanExplorer />
+        </MaintenanceOverlay>
       </section>
 
       <section className="uf-wrap uf-section">
