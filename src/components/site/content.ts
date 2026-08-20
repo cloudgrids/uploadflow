@@ -5,6 +5,7 @@ export const storeUrl = chromeWebStoreUrl;
 export const navigation = [
   { href: '/how-it-works', label: 'How it works' },
   { href: '/whats-new', label: 'What\u2019s new' },
+  { href: '/plans', label: 'Plans' },
   { href: '/privacy', label: 'Privacy' },
   { href: '/support', label: 'Support' }
 ];
@@ -14,7 +15,7 @@ export const heroChips = ['No account', 'No cloud drive', 'No analytics'];
 export const flow = [
   {
     title: 'Capture',
-    copy: 'Hover, right-click, or paste a direct media URL. UploadFlow saves a reference — not the file — to your local shelf.'
+    copy: 'Right-click supported media or paste a direct media URL. UploadFlow saves a reference — not the file — to your local shelf.'
   },
   {
     title: 'Prepare',
@@ -22,7 +23,7 @@ export const flow = [
   },
   {
     title: 'Deliver',
-    copy: 'Click a file input on another site and pick your prepared media. The bytes are fetched on demand and handed over.'
+    copy: 'Pick your media from another site’s file input, or drag it from the shelf straight onto the page — with a pointer or from the keyboard. The bytes are fetched on demand.'
   }
 ];
 
@@ -37,17 +38,21 @@ export const surfaces = [
   },
   {
     title: 'Full editor',
-    copy: 'A preview-led workbench. Finish in one tool, pass the draft to the next, hand off when it’s right.'
+    copy: 'A preview-led workbench, and part of the free plan. Finish in one tool, pass the draft to the next, hand off when it’s right.'
   }
 ];
 
 export type ToolStatus = 'ok' | 'beta' | 'network';
+export type Plan = 'Free' | 'Silver' | 'Gold' | 'Platinum';
 
 export interface Tool {
   title: string;
   status: ToolStatus;
   statusLabel: string;
-  image: string;
+  /** Minimum plan that can open this tool, from the extension's own gate. */
+  plan: Plan;
+  /** Omitted where no current screenshot of that workspace exists. */
+  image?: string;
   alt: string;
   copy: string;
   limit?: { lead?: string; text: string };
@@ -58,32 +63,48 @@ export const tools = [
     title: 'Optimize',
     status: 'ok',
     statusLabel: 'Available',
+    plan: 'Free',
     image: '/site/optimize.webp',
     alt: 'The optimize workspace with format, compression quality and resize controls beside a live preview',
-    copy: 'Resize, compress, convert between JPEG, PNG, WebP and AVIF, rename, and strip metadata — with the estimated output size and saving shown before you apply.',
+    copy: 'Resize, compress, convert between JPEG, PNG, WebP and AVIF, rename, and strip metadata. The sliders measure compression — 100% is the smallest file, 0% leaves the original alone.',
     limit: { text: 'Metadata cleaning covers supported fields. Treat it as a reduction, not a guarantee of anonymity.' }
   },
   {
     title: 'Crop',
-    status: 'beta',
-    statusLabel: 'Beta',
+    status: 'ok',
+    statusLabel: 'Available',
+    plan: 'Free',
     image: '/site/crop.webp',
     alt: 'The crop workspace showing aspect presets and focus controls',
     copy: 'Square, portrait, landscape and thumbnail compositions with adjustable focus and preview zoom, so framing stays deliberate before the crop lands.'
   },
   {
+    title: 'Cutout',
+    status: 'ok',
+    statusLabel: 'Available',
+    plan: 'Free',
+    alt: '',
+    copy: 'Remove a background and see the result while you adjust it. Then choose what sits behind the subject: keep it transparent, fill with a colour, blur the picture’s own background, or composite onto another image you already added.',
+    limit: { text: 'The backdrop comes from the editor’s own queue, not the shelf or a file picker. Every backdrop exports PNG.' }
+  },
+  {
     title: 'Redact',
     status: 'ok',
     statusLabel: 'Available',
+    plan: 'Silver',
     image: '/site/redact.webp',
     alt: 'The redact workspace with blur and cover regions over an image',
     copy: 'Blur or cover regions and confirm against a before-and-after view. Regions cover exactly the pixels the overlay shows, and drags track the cursor one-to-one at any aspect ratio.',
-    limit: { text: 'Text detection covers email, phone, payment-card and IPv4 patterns — not arbitrary sensitive text.' }
+    limit: {
+      lead: 'The privacy scanner is switched off.',
+      text: 'Automatic detection of email, phone, payment-card and IPv4 patterns is being rebuilt and returns when it works. Drawing regions by hand is unaffected.'
+    }
   },
   {
     title: 'Watermark',
     status: 'ok',
     statusLabel: 'Available',
+    plan: 'Silver',
     image: '/site/watermark.webp',
     alt: 'The watermark workspace with placement grid, font and colour controls',
     copy: 'Text or a saved brand-kit variant, placed from a nine-point grid or by clicking the preview against a visible marker.',
@@ -93,6 +114,7 @@ export const tools = [
     title: 'Upscale',
     status: 'network',
     statusLabel: 'Sends your image',
+    plan: 'Gold',
     image: '/site/upscale.webp',
     alt: 'The upscale workspace comparing an enlarged result against the original',
     copy: 'Pick 2× or supported 4×, review the estimated dimensions, and compare against the original.',
@@ -105,10 +127,11 @@ export const tools = [
     title: 'Video',
     status: 'beta',
     statusLabel: 'Beta',
+    plan: 'Gold',
     image: '/site/video.webp',
     alt: 'The video workspace with a timeline, trim handles and cover-frame selection',
-    copy: 'Trim by stream copy when nothing needs re-encoding. Crop, resize, speed, bitrate and audio changes use the locally packaged FFmpeg Wasm renderer; cover frames are chosen separately.',
-    limit: { text: 'Any transformation forces a local re-encode — slow and CPU-heavy. Output is H.264/AAC MP4.' }
+    copy: 'Trim and split by stream copy when nothing needs re-encoding — fast enough to work in the page overlay. Crop, resize, speed, bitrate and audio changes use the locally packaged FFmpeg Wasm renderer.',
+    limit: { text: 'In the overlay only copy-only edits are offered: a page’s CSP governs WebAssembly there, so anything needing an encoder is withheld rather than failed. Output is H.264/AAC MP4.' }
   }
 ] satisfies Tool[];
 
@@ -138,7 +161,7 @@ export const neverDoes = [
 
 export const remembers = [
   'A bounded shelf of up to 20 media references.',
-  'Optional Private Media Memory — metadata only, never file bytes, with 7, 30 or 90-day retention.',
+  'Optional Private Media Memory (Gold) — metadata only, never file bytes, with 7, 30 or 90-day retention.',
   'Everything is exportable, deletable per destination, and gone entirely if you uninstall.'
 ];
 
@@ -166,3 +189,38 @@ export const compatibility = [
     status: 'exp'
   }
 ] satisfies Array<{ title: string; copy: string; verdict: string; status: 'ok' | 'beta' | 'exp' }>;
+
+export type PlanTier = { name: string; summary: string; includes: string[] };
+
+/**
+ * Mirrors the extension's plan gate: what each tier unlocks, and nothing more.
+ * The figures are NOT here — the landing cards read them from `plansContent.ts`
+ * via `priceForPlanName`, so the landing and /plans cannot quote different prices.
+ */
+export const plans = [
+  {
+    name: 'Free',
+    summary: 'Everything you need to move a file between two sites, including the full editor.',
+    includes: [
+      'Upload interception, the URL and native pickers, and the compatibility check',
+      'The overlay, the side panel and the media shelf',
+      'The full editor — optimize, crop and cutout',
+      'Downloads, keyboard shortcuts, Event Drops and Subscriptions'
+    ]
+  },
+  {
+    name: 'Silver',
+    summary: 'Preparation tools for work that has to look a certain way.',
+    includes: ['Redaction', 'Watermark', 'Collections', 'Alt-text studio', 'Extra command shortcuts']
+  },
+  {
+    name: 'Gold',
+    summary: 'Repeatable delivery, and the heavier media tools.',
+    includes: ['Video editor', 'Upscaling', 'Post bundles', 'Site and destination presets', 'Private Media Memory']
+  },
+  {
+    name: 'Platinum',
+    summary: 'Volume work across many destinations.',
+    includes: ['Batch workspace', 'Platform packs', 'Brand kits']
+  }
+] satisfies PlanTier[];

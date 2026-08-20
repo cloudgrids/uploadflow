@@ -2,7 +2,6 @@ import type { ReactNode } from 'react';
 import { UploadFlowIcon } from '../../lib/icons';
 import { navigation, storeUrl } from './content';
 import { ThemeToggle } from './ThemeToggle';
-import { TypePreview } from './TypePreview';
 
 export function Logo({ tagline, href = '/' }: { tagline: string; href?: string }) {
   return (
@@ -52,6 +51,7 @@ export function SiteFooter() {
       <Logo tagline="by CloudGrids" />
       <div className="uf-foot-links">
         <a href="/how-it-works">How it works</a>
+        <a href="/plans">Plans</a>
         <a href="/whats-new">What&rsquo;s new</a>
         <a href="/privacy">Privacy</a>
         <a href="/support">Support</a>
@@ -76,7 +76,6 @@ export function SitePage({ children }: { children: ReactNode }) {
         <SiteHeader />
         <main>{children}</main>
         <SiteFooter />
-        <TypePreview />
       </div>
     </div>
   );

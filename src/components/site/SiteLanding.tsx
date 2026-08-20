@@ -1,8 +1,9 @@
 import { UploadFlowIcon } from '../../lib/icons';
 import { Clip } from './Clip';
+import { Typewriter } from './Typewriter';
 import { ThemeToggle } from './ThemeToggle';
-import { TypePreview } from './TypePreview';
-import { compatibility, flow, heroChips, navigation, neverDoes, remembers, storeUrl, surfaces, tools, transfers } from './content';
+import { compatibility, flow, heroChips, navigation, neverDoes, plans, remembers, storeUrl, surfaces, tools, transfers } from './content';
+import { priceForPlanName } from './plansContent';
 
 const chipClass = { ok: 'uf-chip-ok', beta: 'uf-chip-beta', exp: 'uf-chip-exp', network: 'uf-chip-exp' } as const;
 
@@ -55,7 +56,7 @@ export function SiteLanding() {
               <div className="uf-stack">
                 <span className="uf-chip uf-chip-live">Runs locally in your browser</span>
                 <h1>
-                  Move media between sites. <span className="uf-hl">Skip downloads.</span>
+                  <Typewriter text="Move media between sites. Skip downloads." />
                 </h1>
                 <p className="uf-lede">
                   Capture media you&rsquo;re authorized to use on one webpage, prepare it privately, and send it straight into another
@@ -187,13 +188,18 @@ export function SiteLanding() {
                   <div key={tool.title} className="uf-card uf-stack">
                     <div className="uf-row-top">
                       <h3>{tool.title}</h3>
-                      <span className={`uf-chip ${chipClass[tool.status]}`}>{tool.statusLabel}</span>
+                      <span className="uf-chip-row">
+                        <span className={`uf-chip ${tool.plan === 'Free' ? 'uf-chip-ok' : 'uf-chip-plan'}`}>{tool.plan}</span>
+                        <span className={`uf-chip ${chipClass[tool.status]}`}>{tool.statusLabel}</span>
+                      </span>
                     </div>
-                    <figure className="uf-shot">
-                      <div className="uf-shot-frame">
-                        <img src={tool.image} alt={tool.alt} width={1500} height={1120} loading="lazy" />
-                      </div>
-                    </figure>
+                    {tool.image ? (
+                      <figure className="uf-shot">
+                        <div className="uf-shot-frame">
+                          <img src={tool.image} alt={tool.alt} width={1500} height={1120} loading="lazy" />
+                        </div>
+                      </figure>
+                    ) : null}
                     <p className="uf-small">{tool.copy}</p>
                     {tool.limit ? (
                       <p className="uf-limit">
@@ -246,6 +252,51 @@ export function SiteLanding() {
                   </ul>
                 </div>
               </div>
+            </div>
+          </section>
+
+          {/* ---------------- plans ---------------- */}
+          <section className="uf-wrap uf-section" id="plans">
+            <div className="uf-stack-l">
+              <div className="uf-stack-6">
+                <span className="uf-eyebrow">What&rsquo;s included</span>
+                <h2>Free covers the whole journey.</h2>
+                <p className="uf-lede">
+                  Capture, shelf, full editor, and delivery into another site&rsquo;s upload field are free. Paid tiers start at $4 a
+                  month and add preparation depth and repeatable delivery — they don&rsquo;t gate the core loop.
+                </p>
+              </div>
+              <div className="uf-grid uf-grid-2">
+                {plans.map((tier) => {
+                  const price = priceForPlanName(tier.name);
+                  return (
+                  <div key={tier.name} className="uf-card uf-stack">
+                    <div className="uf-row-top">
+                      <h3>{tier.name}</h3>
+                      <span className={`uf-chip ${price ? 'uf-chip-plan' : 'uf-chip-ok'}`}>
+                        {price ? `$${price.monthly} a month` : 'Included'}
+                      </span>
+                    </div>
+                    <p className="uf-small">{tier.summary}</p>
+                    <ul className="uf-dots">
+                      {tier.includes.map((line) => (
+                        <li key={line}>{line}</li>
+                      ))}
+                    </ul>
+                    {price ? (
+                      <p className="uf-small">
+                        Or ${price.annual} a year &mdash; ${Math.round(price.annual / 12)} a month.
+                      </p>
+                    ) : null}
+                  </div>
+                  );
+                })}
+              </div>
+              <p className="uf-limit">
+                <b>Two tools are switched off in this release.</b> The media inspector and the automatic privacy scanner are being
+                rebuilt — the inspector never appeared over a hovered image, and the scanner had no panel to open. Both return when they
+                work; drawing redaction regions by hand is unaffected.
+              </p>
             </div>
           </section>
 
@@ -335,7 +386,6 @@ export function SiteLanding() {
             through it.
           </p>
         </footer>
-        <TypePreview />
       </div>
     </div>
   );

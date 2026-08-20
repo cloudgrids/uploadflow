@@ -55,25 +55,16 @@ export const configurationGroups = [
     ]
   },
   {
-    id: 'live-draft-sync',
-    title: 'Live Draft Sync — Experimental',
+    id: 'not-in-this-release',
+    title: 'Not in this release',
     summary:
-      'Opt in to track files that UploadFlow placed into supported, connected upload fields before those files start uploading.',
+      'Some capability exists in the codebase but is deliberately unreachable in the Chrome Web Store build, because it is not finished enough to rely on. It is listed here so the guide matches what you can actually open.',
     choices: [
-      'Replacement requires explicit confirmation and never submits or publishes a form.',
-      'Compatibility varies because websites may keep attachment state outside the native file input.',
-      'Unsupported destinations show that a newer version is available and ask you to replace the attachment manually.',
-      'Keep this disabled for the stable launch workflow.'
-    ]
-  },
-  {
-    id: 'cross-device-handoff',
-    title: 'UploadFlow Handoff — Early Access',
-    summary: 'Short-lived encrypted pairing groundwork is available; live phone-to-browser file transfer is still being completed.',
-    choices: [
-      'Pairing sessions are temporary and can be cancelled explicitly.',
-      'Do not expect live encrypted file delivery in the current build.',
-      'Handoff remains separate from the local-only core and will require its own reviewed privacy boundary.'
+      'Live Draft Sync and the pending-drafts panel: replacing a file already placed in an open draft.',
+      'UploadFlow Handoff and AirDrop: moving media from a phone into the browser session.',
+      'Gallery, the audio editor, PDF compression, alt-text studio and edit recipes.',
+      'Region capture, screen recording and the URL collector.',
+      'None of these can be switched on from Settings in a stable build; they return when they ship.'
     ]
   },
   {
@@ -106,12 +97,13 @@ export const configurationGroups = [
   },
   {
     id: 'inspect',
-    title: 'Inspect Mode',
-    summary: 'Inspect Mode adds an UploadFlow action to media you deliberately hover on supported webpages.',
+    title: 'Inspect Mode — switched off',
+    summary:
+      'Hover controls over media are being rebuilt. In this release the inspector never appeared over a hovered image, so it is switched off rather than left as a setting that does nothing.',
     choices: [
-      'Turn it on when capturing authorized images, video, audio, or source URLs from webpages.',
-      'Turn it off when you do not want hover controls on ordinary browsing pages.',
-      'Inspect Mode only operates while UploadFlow itself is enabled.'
+      'Capture instead through the UploadFlow context menu, or by pasting a direct media URL.',
+      'The automatic privacy scanner is off for the same reason; drawing redaction regions by hand is unaffected.',
+      'Both return when they work.'
     ]
   },
   {
@@ -200,10 +192,10 @@ export const featureGroups = [
     eyebrow: '01 · Capture',
     title: 'Collect an authorized source',
     image: '/features/cross-site-handoff.png',
-    copy: 'Enable Inspect Mode for hover controls, use the UploadFlow context menu, or paste a direct media URL. UploadFlow stores a bounded source reference rather than silently downloading every file.',
+    copy: 'Use the UploadFlow context menu on media you are authorized to reuse, or paste a direct media URL. UploadFlow stores a bounded source reference rather than silently downloading every file.',
     points: [
       'Images, video, audio, and media links',
-      'Optional hover inspection and right-click capture',
+      'Right-click capture from the context menu',
       'Capture complete post reads media a page delivers as a CSS background, a lazy-loaded image, or content inside a web component',
       'A post with images but no text is captured at its own container, so it never borrows a neighbouring post’s caption',
       'Signed and protected URLs remain subject to source access rules'

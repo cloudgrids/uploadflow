@@ -1,0 +1,318 @@
+'use client';
+
+import { useCallback, useRef, useState, useSyncExternalStore } from 'react';
+import {
+  accountStates,
+  annualSaving,
+  billingPeriods,
+  monthlyEquivalent,
+  plans,
+  type AccountStateId,
+  type BillingPeriod,
+  type Plan
+} from './plansContent';
+
+const chipTone = { quiet: 'uf-chip', on: 'uf-chip uf-chip-ok', outline: 'uf-chip uf-chip-beta' } as const;
+
+/**
+ * Feeds the card's radial highlight the pointer position. CSS decides whether
+ * anything is drawn — the layer is off for coarse pointers and reduced motion —
+ * so this only ever sets two custom properties and never reads them back.
+ */
+function trackPointer(event: React.PointerEvent<HTMLDivElement>) {
+  const card = event.currentTarget;
+  const box = card.getBoundingClientRect();
+  card.style.setProperty('--uf-mx', `${event.clientX - box.left}px`);
+  card.style.setProperty('--uf-my', `${event.clientY - box.top}px`);
+}
+
+/**
+ * Free shows $0 rather than the word "Free" — the card is already titled Free,
+ * and a figure in the same slot as the paid tiers is what makes the comparison
+ * land. It carries no period, because it does not change with the toggle.
+ */
+function PlanPrice({ plan, period }: { plan: Plan; period: BillingPeriod }) {
+  if (!plan.price) {
+    return (
+      <div className="uf-price">
+        <span className="uf-price-amount">
+          <span className="uf-price-cur">$</span>0
+        </span>
+        <span className="uf-price-note">Always free. No card.</span>
+      </div>
+    );
+  }
+
+  const annual = period === 'annual';
+  const amount = annual ? monthlyEquivalent(plan.price) : plan.price.monthly;
+  const saving = annualSaving(plan.price);
+
+  return (
+    <div className="uf-price">
+      <span key={period} className="uf-price-amount">
+        <span className="uf-price-cur">$</span>
+        {amount}
+        <span className="uf-price-per">/month</span>
+      </span>
+      <span className="uf-price-note">
+        {annual ? <>Billed ${plan.price.annual} a year &middot; save ${saving}</> : <>Billed monthly</>}
+      </span>
+    </div>
+  );
+}
+
+/**
+ * How far from the active card a plan can sit and still be drawn. At depth 1 a
+ * card is the immediate neighbour on one side; anything further is the card
+ * diagonally opposite in the rotation and never has a side of its own.
+ */
+const DECK_DEPTH = 1;
+
+/**
+ * The account panel and the plan grid move together: picking a state changes
+ * which plan is marked as yours, so the two never disagree on screen.
+ */
+export function PlanExplorer() {
+  const [stateId, setStateId] = useState<AccountStateId>('out');
+  const [period, setPeriod] = useState<BillingPeriod>('monthly');
+  const [active, setActive] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const deckRef = useRef<HTMLDivElement>(null);
+  const drag = useRef<{ id: number; x: number } | null>(null);
+  const account = accountStates.find((s) => s.id === stateId) ?? accountStates[0];
+  const count = plans.length;
+
+  /**
+   * `inert` waits for hydration. It is a DOM attribute, not a style, so applying
+   * it server-side would strip three of the four plans from the accessibility
+   * tree for anyone whose JavaScript never arrives — and without JavaScript
+   * there is no way to swipe them back into view. Same `useSyncExternalStore`
+   * shape as ThemeToggle: false on the server, true on the client, never again.
+   */
+  const hydrated = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
+
+  /**
+   * Signed distance from the active card, taking the shorter way round: negative
+   * sits to the left, positive to the right, zero is the card in the middle. The
+   * sign drives direction (offset, tilt) and the magnitude drives depth (scale,
+   * fade, stacking), which is what keeps the fan symmetrical about the middle.
+   */
+  const offsetOf = (index: number) => {
+    const half = count / 2;
+    let distance = index - active;
+    if (distance > half) distance -= count;
+    if (distance < -half) distance += count;
+    return distance;
+  };
+  const step = useCallback((delta: number) => setActive((a) => (a + delta + count) % count), [count]);
+
+  const setDragOffset = (dx: number) => {
+    const el = deckRef.current;
+    if (!el) return;
+    el.style.setProperty('--uf-drag', `${dx}px`);
+    // a second, unitless copy: `calc()` cannot turn px into deg for the tilt
+    el.style.setProperty('--uf-drag-n', `${dx}`);
+  };
+
+  function onPointerDown(event: React.PointerEvent<HTMLDivElement>) {
+    drag.current = { id: event.pointerId, x: event.clientX };
+    // throws if the pointer is already gone; the drag still works without capture
+    try {
+      event.currentTarget.setPointerCapture(event.pointerId);
+    } catch {
+      /* no capture available — pointerup on the document still ends the drag */
+    }
+    setDragging(true);
+  }
+
+  function onPointerMove(event: React.PointerEvent<HTMLDivElement>) {
+    if (!drag.current || drag.current.id !== event.pointerId) return;
+    setDragOffset(event.clientX - drag.current.x);
+  }
+
+  function onPointerUp(event: React.PointerEvent<HTMLDivElement>) {
+    if (!drag.current || drag.current.id !== event.pointerId) return;
+    const dx = event.clientX - drag.current.x;
+    drag.current = null;
+    setDragging(false);
+    setDragOffset(0);
+    const width = deckRef.current?.getBoundingClientRect().width ?? 0;
+    // proportional, with a floor: at 150px a fixed 60px threshold is 40% of the card
+    const threshold = Math.max(36, width * 0.22);
+    if (dx <= -threshold) step(1);
+    else if (dx >= threshold) step(-1);
+  }
+
+  return (
+    <div className="uf-stack-l">
+      <div className="uf-acct uf-rise">
+        <div className="uf-acct-bar">
+          <span className="uf-avatar" aria-hidden="true">
+            {account.initials}
+          </span>
+          <span className="uf-who">
+            <b>{account.name}</b>
+            <span>{account.sub}</span>
+          </span>
+          <span style={{ marginLeft: 'auto' }}>
+            <span className={chipTone[account.chipTone]}>{account.chip}</span>
+          </span>
+        </div>
+
+        <div className="uf-acct-body">
+          <div className="uf-stack-6">
+            <h2>{account.title}</h2>
+            <p className="uf-small">{account.copy}</p>
+          </div>
+
+          <div className="uf-cta-row">
+            <button type="button" className="uf-btn uf-btn-primary">
+              {account.primary}
+            </button>
+            <button type="button" className="uf-btn uf-btn-ghost">
+              {account.secondary}
+            </button>
+          </div>
+
+          <div className="uf-stack-6">
+            <span className="uf-eyebrow uf-eyebrow-dim">Preview account states</span>
+            <div className="uf-switch" role="group" aria-label="Account state">
+              {accountStates.map((s) => (
+                <button key={s.id} type="button" aria-pressed={s.id === stateId} onClick={() => setStateId(s.id)}>
+                  {s.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="uf-billing">
+        <span className="uf-eyebrow uf-eyebrow-dim">Billing</span>
+        <div className="uf-switch" role="group" aria-label="Billing period">
+          {billingPeriods.map((option) => (
+            <button key={option.id} type="button" aria-pressed={option.id === period} onClick={() => setPeriod(option.id)}>
+              {option.label}
+            </button>
+          ))}
+        </div>
+        <span className="uf-small uf-billing-hint">
+          {period === 'annual' ? 'Every paid plan costs less per month — up to 25% less.' : 'Switch to annual to pay less per month.'}
+        </span>
+      </div>
+
+      <div
+        className="uf-deck"
+        ref={deckRef}
+        data-dragging={dragging || undefined}
+        role="group"
+        aria-roledescription="Plan deck"
+        aria-label="Plans"
+        onKeyDown={(event) => {
+          if (event.key === 'ArrowRight') { event.preventDefault(); step(1); }
+          if (event.key === 'ArrowLeft') { event.preventDefault(); step(-1); }
+        }}
+      >
+        <div
+          className="uf-deck-stack"
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerCancel={onPointerUp}
+        >
+        {plans.map((plan, index) => {
+          const current = plan.id === account.plan;
+          // current wins: "most popular" is noise on the plan you already hold
+          const flag = current ? 'Your plan' : plan.recommended ? 'Most popular' : null;
+          const offset = offsetOf(index);
+          const depth = Math.abs(offset);
+          const top = offset === 0;
+          return (
+            <div
+              key={plan.id}
+              className="uf-card uf-plan"
+              data-current={current}
+              data-recommended={!current && plan.recommended ? true : undefined}
+              data-top={top ? true : undefined}
+              data-buried={depth > DECK_DEPTH ? true : undefined}
+              inert={hydrated && !top}
+              role="group"
+              aria-roledescription="Plan card"
+              aria-label={`${plan.name}, ${index + 1} of ${count}`}
+              onPointerMove={trackPointer}
+              style={
+                { animationDelay: `${index * 70}ms`, '--uf-d': offset, '--uf-depth': depth } as React.CSSProperties
+              }
+            >
+              {flag ? <span className="uf-plan-flag">{flag}</span> : null}
+              <div>
+                <div className="uf-plan-name">{plan.name}</div>
+                <div className="uf-plan-access">{plan.access}</div>
+              </div>
+              <PlanPrice plan={plan} period={period} />
+              <p className="uf-plan-line">{plan.line}</p>
+
+              <div>
+                {plan.features.map((feature) => (
+                  <div key={feature.title} className="uf-feat" data-state={feature.state}>
+                    <span className="uf-tick" aria-hidden="true">
+                      {feature.state === 'included' ? '✓' : ''}
+                    </span>
+                    <span>
+                      <b>
+                        {feature.title}
+                        {feature.state === 'soon' ? <span className="uf-feat-soon">Coming soon</span> : null}
+                      </b>
+                      <span>{feature.copy}</span>
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="uf-plan-foot">
+                <button
+                  type="button"
+                  className={`uf-btn ${!current && plan.recommended ? 'uf-btn-primary' : 'uf-btn-ghost'}`}
+                  disabled={current}
+                  style={current ? { opacity: 0.55, cursor: 'default' } : undefined}
+                >
+                  {current ? 'Current plan' : plan.cta}
+                </button>
+              </div>
+            </div>
+          );
+        })}
+        </div>
+
+        <div className="uf-deck-nav">
+          <button type="button" className="uf-deck-arrow" aria-label="Previous plan" onClick={() => step(-1)}>
+            &larr;
+          </button>
+          <div className="uf-deck-dots">
+            {plans.map((plan, index) => (
+              <button
+                key={plan.id}
+                type="button"
+                aria-label={plan.name}
+                aria-current={index === active}
+                onClick={() => setActive(index)}
+              />
+            ))}
+          </div>
+          <button type="button" className="uf-deck-arrow" aria-label="Next plan" onClick={() => step(1)}>
+            &rarr;
+          </button>
+        </div>
+
+        {/* the cards behind are inert, so the change of top card needs saying */}
+        <p className="uf-sr" aria-live="polite">
+          {hydrated ? `${plans[active].name}, plan ${active + 1} of ${count}` : ''}
+        </p>
+      </div>
+    </div>
+  );
+}

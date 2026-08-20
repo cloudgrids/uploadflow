@@ -27,79 +27,79 @@ export const releases = [
     version: '2.2.1',
     state: 'development',
     date: 'Not yet released',
-    headline: 'A workspace you can make your own.',
+    headline: 'The full editor is free, and the workspace is yours.',
     summary:
-      'A profile studio with animated nameplates and frames, a navigation rail that trades nine stacked buttons for icon tiles, release notes inside the extension, and a round of fixes to capture, redaction, watermarking, and background removal.',
+      'The first Chrome Web Store release. The full editor moves into the free plan, cutout gains real backdrops, media drags from the shelf straight onto a page — by pointer or by keyboard — and paid features are unlocked by a signed grant your copy verifies for itself.',
     changes: [
       {
-        kind: 'added',
-        title: 'Profile nameplates',
-        copy: 'Aurora, Comet, Prism, Ember, and Circuit sit behind your display name with animated gradient washes, streaks, and sparks.'
+        kind: 'changed',
+        title: 'The full editor is part of the free plan',
+        copy: 'Queue a file on any page and open it in the editor without a subscription.'
       },
       {
         kind: 'added',
-        title: 'Profile frames',
-        copy: 'Gold, Neon, Holographic, and Stealth wrap the full and compact profile cards with sheen, glow, and hue-cycle treatments.'
+        title: 'Cutout puts a backdrop behind the subject',
+        copy: 'Keep it transparent, pick a colour, blur the original, or composite onto another image you added. Every backdrop still exports PNG.'
       },
       {
         kind: 'added',
-        title: 'Your look is saved',
-        copy: 'Avatar decoration, profile effect, banner, nameplate, and frame are stored with your profile instead of resetting when the workspace closes.'
+        title: 'Cutout shows its result while you adjust it',
+        copy: 'The preview updates as you work instead of only after you apply.'
       },
       {
         kind: 'added',
-        title: 'Motion follows your system',
-        copy: 'The reduced-motion preview starts from your operating system setting and follows it when you change it.'
+        title: 'Drag media from the shelf onto a page',
+        copy: 'Dropping delivers the file with or without the review overlay. A post bundle drags as every file it holds, in order.'
       },
       {
         kind: 'added',
-        title: 'Release notes in the extension',
-        copy: 'A What’s new page opens from the workspace header, lists every catalogued release newest-first, and marks the build you are running.'
+        title: 'Place media without a mouse',
+        copy: 'The grip is a real button. Activate it and the page outlines the upload areas that accept files, so you can pick one with the keyboard.'
+      },
+      {
+        kind: 'added',
+        title: 'Profile studio',
+        copy: 'Nameplates and frames sit behind your display name, and every cosmetic choice is remembered.'
+      },
+      {
+        kind: 'added',
+        title: 'Minimize folds the popup to its header',
+        copy: 'The folded row keeps quick switches for the Capture and upload features, and can open the side panel without unfolding first.'
       },
       {
         kind: 'changed',
-        title: 'Navigation is an icon rail',
-        copy: 'Nine stacked label buttons became a column of icon tiles, two to a row. Labels appear in a flyout on hover and on keyboard focus, and the workspace keeps the width the labels used to take.'
+        title: 'Popup navigation is an icon rail',
+        copy: 'Two tiles to a row, with labels in a flyout.'
       },
       {
         kind: 'changed',
-        title: 'Keyboard and screen-reader parity',
-        copy: 'Tab names stay as accessible names, arrow keys follow the tile grid and stop at the ends, and unavailable tabs still explain why. The side panel keeps its own tabs.'
+        title: 'The compression sliders measure compression',
+        copy: '100% is the smallest file, and 0% leaves the original alone. The popup metric counts the files you export and how much smaller they left.'
       },
       {
         kind: 'changed',
-        title: 'Release history reads as a timeline',
-        copy: 'One rail, a node per release, the in-development version at the head in a dashed card, and highlights as separate rows rather than bullets.'
+        title: 'Paid features unlock from a signed grant',
+        copy: 'Your copy of UploadFlow verifies the grant itself, and the platinum trial now has an end date instead of lasting forever.'
+      },
+      {
+        kind: 'fixed',
+        title: 'Redaction and watermark follow the pointer exactly',
+        copy: 'Regions and placement track the cursor one-to-one at any aspect ratio.'
+      },
+      {
+        kind: 'fixed',
+        title: 'The picker follows what a page asked for',
+        copy: 'A page that wants a single file, or only certain file types, gets exactly that.'
+      },
+      {
+        kind: 'fixed',
+        title: 'A drop always ends the drag',
+        copy: 'A page never leaves its drop overlay stranded across the screen after the drag is over.'
       },
       {
         kind: 'changed',
-        title: 'Badges are display-only',
-        copy: 'Badges are issued by UploadFlow, so the controls that implied you could add your own were removed rather than left as dead buttons.'
-      },
-      {
-        kind: 'fixed',
-        title: 'Capture complete post finds more posts',
-        copy: 'Capture now survives a selected caption, a focused comment box, or a framed post, and reads media a page delivers as a CSS background, a lazy-loaded image, or content inside a web component.'
-      },
-      {
-        kind: 'fixed',
-        title: 'No more borrowed captions',
-        copy: 'A post with images but no text is captured at its own container instead of climbing into the feed and attaching a neighbouring post’s caption.'
-      },
-      {
-        kind: 'fixed',
-        title: 'Redaction covers what it says it covers',
-        copy: 'The region overlay now matches the pixels the redaction actually touches, and pointer tracking uses the image’s real aspect ratio, so drags follow the cursor one-to-one.'
-      },
-      {
-        kind: 'fixed',
-        title: 'Watermark click-to-position works',
-        copy: 'Placement moved onto the original preview with a visible marker, and clicking the letterbox margin pans the view instead of snapping the watermark to an edge.'
-      },
-      {
-        kind: 'fixed',
-        title: 'Background removal previews live',
-        copy: 'Cutout now previews as you work, like every other image tool, so its result is visible and selectable before you apply it.'
+        title: 'Media inspector and privacy scanner are switched off',
+        copy: 'The inspector never appeared over a hovered image and the scanner had no panel to open. Both are off while they are rebuilt, and return when they work.'
       }
     ]
   },

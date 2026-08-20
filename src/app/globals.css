@@ -10,47 +10,55 @@
   /* ---- structural tokens (theme-independent) ---- */
 
   /* radius scale — matches --radius 0.625rem in the extension's ui-system */
-  --uf-r: 0.625rem;
+  --uf-r: 0.5rem;            /* 8px — both references sit at 6-10px */
   --uf-r-sm: calc(var(--uf-r) * 0.6);
   --uf-r-md: calc(var(--uf-r) * 0.8);
   --uf-r-xl: calc(var(--uf-r) * 1.4);
   --uf-r-2xl: calc(var(--uf-r) * 1.8);
 
-  --uf-head: "Avenir Next", Avenir, "Nimbus Sans", ui-sans-serif, system-ui, sans-serif;
-  --uf-head-style: italic;
-  --uf-head-case: uppercase;
-  --uf-head-weight: 700;
-  --uf-head-track: -0.045rem;
-  --uf-head-track-lg: -0.045rem;
+  /* Display treatment referenced from vercel.com and antigravity.google:
+     sentence case, light weight, upright, tightly tracked. Both sites carry
+     their scale with tracking rather than weight. */
+  --uf-head: Geist, "Geist Fallback", Inter, ui-sans-serif, system-ui, sans-serif;
+  --uf-head-style: normal;
+  --uf-head-case: none;
+  --uf-head-weight: 400;
+  --uf-head-track: -0.035em;
+  --uf-head-track-lg: -0.055em;
+  /* header height — the sticky rail offsets are derived from this */
+  --uf-bar-h: 42px;
   --uf-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, "Cascadia Mono", Consolas, monospace;
 
   /* ---- LIGHT palette ----
-     `:root` is light and `.dark` overrides it, which is the shape next-themes
-     drives with attribute="class". Lime stays a FILL colour in both themes;
-     --uf-accent-ink is the type colour and becomes a deep olive here, because
-     lime text on a light ground is illegible. */
+     Monochrome: `:root` is light and `.dark` overrides it, the shape
+     next-themes drives with attribute="class". Two accent roles still matter —
+     --uf-accent is what we FILL with and inverts per theme, --uf-accent-ink is
+     what we SET TYPE in, because white type on a white ground is unreadable.
+     Semantic colours stay desaturated so status is still scannable without
+     reintroducing a brand hue. */
   color-scheme: light;
-  --uf-bg: #f6f7f4;
-  --uf-bg-2: #eceee7;
-  --uf-surface: #ffffff;
-  --uf-card: rgba(16, 20, 22, 0.03);
-  --uf-accent: #eefb7a;
-  --uf-accent-hover: #e4f556;
-  --uf-accent-text: #101416;
-  --uf-accent-ink: #55670f;
-  --uf-glow: rgba(85, 103, 15, 0.18);
-  --uf-text: #101416;
-  --uf-text-2: rgba(16, 20, 22, 0.78);
+  --uf-bg: #FAFAF9;
+  --uf-bg-2: #F1F1EF;
+  --uf-surface: #FFFFFF;
+  --uf-card: rgba(11, 12, 14, 0.03);
+  --uf-accent: #0B0C0E;
+  --uf-accent-hover: #23262B;
+  --uf-accent-text: #FFFFFF;
+  --uf-accent-ink: #0B0C0E;
+  --uf-glow: rgba(11, 12, 14, 0.12);
+  --uf-halo: 0 0 22px rgba(11, 12, 14, 0.10);
+  --uf-text: #0B0C0E;
+  --uf-text-2: rgba(11, 12, 14, 0.74);
   /* .uf-small carries real body copy, so this must clear 4.5:1 on the page
      ground rather than sit at the muted level a dark palette can afford */
-  --uf-text-3: rgba(16, 20, 22, 0.66);
-  --uf-border: rgba(16, 20, 22, 0.14);
-  --uf-border-hover: rgba(16, 20, 22, 0.28);
-  --uf-ring: #55670f;
+  --uf-text-3: rgba(11, 12, 14, 0.62);
+  --uf-border: rgba(11, 12, 14, 0.12);
+  --uf-border-hover: rgba(11, 12, 14, 0.26);
+  --uf-ring: #0B0C0E;
 
-  --uf-ok: #0f7a52;
-  --uf-warn: #8a5a12;
-  --uf-stop: #b4323f;
+  --uf-ok: #1F6F4A;
+  --uf-warn: #7A5310;
+  --uf-stop: #A32B33;
 }
 
 /* ---- DARK palette ----
@@ -58,26 +66,27 @@
    system-dark. It is the product's own identity, so it is the richer of the two. */
 .dark {
   color-scheme: dark;
-  --uf-bg: #101416;
-  --uf-bg-2: #0d1113;
-  --uf-surface: #151a1d;
-  --uf-card: rgba(255, 255, 255, 0.03);
-  --uf-accent: #eefb7a;
-  --uf-accent-hover: #f5fd9e;
-  --uf-accent-text: #101416;
-  --uf-accent-ink: #eefb7a;
-  --uf-glow: rgba(238, 251, 122, 0.25);
-  --uf-text: #ffffff;
-  --uf-text-2: rgba(255, 255, 255, 0.72);
+  --uf-bg: #000000;
+  --uf-bg-2: #050505;
+  --uf-surface: #0E0E0E;
+  --uf-card: rgba(255, 255, 255, 0.035);
+  --uf-accent: #FFFFFF;
+  --uf-accent-hover: #E6E8EC;
+  --uf-accent-text: #0B0C0E;
+  --uf-accent-ink: #FFFFFF;
+  --uf-glow: rgba(255, 255, 255, 0.16);
+  --uf-halo: 0 0 24px rgba(255, 255, 255, 0.16), 0 0 64px rgba(255, 255, 255, 0.05);
+  --uf-text: #EDEDED;
+  --uf-text-2: rgba(237, 237, 237, 0.74);
   /* the product uses 0.4 for muted labels; body copy needs more — 0.4 is 3.8:1 */
-  --uf-text-3: rgba(255, 255, 255, 0.56);
-  --uf-border: rgba(255, 255, 255, 0.1);
-  --uf-border-hover: rgba(255, 255, 255, 0.2);
-  --uf-ring: #eefb7a;
+  --uf-text-3: rgba(237, 237, 237, 0.58);
+  --uf-border: rgba(255, 255, 255, 0.09);
+  --uf-border-hover: rgba(255, 255, 255, 0.20);
+  --uf-ring: #FFFFFF;
 
-  --uf-ok: #10b981;
-  --uf-warn: #fbbf24;
-  --uf-stop: #fb7185;
+  --uf-ok: #7FD8AE;
+  --uf-warn: #E4BC70;
+  --uf-stop: #F0949A;
 }
 
 * {
@@ -97,7 +106,10 @@ body {
   max-width: 100%;
   min-height: 100svh;
   margin: 0;
-  overflow-x: hidden;
+  /* No overflow-x here. It computes overflow-y to `auto`, which makes body a
+     scroll container and leaves the sticky header and rail with nothing to
+     stick to — html already clips, and the layout audit shows nothing
+     overflows horizontally anyway. */
   color: var(--uf-text);
   background: var(--uf-bg);
 }
@@ -226,6 +238,7 @@ input[type='range'] {
 .uf h1, .uf h2, .uf h3, .uf h4 {
   margin: 0;
   font-family: var(--uf-head);
+  font-feature-settings: 'ss01' 1;
   font-style: var(--uf-head-style);
   text-transform: var(--uf-head-case);
   font-weight: var(--uf-head-weight);
@@ -253,8 +266,8 @@ input[type='range'] {
 .uf-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
 
 .uf-eyebrow {
-  font-size: 9px; font-weight: 700; letter-spacing: 0.16em;
-  text-transform: uppercase; color: var(--uf-accent-ink);
+  font-size: 12.5px; font-weight: 500; letter-spacing: -0.01em;
+  color: var(--uf-accent-ink);
 }
 .uf-eyebrow-dim { color: var(--uf-text-3); }
 .uf-lede { color: var(--uf-text-2); font-size: 14px; line-height: 1.6; }
@@ -270,12 +283,12 @@ input[type='range'] {
 }
 .uf-logo-name { min-width: 0; }
 .uf-logo-name b {
-  display: block; font-family: var(--uf-head); font-size: 12px; font-weight: 800;
-  text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  display: block; font-family: var(--uf-head); font-size: 13px; font-weight: 600;
+  letter-spacing: -0.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .uf-logo-name span {
-  display: block; font-size: 7.5px; font-weight: 700; letter-spacing: 0.16em;
-  text-transform: uppercase; color: var(--uf-text-3);
+  display: block; font-size: 10.5px; font-weight: 500; letter-spacing: -0.005em;
+  color: var(--uf-text-3);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
@@ -287,6 +300,16 @@ input[type='range'] {
   border-bottom: 1px solid var(--uf-border);
 }
 .uf-bar-in { display: flex; align-items: center; gap: 8px; padding: 8px 10px; }
+
+/* Header height, in one ascending group.
+   Declared on `.uf-inner`, never `.uf`: a container query styles the
+   container's DESCENDANTS, so a rule targeting `.uf` — the container itself —
+   silently never applies. The bands must also stay contiguous and in order,
+   because the file has several @container blocks per breakpoint and a stray
+   380px rule sitting after a 620px one would win at wide widths. */
+@container uf (min-width: 200px) { .uf-inner { --uf-bar-h: 46px; } }
+@container uf (min-width: 380px) { .uf-inner { --uf-bar-h: 50px; } }
+@container uf (min-width: 620px) { .uf-inner { --uf-bar-h: 58px; } }
 .uf-bar nav { display: none; }
 .uf-bar .uf-cta-sm { display: none; }
 .uf-arw { display: none; }
@@ -295,8 +318,8 @@ input[type='range'] {
 /* ---------- buttons ---------- */
 .uf-btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 5px;
-  font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
-  padding: 8px 12px; border-radius: 999px; border: 1px solid transparent;
+  font-size: 13px; font-weight: 500; letter-spacing: -0.01em;
+  padding: 9px 14px; border-radius: var(--uf-r); border: 1px solid transparent;
   cursor: pointer; text-decoration: none; text-align: center; white-space: normal;
   transition: background-color .18s, border-color .18s, color .18s, transform .18s;
 }
@@ -309,7 +332,10 @@ input[type='range'] {
 /* ---------- chips ---------- */
 .uf-chip {
   display: inline-flex; align-items: flex-start; gap: 4px;
-  font-size: 8.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  font-size: 11.5px; font-weight: 500; letter-spacing: -0.005em;
+  /* explicit, not just omitted: chips nest inside `.uf-shot-cap`, which is
+     uppercase, and text-transform inherits. */
+  text-transform: none;
   padding: 3px 6px; border-radius: 999px;
   border: 1px solid var(--uf-border); color: var(--uf-text-3); white-space: normal;
   /* `anywhere`, not `break-word`: only `anywhere` reduces min-content, and a
@@ -317,7 +343,12 @@ input[type='range'] {
      wider than the column at the 150px floor. */
   overflow-wrap: anywhere;
 }
-.uf-chip::before { content: ""; width: 4px; height: 4px; border-radius: 50%; flex: none; background: currentColor; }
+/* flex-start keeps the dot on the first line when the chip wraps, but that pins
+   it to the top of the line box; nudge it down to the first line's optical centre. */
+.uf-chip::before {
+  content: ""; width: 4px; height: 4px; border-radius: 50%; flex: none;
+  margin-top: calc((1.55em - 4px) / 2); background: currentColor;
+}
 .uf-stack > .uf-chip, .uf-stack-6 > .uf-chip, .uf-stack-l > .uf-chip { align-self: flex-start; }
 .uf-chip-live { color: var(--uf-accent-ink); border-color: color-mix(in srgb, var(--uf-accent-ink) 35%, transparent); background: color-mix(in srgb, var(--uf-accent-ink) 8%, transparent); }
 .uf-chip-ok { color: var(--uf-ok); border-color: color-mix(in srgb, var(--uf-ok) 35%, transparent); }
@@ -342,13 +373,23 @@ input[type='range'] {
 .uf-shot-frame img, .uf-shot-frame video { display: block; width: 100%; height: auto; }
 .uf-shot-cap {
   display: flex; align-items: center; gap: 5px; flex-wrap: wrap;
-  font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
-  font-weight: 700; color: var(--uf-text-3);
+  font-size: 11.5px; letter-spacing: -0.005em;
+  font-weight: 500; color: var(--uf-text-3);
 }
 
 /* ---------- hero ---------- */
-.uf-hero { padding-block: 26px 30px; }
-.uf-hero h1 .uf-hl { color: var(--uf-accent-ink); }
+.uf-hero { position: relative; overflow: hidden; padding-block: 26px 30px; }  /* clips the glow below */
+/* Vercel lights its hero with a single soft radial rather than a gradient wash */
+.uf-hero::before {
+  content: ''; position: absolute; z-index: -1;
+  left: 50%; top: -10%; width: min(900px, 120%); aspect-ratio: 1;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, var(--uf-glow) 0%, transparent 62%);
+  pointer-events: none;
+}
+/* Not scoped to .uf-hero: PageHero on every other route uses .uf-hl too, and
+   the hero-only selector left the highlight dead everywhere but the landing. */
+.uf .uf-hl { color: var(--uf-accent-ink); }
 .uf-cta-row { display: flex; flex-wrap: wrap; gap: 7px; }
 .uf-chip-row { display: flex; flex-wrap: wrap; gap: 5px; }
 
@@ -388,6 +429,335 @@ input[type='range'] {
 .uf-foot-links a { color: var(--uf-text-3); text-decoration: none; font-size: 11px; font-weight: 600; }
 .uf-foot-links a:hover { color: var(--uf-accent-ink); }
 
+/* a card that is itself a link: the heading should read as a heading, and the
+   accent belongs to the affordance and to hover, not to every word in it */
+a.uf-card { color: var(--uf-text); text-decoration: none; }
+a.uf-card:hover { border-color: var(--uf-accent-ink); }
+a.uf-card:hover h3 { color: var(--uf-accent-ink); }
+
+/* the soft halo the monochrome palette carries on its display type */
+.uf h1 { text-shadow: var(--uf-halo); }
+.uf .uf-logo-tile { box-shadow: var(--uf-halo); }
+.uf .uf-btn-primary:hover { box-shadow: var(--uf-halo); }
+
+/* ---------- plans: account bar, marquee, plan cards ---------- */
+.uf-acct { border: 1px solid var(--uf-border); border-radius: var(--uf-r-2xl); background: var(--uf-surface); overflow: hidden; }
+.uf-acct-bar {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 12px; border-bottom: 1px solid var(--uf-border); background: var(--uf-card);
+}
+.uf-avatar {
+  width: 32px; height: 32px; border-radius: 50%; flex: none;
+  display: grid; place-items: center; font-size: 12px; font-weight: 700;
+  border: 1px solid var(--uf-border-hover); color: var(--uf-text-2); background: var(--uf-bg-2);
+}
+.uf-who { display: flex; flex-direction: column; min-width: 0; }
+.uf-who b { font-size: 13px; font-weight: 700; }
+.uf-who span { font-size: 11px; color: var(--uf-text-3); }
+.uf-acct-body { padding: 14px 12px; display: flex; flex-direction: column; gap: 14px; }
+
+.uf-switch { display: flex; gap: 5px; flex-wrap: wrap; }
+.uf-switch button {
+  font-family: inherit; font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em;
+  padding: 6px 10px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--uf-border); background: transparent; color: var(--uf-text-3);
+  transition: color .2s, border-color .2s, background-color .2s;
+}
+.uf-switch button:hover { color: var(--uf-text); border-color: var(--uf-border-hover); }
+.uf-switch button[aria-pressed="true"] { background: var(--uf-accent); border-color: var(--uf-accent); color: var(--uf-accent-text); }
+
+/* the walking line */
+.uf-marquee {
+  position: relative; overflow: hidden;
+  border-block: 1px solid var(--uf-border); padding: 9px 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+.uf-marquee-track { display: flex; width: max-content; animation: uf-walk 34s linear infinite; }
+.uf-marquee-run {
+  display: flex; align-items: center; gap: 26px; padding-right: 26px;
+  font-size: 12px; letter-spacing: -0.005em;
+  color: var(--uf-text-3); white-space: nowrap;
+}
+.uf-marquee-run b { color: var(--uf-text-2); font-weight: 600; }
+.uf-marquee-run i { width: 3px; height: 3px; border-radius: 50%; background: var(--uf-border-hover); display: inline-block; }
+@keyframes uf-walk { from { transform: translate3d(0,0,0); } to { transform: translate3d(-50%,0,0); } }
+
+/* ---------- plan deck ---------- */
+/* The plans layout at every width: one card on top, the rest stacked behind it,
+   swipe or use the nav to bring the next forward. */
+.uf-deck {
+  position: relative;
+  /* The deck is the plans layout at every width. `width` is explicit because
+     `.uf-stack-l` is a column flex container and the deck would otherwise
+     shrink-to-fit its content rather than fill up to the cap. */
+  width: 100%;
+  max-width: 520px;
+  margin-inline: auto;
+}
+
+.uf-deck-stack {
+  /* every card in one grid cell: the stack is as tall as the tallest plan, so
+     swiping never shifts the page */
+  display: grid;
+  touch-action: pan-y;  /* vertical scrolling stays the page's, horizontal is ours */
+}
+.uf-deck-stack > .uf-plan {
+  grid-area: 1 / 1;
+  /* The fan is off at the floor and widens in two steps. Rotating a card adds
+     height×sin(angle) to its bounding box, and these cards are several hundred
+     pixels tall, so a fixed angle that looks right at 900px slices the third
+     card's corner off against `html { overflow-x: hidden }` at 380px. */
+  --uf-fan-a: 0deg;
+  --uf-fan-x: 0px;
+  transform-origin: 50% 88%;
+  /* `--uf-d` is signed and sets direction: the neighbour on the left offsets and
+     tilts one way, the one on the right the other. `--uf-depth` is its magnitude
+     and sets recession, so both sides fall back by the same amount. */
+  transform:
+    translateX(calc(var(--uf-d, 0) * var(--uf-fan-x)))
+    translateY(calc(var(--uf-depth, 0) * 13px))
+    rotate(calc(var(--uf-d, 0) * var(--uf-fan-a)))
+    scale(calc(1 - var(--uf-depth, 0) * 0.055));
+  opacity: calc(1 - var(--uf-depth, 0) * 0.35);
+  z-index: calc(10 - var(--uf-depth, 0));
+  transition: transform .38s cubic-bezier(.2,.75,.25,1), opacity .38s ease;
+}
+.uf-deck-stack > .uf-plan[data-top="true"] {
+  transform: translateX(var(--uf-drag, 0px)) rotate(calc(var(--uf-drag-n, 0) * 0.022deg));
+  cursor: grab;
+}
+.uf-deck[data-dragging="true"] .uf-plan[data-top="true"] { transition: none; cursor: grabbing; }
+/* further than one step from the middle: no side of its own, and each painted
+   card costs a full card of compositing */
+.uf-deck-stack > .uf-plan[data-buried="true"] { visibility: hidden; }
+
+/* Sized for the 150px floor: two arrows, four dots and the gaps have to fit a
+   130px content box, so everything starts small and grows at 200px. */
+.uf-deck-nav {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  padding-top: 14px;
+}
+.uf-deck-arrow {
+  flex: none; width: 26px; height: 26px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--uf-border); background: var(--uf-card); color: var(--uf-text-2);
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: border-color .2s, color .2s;
+}
+.uf-deck-arrow:hover { border-color: var(--uf-border-hover); color: var(--uf-text); }
+.uf-deck-dots { display: flex; align-items: center; gap: 4px; }
+.uf-deck-dots button {
+  width: 6px; height: 6px; padding: 0; border: 0; border-radius: 999px; cursor: pointer;
+  background: var(--uf-border-hover);
+  transition: width .25s, background-color .25s;
+}
+.uf-deck-dots button[aria-current="true"] { width: 14px; background: var(--uf-accent); }
+
+@media (prefers-reduced-motion: reduce) {
+  .uf-deck-stack > .uf-plan { transition: none; }
+  .uf-deck-dots button { transition: none; }
+}
+
+/* plan cards */
+.uf-plan { position: relative; display: flex; flex-direction: column; gap: 10px; }
+.uf-plan[data-current="true"] { border-color: var(--uf-accent-ink); }
+
+/* One flag slot, filled by the component with either "Your plan" or "Most
+   popular" — a real element rather than two pseudo-elements, so the two can
+   never occupy the same corner. It wraps to `right` at the floor because
+   "Most popular" is wider than the gap `left: 12px` leaves there. */
+.uf-plan-flag {
+  /* In flow at the floor. "Most popular" needs two lines under ~200px, and a
+     two-line pill pinned to `top: -10px` rides down over the plan name. */
+  align-self: flex-start; order: -1;
+  width: fit-content; max-width: 100%;
+  font-size: 11px; font-weight: 500; letter-spacing: -0.005em; line-height: 1.4;
+  padding: 2px 8px; border-radius: 999px;
+  background: var(--uf-accent); color: var(--uf-accent-text);
+}
+
+/* Pointer highlight. Decorative only — no content lives in this layer, so
+   starting at opacity 0 is safe here in a way it never is for real content, and
+   it is a transition rather than an animation, so a background tab cannot strand
+   it mid-keyframe. */
+.uf-plan::before {
+  content: ''; position: absolute; inset: 0; z-index: 0;
+  border-radius: inherit; pointer-events: none;
+  opacity: 0; transition: opacity .3s ease;
+  background: radial-gradient(260px circle at var(--uf-mx, 50%) var(--uf-my, 0px),
+    color-mix(in srgb, var(--uf-accent) 13%, transparent), transparent 68%);
+}
+.uf-plan:hover::before { opacity: 1; }
+/* the card's own children must sit above the highlight layer */
+.uf-plan > * { position: relative; z-index: 1; }
+
+/* Rotating edge glow on the recommended tier. `--uf-ring-angle` has to be a
+   registered property or the conic gradient steps instead of sweeping. The card
+   background is opaque (`--uf-surface`), so the blurred ring only shows past
+   the border. */
+@property --uf-ring-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+.uf-plan[data-recommended="true"] {
+  border-color: color-mix(in srgb, var(--uf-accent) 42%, transparent);
+}
+.uf-plan[data-recommended="true"] {
+  /* soft static halo; the sweeping part is the masked ring below */
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--uf-accent) 12%, transparent),
+              0 20px 60px -28px var(--uf-glow);
+}
+.uf-plan[data-recommended="true"]::after {
+  content: ''; position: absolute; inset: -1px; z-index: 1;
+  border-radius: inherit; pointer-events: none;
+  padding: 1px;
+  background: conic-gradient(from var(--uf-ring-angle),
+    transparent 0 54%, var(--uf-accent) 76%, transparent 90% 100%);
+  /* Clip the gradient to the 1px border ring. Without this the conic fills the
+     whole box and sweeps a wedge of light across the card face — and `z-index:
+     -1` cannot escape it, because `.uf-rise` animates transform and so makes
+     the card its own stacking context. */
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: uf-ring 6s linear infinite;
+}
+@keyframes uf-ring { to { --uf-ring-angle: 360deg; } }
+.uf-plan-name { font-family: var(--uf-head); font-size: 19px; font-weight: 800; letter-spacing: -0.02em; }
+.uf-plan-access { font-size: 12px; letter-spacing: -0.005em; color: var(--uf-text-3); }
+.uf-plan-line { color: var(--uf-text-2); font-size: 12.5px; }
+
+/* ---------- price ---------- */
+/* Authored at the 150px floor: the figure wraps under the currency rather than
+   forcing the card wider, so `uf-price-amount` stays a plain inline-flex row
+   with baseline alignment instead of a nowrap block. */
+.uf-billing {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 7px;
+  padding-bottom: 4px;
+  /* same column as the deck it controls — full width it would strand the hint
+     against the far edge of a wide page */
+  width: 100%; max-width: 520px; margin-inline: auto;
+}
+.uf-billing-hint { color: var(--uf-text-3); }
+.uf-price {
+  display: flex; flex-direction: column; gap: 1px;
+  padding: 2px 0 4px;
+}
+.uf-price-amount {
+  animation: uf-price-in .34s cubic-bezier(.2,.75,.25,1);
+  display: inline-flex; align-items: baseline; flex-wrap: wrap; gap: 1px;
+  font-family: var(--uf-head);
+  font-size: 30px; font-weight: 400; letter-spacing: var(--uf-head-track-lg);
+  line-height: 1.05; color: var(--uf-text);
+  /* tabular figures so the number does not shift width when the toggle flips */
+  font-variant-numeric: tabular-nums;
+}
+.uf-price-cur { font-size: 0.6em; font-weight: 500; align-self: flex-start; margin-top: 0.22em; }
+.uf-price-per {
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: 11.5px; font-weight: 500; letter-spacing: -0.005em;
+  color: var(--uf-text-3);
+}
+.uf-price-note { font-size: 11.5px; color: var(--uf-text-3); letter-spacing: -0.005em; }
+@keyframes uf-price-in { from { transform: translateY(9px); } to { transform: none; } }
+
+.uf-feat { display: grid; grid-template-columns: 16px 1fr; gap: 8px; align-items: start; padding: 7px 0; border-top: 1px solid var(--uf-border); }
+.uf-feat:first-child { border-top: 0; }
+.uf-tick {
+  width: 15px; height: 15px; border-radius: 50%; margin-top: 2px;
+  display: grid; place-items: center; font-size: 8px; line-height: 1;
+  border: 1px solid var(--uf-border-hover); color: var(--uf-text-3);
+}
+.uf-feat[data-state="included"] .uf-tick { background: var(--uf-accent); border-color: var(--uf-accent); color: var(--uf-accent-text); }
+.uf-feat[data-state="soon"] .uf-tick { border-style: dashed; }
+.uf-feat b { display: block; font-size: 12.5px; font-weight: 600; }
+.uf-feat span { display: block; font-size: 11.5px; color: var(--uf-text-3); line-height: 1.5; }
+/* two classes, not one: `.uf-feat span` (0,1,1) sets `display: block` for the
+   feature description and would otherwise beat a bare `.uf-feat-soon` (0,1,0),
+   stretching this badge into a full-width bar. */
+.uf-feat .uf-feat-soon {
+  display: inline-block; vertical-align: baseline;
+  margin-left: 6px; font-size: 11px; font-weight: 500; letter-spacing: -0.005em; line-height: 1.5;
+  color: var(--uf-text-3); border: 1px solid var(--uf-border-hover); border-radius: 999px; padding: 1px 6px;
+  /* wraps at the floor; a nowrap badge is wider than the feature column there */
+  white-space: normal;
+}
+.uf-plan-foot { margin-top: auto; padding-top: 8px; }
+.uf-plan-foot .uf-btn { width: 100%; }
+
+/* entrance: TRANSFORM ONLY. A stalled animation still applies its current
+   keyframe, so an opacity-0 start can hide content indefinitely in a
+   background tab. Sliding degrades to "14px low but readable". */
+.uf-rise { animation: uf-rise .7s cubic-bezier(.2,.75,.25,1) both; }
+@keyframes uf-rise { from { transform: translateY(14px); } to { transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .uf-marquee-track { animation: none; transform: none; }
+  .uf-rise { animation: none; transform: none; }
+  .uf-price-amount { animation: none; }
+  /* the ring keeps its glow, it just stops sweeping */
+  .uf-plan[data-recommended="true"]::after { animation: none; }
+  .uf-plan::before { transition: none; }
+}
+
+/* No highlight to chase without a real pointer, and on touch it would latch on
+   after a tap and stay lit. */
+@media (hover: none), (pointer: coarse) {
+  .uf-plan::before { display: none; }
+}
+
+/* ---------- loading mark (ported from the extension's ui-system) ---------- */
+.uf-loader { display: grid; place-items: center; color: var(--uf-accent-ink); }
+
+@keyframes uf-loader-charge {
+  0% { stroke-dashoffset: 260; }
+  45%, 62% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -260; }
+}
+
+.uf-loader__stroke {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 260;
+  stroke-dashoffset: 260;
+  animation: uf-loader-charge 1700ms ease-in-out infinite;
+}
+
+/* The tray fills first and the arrow rises out of it. */
+.uf-loader__stroke--tray { animation-delay: 180ms; }
+
+/* Resting state still has to read as "something is happening here", so the mark
+   stays drawn rather than disappearing along with its animation. */
+@media (prefers-reduced-motion: reduce) {
+  .uf-loader__stroke { animation: none; stroke-dashoffset: 0; opacity: 0.7; }
+}
+
+.uf-loading-shell {
+  min-height: 60svh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+}
+
+/* visually hidden, still read aloud — the headline text is never absent */
+.uf-sr {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+
+/* ---------- typewriter caret (antigravity.google) ---------- */
+.uf-caret {
+  display: inline-block; width: 2px; height: 0.86em;
+  margin-left: 0.06em; vertical-align: -0.08em;
+  background: linear-gradient(180deg, #4285F4, #EA4335 45%, #FBBC04 75%, #34A853);
+  animation: uf-blink 1.05s steps(1) infinite;
+}
+@keyframes uf-blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .uf-caret { animation: none; opacity: .6; } }
+
 /* ---------- theme toggle ---------- */
 .uf-theme-toggle {
   /* hidden at the floor: the header only has room for the wordmark there */
@@ -398,7 +768,7 @@ input[type='range'] {
   display: inline-flex; align-items: center; gap: 4px;
   border: 0; background: transparent; color: var(--uf-text-3);
   border-radius: 999px; padding: 4px 7px; cursor: pointer;
-  font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  font-size: 11.5px; font-weight: 500; letter-spacing: -0.01em;
   line-height: 1;
 }
 .uf-theme-toggle button:hover { color: var(--uf-text); }
@@ -409,6 +779,16 @@ input[type='range'] {
    Container bands — the base above is the 150px design
    ========================================================================== */
 @container uf (min-width: 200px) {
+  .uf-deck-nav { gap: 10px; }
+  .uf-deck-arrow { width: 30px; height: 30px; }
+  .uf-deck-dots { gap: 5px; }
+  .uf-deck-dots button { width: 7px; height: 7px; }
+  .uf-deck-dots button[aria-current="true"] { width: 20px; }
+  /* one line fits from here, so the pill can straddle the card border again */
+  .uf-plan-flag {
+    position: absolute; top: -10px; left: 12px; z-index: 2;
+    max-width: calc(100% - 24px);
+  }
   .uf { font-size: 13.5px; }
   .uf-wrap { padding-inline: 14px; }
   .uf h1 { font-size: 30px; }
@@ -418,6 +798,22 @@ input[type='range'] {
 }
 
 @container uf (min-width: 380px) {
+  /* Half-card spread. `--uf-fan-x: 50%` is 50% of the card's own width, so the
+     three visible cards span two full card widths and the card must halve to
+     make room — 48% is what guarantees the spread fits inside the deck, and the
+     520px cap stops the card growing past its usual size. 380px is the lowest
+     band this works at: below it the halved card drops under the 130px the
+     floor layout is authored for. */
+  .uf-deck { max-width: 1100px; }
+  .uf-deck-stack { width: min(520px, 48%); margin-inline: auto; }
+  /* no pull-back: the fan is symmetric about the active card, so centring the
+     column centres the whole spread */
+  .uf-deck-stack > .uf-plan { --uf-fan-a: 1.5deg; --uf-fan-x: 50%; }
+  /* label, switch and hint fit on one line once there is room; below this they
+     stack, because the switch alone is wider than the column at the floor */
+  .uf-billing { flex-direction: row; align-items: center; flex-wrap: wrap; gap: 8px 10px; }
+  .uf-billing-hint { margin-left: auto; }
+  .uf-price-amount { font-size: 34px; }
   .uf-wrap { padding-inline: 20px; }
   .uf h1 { font-size: 40px; }
   .uf h2 { font-size: 25px; }
@@ -428,6 +824,7 @@ input[type='range'] {
   .uf-grid-2 { grid-template-columns: repeat(2, 1fr); }
   .uf-chip { white-space: nowrap; overflow-wrap: normal; align-items: center; }
   .uf-btn { white-space: nowrap; }
+  .uf-btn-xs { font-size: 12px; }
   .uf-arw { display: inline; }
   .uf-bar .uf-cta-sm { display: inline-flex; margin-left: auto; flex: none; }
   .uf-theme-toggle { display: inline-flex; }
@@ -438,6 +835,13 @@ input[type='range'] {
 }
 
 @container uf (min-width: 620px) {
+  /* only the tilt opens up here — the offset is already 50% from 380px, and
+     re-stating it in px would silently collapse the spread */
+  .uf-deck-stack > .uf-plan { --uf-fan-a: 3.2deg; }
+
+  /* not at 380: that is where the plan grid goes two-up and the cards are at
+     their narrowest, so a nowrap badge overflows its feature column there */
+  .uf-feat .uf-feat-soon { white-space: nowrap; }
   .uf { font-size: 14px; }
   .uf-wrap { padding-inline: 28px; }
   .uf h1 { font-size: 54px; }
@@ -448,12 +852,12 @@ input[type='range'] {
   .uf-grid { gap: 14px; }
   .uf-grid-3 { grid-template-columns: repeat(3, 1fr); }
   .uf-bar nav { display: flex; align-items: center; gap: 16px; }
-  .uf-bar nav a { color: var(--uf-text-2); text-decoration: none; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+  .uf-bar nav a { color: var(--uf-text-2); text-decoration: none; font-size: 13.5px; font-weight: 450; letter-spacing: -0.01em; }
   .uf-bar nav a:hover { color: var(--uf-accent-ink); }
   .uf-bar .uf-cta-sm { margin-left: 0; }
   .uf-bar-in { gap: 20px; }
   .uf-logo-tile { width: 32px; height: 32px; font-size: 15px; }
-  .uf-logo-name b { font-size: 14px; }
+  .uf-logo-name b { font-size: 15px; }
   .uf-flow { flex-direction: row; gap: 14px; }
   .uf-flow > li { flex: 1; }
 }
@@ -490,7 +894,7 @@ input[type='range'] {
 .uf-statline {
   display: flex; flex-direction: column; gap: 2px;
   padding: 7px 0; border-bottom: 1px solid var(--uf-border);
-  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700;
+  font-size: 12px; letter-spacing: -0.005em; font-weight: 500;
   color: var(--uf-text-3);
 }
 .uf-statline:last-child { border-bottom: 0; }
@@ -498,7 +902,7 @@ input[type='range'] {
 
 /* sticky in-page nav */
 .uf-toc {
-  position: sticky; top: 44px; z-index: 30;
+  position: sticky; top: var(--uf-bar-h); z-index: 30;
   display: flex; gap: 5px; overflow-x: auto;
   padding: 8px 10px; margin-block: 4px;
   border-block: 1px solid var(--uf-border);
@@ -508,7 +912,7 @@ input[type='range'] {
 }
 .uf-toc a {
   flex: none; text-decoration: none;
-  font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  font-size: 11.5px; font-weight: 500; letter-spacing: -0.005em;
   padding: 5px 9px; border-radius: 999px;
   border: 1px solid var(--uf-border); color: var(--uf-text-3);
   white-space: nowrap;
@@ -544,7 +948,7 @@ input[type='range'] {
 .uf-rel-head { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; }
 .uf-rel-head .uf-rel-date { margin-left: 0; }
 .uf-rel-ver { font-family: var(--uf-mono); font-size: 13px; font-weight: 700; color: var(--uf-accent-ink); }
-.uf-rel-date { font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--uf-text-3); font-weight: 700; }
+.uf-rel-date { font-size: 11.5px; letter-spacing: -0.005em; color: var(--uf-text-3); font-weight: 500; }
 .uf-change { display: flex; flex-direction: column; gap: 3px; padding: 7px 0; border-bottom: 1px solid var(--uf-border); }
 .uf-change:last-child { border-bottom: 0; }
 .uf-change-top { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
@@ -567,7 +971,7 @@ input[type='range'] {
 .uf-log-row[data-status="success"] { border-left-color: var(--uf-ok); }
 .uf-log-row[data-status="error"] { border-left-color: var(--uf-stop); }
 .uf-log-row[data-status="info"] { border-left-color: var(--uf-warn); }
-.uf-log-src { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--uf-text-2); }
+.uf-log-src { font-size: 11.5px; font-weight: 500; letter-spacing: -0.005em; color: var(--uf-text-2); }
 .uf-log-detail { font-family: var(--uf-mono); font-size: 10.5px; color: var(--uf-text-3); word-break: break-word; }
 .uf-field {
   width: 100%; padding: 7px 9px; border-radius: var(--uf-r-md);
@@ -588,7 +992,7 @@ input[type='range'] {
 
 @container uf (min-width: 620px) {
   .uf-page-hero { padding-block: 56px 40px; }
-  .uf-toc { top: 52px; padding-inline: 28px; }
+  .uf-toc { padding-inline: 28px; }   /* offset comes from --uf-bar-h, not a literal */
   .uf-prose h2 { font-size: 18px; }
   .uf-prose p, .uf-prose li { font-size: 13.5px; }
   .uf-rel-item { padding-left: 24px; }
@@ -611,7 +1015,7 @@ input[type='range'] {
 .uf-handoff-foot {
   display: grid; grid-template-columns: 1fr; gap: 6px;
   padding-top: 10px; border-top: 1px solid var(--uf-border); text-align: center;
-  font-size: 8.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--uf-text-3);
+  font-size: 11px; font-weight: 500; letter-spacing: -0.005em; color: var(--uf-text-3);
 }
 .uf-code {
   border: 1px solid color-mix(in srgb, var(--uf-accent-ink) 30%, transparent);
@@ -619,7 +1023,7 @@ input[type='range'] {
   border-radius: var(--uf-r-xl); padding: 14px 10px; text-align: center;
   display: flex; flex-direction: column; gap: 6px;
 }
-.uf-code-label { font-size: 8.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--uf-text-3); }
+.uf-code-label { font-size: 11.5px; font-weight: 500; letter-spacing: -0.005em; color: var(--uf-text-3); }
 .uf-code-value { font-size: 28px; letter-spacing: 0.22em; color: var(--uf-accent-ink); line-height: 1.1; }
 
 .uf-meter { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
@@ -640,34 +1044,13 @@ input[type='range'] {
 
 @container uf (min-width: 900px) {
   .uf-test-split { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 36px; align-items: start; }
-  .uf-test-split > aside { position: sticky; top: 70px; }
+  .uf-test-split > aside { position: sticky; top: calc(var(--uf-bar-h) + 14px); }
 }
-
-/* ==========================================================================
-   TypePreview — DEVELOPMENT ONLY, delete with src/components/site/TypePreview.tsx
-   ========================================================================== */
-.uf-typedock { position: fixed; right: 8px; bottom: 8px; z-index: 90; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; font-family: var(--uf-mono); }
-.uf-typedock-toggle {
-  border: 1px solid var(--uf-border-hover); background: var(--uf-surface); color: var(--uf-text);
-  border-radius: 999px; padding: 6px 10px; font-size: 10px; cursor: pointer;
-  box-shadow: 0 6px 20px rgb(0 0 0 / 35%);
-}
-.uf-typedock-panel {
-  display: flex; flex-direction: column; gap: 4px;
-  padding: 10px; width: min(280px, calc(100vw - 24px));
-  border: 1px solid var(--uf-border); border-radius: var(--uf-r-xl);
-  background: var(--uf-surface); box-shadow: 0 12px 40px rgb(0 0 0 / 45%);
-  max-height: 70vh; overflow-y: auto;
-}
-.uf-typedock-label { font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--uf-text-3); margin-top: 4px; }
-.uf-typedock-row { display: flex; flex-wrap: wrap; gap: 4px; }
-.uf-typedock-row button {
-  border: 1px solid var(--uf-border); background: var(--uf-card); color: var(--uf-text-2);
-  border-radius: 999px; padding: 4px 8px; font-size: 10px; cursor: pointer;
-}
-.uf-typedock-row button[aria-pressed="true"] { border-color: var(--uf-accent-ink); color: var(--uf-accent-ink); }
 
 
 @container uf (min-width: 1100px) {
   .uf-theme-toggle-label { display: inline; }
 }
+
+/* neutral plan chip — a tier is not a status, so it must not read as one */
+.uf-chip-plan { color: var(--uf-text-2); border-color: var(--uf-border-hover); }
