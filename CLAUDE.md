@@ -6,9 +6,24 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 The public marketing/product site for UploadFlow (a Chrome extension), served at `https://uploadflow.cloudgrids.tech`. Next.js 16 App Router + React 19 + Tailwind 4, TypeScript strict, pnpm.
 
-This directory is its own git repository (`arijitchhatui/uploadflow`), separate from the sibling `extension/` and `server/` trees. Run all git commands from `web/`, never from the parent directory. See the parent `../CLAUDE.md` for the container layout.
+This directory is its own git repository (`cloudgrids/uploadflow`), separate from the sibling `extension/` and `server/` trees. Run all git commands from `web/`, never from the parent directory. See the parent `../CLAUDE.md` for the container layout.
 
-**Content boundary:** `extension/` is a private repo. Product copy and feature claims come from `web/README.md` and the `content.ts` modules. Do not copy extension source, architecture, internal docs, or its theme registry into this repo — a previous attempt to ship the extension's 18 theme palettes here was explicitly reverted as "keep it internal".
+> ## ⚠ This repository is PUBLIC
+>
+> It is the only one of the three that is. `uploadflow-extension` and `uploadflow-server` are
+> private, and **anything written here — including this file, commit messages, branch names and pull
+> request descriptions — is world-readable the moment it is pushed.** Assume a competitor reads every
+> commit.
+>
+> Nothing internal belongs in this repo. Not extension or server source, not architecture notes, not
+> file paths into the private trees, not internal mechanism names, not unreleased plans, and not the
+> names of features the product does not advertise. A previous attempt to ship the extension's 18
+> theme palettes here was explicitly reverted as "keep it internal" — the same test applies to prose.
+>
+> Working notes that need any of that live in the private workspace repo's `CLAUDE.md`, one directory
+> up. When something must be referred to here, refer to it by what a customer would call it.
+
+Product copy and feature claims come from `README.md` and the `content.ts` modules.
 
 ## Commands
 
@@ -81,26 +96,22 @@ When auditing, compare each element's width against the container **and** check 
 
 Data modules `components/landing/content.ts`, `components/how-it-works/content.ts` and `components/whats-new/content.ts` are still the source of copy for their pages.
 
-## Plan gate — the site must not outrun it
+## Plan gate — the site must not outrun the product
 
-The extension gates features by plan (`free` / `silver` / `gold` / `platinum`, in
-`apps/extension/src/product/features/*Features.ts` → `planRequirements`) **and** by maturity
-(`RELEASE_PROFILES.stable` admits `available` + `beta` and requires `runtimeReady`). A stable free
-install therefore gets far less than the tree contains.
+The extension gates features two ways at once: by plan (free / silver / gold / platinum) **and** by
+how mature a feature is in the build that actually ships. A stable free install therefore offers less
+than the product contains, and a claim that is true of the product can still be false of the release
+a visitor installs.
 
-Free today: upload interception, both pickers, overlay, side panel, media shelf, **the full editor**,
-optimize, crop, cutout, compatibility check, downloads, shortcuts, Event Drops, Subscriptions.
-Silver: redaction, watermark, collections, alt-text studio. Gold: video, upscaling, post bundles,
-site/destination presets, Private Media Memory. Platinum: batch workspace, platform packs, brand kits.
+**Verify every feature claim against the internal notes before writing it** — not against the
+feature's name, and not against this file. The current plan split, the maturity ladder, and the list
+of what a stable build genuinely reaches are all maintained in the private workspace repo, because
+enumerating what this site does *not* advertise is precisely the kind of thing this repo must never
+contain. If you cannot confirm a claim from a customer-facing source, ask rather than infer.
 
-Unreachable in a stable build and therefore **not advertised**: Live Draft Sync, Handoff, AirDrop,
-Gallery, audio editor, PDF compression, URL collector, region capture, screen recording, edit
-recipes, auto-redact, scheduled delivery. The media inspector (Inspect Mode) and the automatic
-privacy scanner are switched off in 2.2.1 while they are rebuilt.
-
-Before changing a feature claim, check `planRequirements` and the maturity ladder rather than the
-feature's name, and mirror `changelog.upcoming` in `packages/i18n/src/locales/en.ts` — that is the
-curated list of what a stable build actually offers.
+Two tools are switched off in the current release and the site says so on purpose — see
+`whats-new/content.ts` and the landing page. Telling users what is disabled is deliberate; listing
+what is unreleased is not.
 
 ## Prices
 
