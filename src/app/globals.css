@@ -823,6 +823,11 @@ a.uf-card:hover h3 { color: var(--uf-accent-ink); }
   .uf-hero { padding-block: 40px 46px; }
   .uf-grid-2 { grid-template-columns: repeat(2, 1fr); }
   .uf-chip { white-space: nowrap; overflow-wrap: normal; align-items: center; }
+  /* The dot's margin-top optically centres it against the FIRST line while the base rule
+     aligns to flex-start. Once the chip is one line and centred, that offset is applied on
+     top of the centring — flex centres the margin box — and pushes the dot a full diameter
+     below the text. Reset it wherever align-items becomes center. */
+  .uf-chip::before { margin-top: 0; }
   .uf-btn { white-space: nowrap; }
   .uf-btn-xs { font-size: 12px; }
   .uf-arw { display: inline; }
