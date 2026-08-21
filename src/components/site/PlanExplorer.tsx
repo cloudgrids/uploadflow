@@ -9,8 +9,11 @@ import {
   plans,
   type AccountStateId,
   type BillingPeriod,
-  type Plan
+  type Plan,
+  type PlanId
 } from './plansContent';
+import { isApiError, isPayablePlan, startCheckout } from '../../lib/api';
+import { messageForFailure } from './apiMessages';
 
 const chipTone = { quiet: 'uf-chip', on: 'uf-chip uf-chip-ok', outline: 'uf-chip uf-chip-beta' } as const;
 
@@ -147,6 +150,32 @@ export function PlanExplorer() {
     else if (dx >= threshold) step(-1);
   }
 
+  /**
+   * Which plan is mid-checkout, if any. One at a time: the browser leaves the page on success, so
+   * a second click would only ever be a double submit.
+   */
+  const [starting, setStarting] = useState<PlanId | null>(null);
+  const [notice, setNotice] = useState('');
+
+  const buy = async (plan: Plan) => {
+    if (starting || !isPayablePlan(plan.id)) return;
+
+    setStarting(plan.id);
+    setNotice('');
+    try {
+      window.location.assign(await startCheckout(plan.id, period));
+    } catch (cause) {
+      // A subscription belongs to an account, so nobody signed in means sign in first rather than
+      // an error — the visitor asked to buy something and that is still the thing to help them do.
+      if (isApiError(cause) && cause.outcome === 'auth') {
+        window.location.assign('/sign-in');
+        return;
+      }
+      setNotice(messageForFailure(cause, 'Could not start checkout. Try again.'));
+      setStarting(null);
+    }
+  };
+
   return (
     <div className="uf-stack-l">
       <div className="uf-acct uf-rise">
@@ -277,10 +306,11 @@ export function PlanExplorer() {
                 <button
                   type="button"
                   className={`uf-btn ${!current && plan.recommended ? 'uf-btn-primary' : 'uf-btn-ghost'}`}
-                  disabled={current}
+                  disabled={current || !isPayablePlan(plan.id) || starting !== null}
                   style={current ? { opacity: 0.55, cursor: 'default' } : undefined}
+                  onClick={() => void buy(plan)}
                 >
-                  {current ? 'Current plan' : plan.cta}
+                  {current ? 'Current plan' : starting === plan.id ? 'Starting…' : plan.cta}
                 </button>
               </div>
             </div>
@@ -312,6 +342,17 @@ export function PlanExplorer() {
         <p className="uf-sr" aria-live="polite">
           {hydrated ? `${plans[active].name}, plan ${active + 1} of ${count}` : ''}
         </p>
+
+        {/*
+          Outside the cards on purpose. They share one grid cell, so the stack is as tall as the
+          tallest of them — a message rendered inside would resize the whole deck the moment it
+          appeared, and there is only ever one checkout in flight to report on anyway.
+        */}
+        {notice ? (
+          <p className="uf-small" role="status" aria-live="polite">
+            {notice}
+          </p>
+        ) : null}
       </div>
     </div>
   );
