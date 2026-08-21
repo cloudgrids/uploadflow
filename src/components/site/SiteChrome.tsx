@@ -25,11 +25,11 @@ export function StoreLink({ className, children }: { className: string; children
   );
 }
 
-export function SiteHeader() {
+export function SiteHeader({ logoHref }: { logoHref?: string } = {}) {
   return (
     <header className="uf-bar">
       <div className="uf-bar-in">
-        <Logo tagline="Private toolkit" />
+        <Logo tagline="Private toolkit" href={logoHref} />
         <span className="uf-bar-spacer" />
         <nav aria-label="Main navigation">
           {navigation.map((item) => (
@@ -51,15 +51,25 @@ export function SiteHeader() {
           <summary aria-label="Menu">
             <span className="uf-menu-icon" aria-hidden="true" />
           </summary>
-          <nav className="uf-menu-panel" aria-label="Pages">
-            {navigation.map((item) => (
-              <a key={item.href} href={item.href}>
-                {item.label}
-              </a>
-            ))}
-            {/* The header has no room for the call to action until 620px, so it lives here until then. */}
+          {/*
+            The panel is a plain box, not the <nav> itself: it also carries the
+            call to action and the theme control, and neither belongs inside
+            something announced as a list of pages.
+          */}
+          <div className="uf-menu-panel">
+            <nav className="uf-menu-nav" aria-label="Pages">
+              {navigation.map((item) => (
+                <a key={item.href} href={item.href}>
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+            {/* Each of these is here only while the header itself is too narrow to show it. */}
             <StoreLink className="uf-menu-cta">Add to Chrome</StoreLink>
-          </nav>
+            <div className="uf-menu-theme">
+              <ThemeToggle />
+            </div>
+          </div>
         </details>
       </div>
     </header>
