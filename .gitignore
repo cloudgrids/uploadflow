@@ -3,6 +3,9 @@ dist/
 .next/
 *.tsbuildinfo
 *.local
+.env
+.env.*
+!.env.example
 *.log
 .DS_Store
 .vercel/
