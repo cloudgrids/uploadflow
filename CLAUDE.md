@@ -135,6 +135,21 @@ Two tools are switched off in the current release and the site says so on purpos
 `whats-new/content.ts` and the landing page. Telling users what is disabled is deliberate; listing
 what is unreleased is not.
 
+**Which tier a feature belongs to is moving out of the extension and into the service.** It is
+becoming a value the backend states and signs rather than one compiled into the installed build. Two
+things follow for this repo, and both are about not being the last to find out:
+
+- **A tier can change without any release.** Plan assignments will be repriceable server-side, so
+  copy that was accurate when written can go stale with nothing in any changelog to prompt a check.
+  Treat a tier claim as perishable, and re-verify before a campaign rather than trusting that it was
+  right last quarter.
+- **Confirming a claim against a shipped build stops being sufficient.** During the migration the
+  build and the service can disagree with no visible symptom. Ask for the current answer rather than
+  reading it off a running install.
+
+Prices are the exception and stay here — see below. This is about *which tier a feature sits in*, not
+what a tier costs.
+
 ## Prices
 
 The product itself still defines no prices; the **site** does, and
