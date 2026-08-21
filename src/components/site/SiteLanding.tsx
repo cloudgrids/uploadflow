@@ -3,7 +3,6 @@ import { Logo, SiteHeader } from './SiteChrome';
 import { Typewriter } from './Typewriter';
 import { compatibility, flow, heroChips, neverDoes, plans, remembers, storeUrl, surfaces, tools, transfers } from './content';
 import { priceForPlanName } from './plansContent';
-import { MaintenanceOverlay } from './MaintenanceOverlay';
 
 const chipClass = { ok: 'uf-chip-ok', beta: 'uf-chip-beta', exp: 'uf-chip-exp', network: 'uf-chip-exp' } as const;
 
@@ -244,10 +243,6 @@ export function SiteLanding() {
                   month and add preparation depth and repeatable delivery — they don&rsquo;t gate the core loop.
                 </p>
               </div>
-              <MaintenanceOverlay
-                title="Plans aren't open for sign-up yet"
-                note="These tiers are real, but subscribing isn't switched on. Free needs no account and works today."
-              >
               <div className="uf-grid uf-grid-2">
                 {plans.map((tier) => {
                   const price = priceForPlanName(tier.name);
@@ -274,7 +269,6 @@ export function SiteLanding() {
                   );
                 })}
               </div>
-              </MaintenanceOverlay>
               <p className="uf-limit">
                 <b>Two tools are switched off in this release.</b> The media inspector and the automatic privacy scanner are being
                 rebuilt — the inspector never appeared over a hovered image, and the scanner had no panel to open. Both return when they
