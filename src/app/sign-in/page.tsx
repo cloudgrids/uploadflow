@@ -31,6 +31,15 @@ export default function SignInPage() {
               <SignInPanel />
             </Suspense>
           </div>
+
+          {/*
+            Outside the boundary above on purpose. That subtree reads a query parameter, so it is
+            rendered on the client and is absent from the served HTML — a way in that only exists
+            once JavaScript has run is not a way in. This link is in the page itself.
+          */}
+          <p className="uf-small">
+            No account yet? <a href="/sign-up">Create one</a>.
+          </p>
         </div>
       </section>
     </SitePage>
