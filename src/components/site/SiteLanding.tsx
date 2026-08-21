@@ -1,26 +1,11 @@
-import { UploadFlowIcon } from '../../lib/icons';
 import { Clip } from './Clip';
+import { Logo, SiteHeader } from './SiteChrome';
 import { Typewriter } from './Typewriter';
-import { ThemeToggle } from './ThemeToggle';
-import { compatibility, flow, heroChips, navigation, neverDoes, plans, remembers, storeUrl, surfaces, tools, transfers } from './content';
+import { compatibility, flow, heroChips, neverDoes, plans, remembers, storeUrl, surfaces, tools, transfers } from './content';
 import { priceForPlanName } from './plansContent';
 import { MaintenanceOverlay } from './MaintenanceOverlay';
 
 const chipClass = { ok: 'uf-chip-ok', beta: 'uf-chip-beta', exp: 'uf-chip-exp', network: 'uf-chip-exp' } as const;
-
-function Logo({ tagline }: { tagline: string }) {
-  return (
-    <a className="uf-logo" href="#top">
-      <span className="uf-logo-tile" aria-hidden="true">
-        <UploadFlowIcon />
-      </span>
-      <span className="uf-logo-name">
-        <b>UploadFlow</b>
-        <span>{tagline}</span>
-      </span>
-    </a>
-  );
-}
 
 function StoreLink({ className, children }: { className: string; children: React.ReactNode }) {
   return (
@@ -34,21 +19,13 @@ export function SiteLanding() {
   return (
     <div className="uf">
       <div className="uf-inner">
-        <header className="uf-bar">
-          <div className="uf-bar-in">
-            <Logo tagline="Private toolkit" />
-            <span className="uf-bar-spacer" />
-            <nav aria-label="Main navigation">
-              {navigation.map((item) => (
-                <a key={item.href} href={item.href}>
-                  {item.label}
-                </a>
-              ))}
-            </nav>
-            <ThemeToggle />
-            <StoreLink className="uf-btn uf-btn-primary uf-btn-xs uf-cta-sm">Add to Chrome</StoreLink>
-          </div>
-        </header>
+        {/*
+          The shared header, not a copy of it. This page had its own, which is why
+          the menu added to `SiteHeader` never appeared here. `logoHref` is the one
+          thing that differed: on the landing page the wordmark returns to the top
+          rather than navigating away.
+        */}
+        <SiteHeader logoHref="#top" />
 
         <main id="top">
           {/* ---------------- hero ---------------- */}
@@ -378,7 +355,7 @@ export function SiteLanding() {
         </main>
 
         <footer className="uf-foot uf-wrap">
-          <Logo tagline="by CloudGrids" />
+          <Logo tagline="by CloudGrids" href="#top" />
           <div className="uf-foot-links">
             <a href="/how-it-works">How it works</a>
             <a href="/whats-new">What&rsquo;s new</a>

@@ -346,10 +346,10 @@ input[type='range'] {
 .uf-menu-icon::before { top: -4.5px; }
 .uf-menu-icon::after { top: 4.5px; }
 
-/* Scoped under `.uf-bar` deliberately: the panel is a <nav>, and `.uf-bar nav`
-   (0,1,1) hides every nav in the header. `.uf-menu-panel` alone (0,1,0) loses to
-   it and the panel never appears. The same applies to the link rules below,
-   which would otherwise be overridden by `.uf-bar nav a` from 620px. */
+/* Scoped under `.uf-bar` deliberately. `.uf-bar nav { display: none }` is (0,1,1)
+   and hides every nav in the header, so the link list inside — and the link rules,
+   which `.uf-bar nav a` would otherwise take over from 620px — must outrank it. A
+   bare `.uf-menu-nav` (0,1,0) loses, and the panel renders empty at every width. */
 .uf-bar .uf-menu-panel {
   position: absolute; right: 0; top: calc(100% + 7px); z-index: 50;
   display: flex; flex-direction: column; gap: 2px;
@@ -357,6 +357,7 @@ input[type='range'] {
   border: 1px solid var(--uf-border); border-radius: var(--uf-r-md);
   background: var(--uf-bg); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
 }
+.uf-bar .uf-menu-nav { display: flex; flex-direction: column; gap: 2px; }
 .uf-bar .uf-menu-panel a {
   padding: 7px 9px; border-radius: var(--uf-r-sm);
   color: var(--uf-text-2); text-decoration: none;
@@ -367,6 +368,11 @@ input[type='range'] {
    is moved rather than lost between 200px and 620px. */
 .uf-bar .uf-menu-cta { margin-top: 4px; border-top: 1px solid var(--uf-border); padding-top: 6px; }
 .uf-bar .uf-menu-panel a.uf-menu-cta:hover { background: none; color: var(--uf-accent-ink); }
+/* Same bargain as the CTA above: the panel holds the theme control only while the
+   header is too narrow for it, so there is exactly one of each at every width. */
+.uf-bar .uf-menu-theme { margin-top: 4px; border-top: 1px solid var(--uf-border); padding-top: 6px; }
+.uf-bar .uf-menu-theme .uf-theme-toggle { display: inline-flex; width: 100%; }
+.uf-bar .uf-menu-theme .uf-theme-toggle button { flex: 1; }
 
 /* ---------- buttons ---------- */
 .uf-btn {
@@ -887,6 +893,8 @@ a.uf-card:hover h3 { color: var(--uf-accent-ink); }
   .uf-btn-xs { font-size: 12px; }
   .uf-arw { display: inline; }
   .uf-theme-toggle { display: inline-flex; }
+  /* the header shows its own from here, so the panel's copy stands down */
+  .uf-bar .uf-menu-theme { display: none; }
   .uf-card { padding: 16px; }
   .uf-bar-in { padding: 12px 20px; }
   .uf-row { flex-direction: row; align-items: baseline; gap: 12px; }
