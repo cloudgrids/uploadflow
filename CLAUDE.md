@@ -226,7 +226,7 @@ renders — keep them on marketing surfaces only.
 
 - `/demo` is a re-export of `/test` — both URLs render the interceptor harness.
 - `interceptorTestTypes.ts` exposes `TEST_METHODS`; log entries and the progress meter index into it **positionally**, so reordering that array silently mislabels results.
-- `/api/upscale` is a permissive-CORS proxy that spoofs browser headers to fetch the iLoveIMG page for the extension. `/api/test-upload` is a byte-count sink used only by the harness.
+- `/api/test-upload` is a byte-count sink used only by the harness, and is now the only route under `src/app/api/`. The `/api/upscale` proxy that used to sit beside it was removed in #10 — it forged browser headers to fetch a third-party page and served `Access-Control-Allow-Origin: *`, and nothing ever called it. Do not reintroduce that shape; upscaling runs locally in the extension.
 - `/handoff` parses a base64url `#pair=` fragment inside a `setTimeout(0)` so the fragment never reaches the server render; malformed payloads fall through to an invalid state.
 - Navigation uses plain `<a>` and `<img>` — `next/link` and `next/image` are not used anywhere.
 - **Tailwind preflight strips `list-style`,** and `.uf-prose ul` only restores margin and padding — so a plain `<ul>` renders as an indent with no markers at all. Use `.uf-dots` for bullets or `.uf-flow` for numbers; both draw their own markers via `::before`. (`src/app/privacy/page.tsx` still has two plain `<ul>`s and is showing this today.)
