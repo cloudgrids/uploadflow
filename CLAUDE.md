@@ -8,7 +8,14 @@ The public marketing/product site for UploadFlow (a Chrome extension), served at
 
 This directory is its own git repository (`cloudgrids/uploadflow`), separate from the sibling `extension/` and `server/` trees. Run all git commands from `web/`, never from the parent directory. See the parent `../CLAUDE.md` for the container layout.
 
-The `arijitchhatui/uploadflow` remote URL still in `.git/config` is a rename redirect to this same repo. Git follows it silently, but `gh` does not infer the base from it — `gh pr create` fails with the misleading `No commits between cloudgrids:main and arijitchhatui:<branch>`, which reads like an empty diff rather than a naming problem. Pass `--repo cloudgrids/uploadflow` explicitly.
+**If `gh pr create` says `No commits between cloudgrids:main and arijitchhatui:<branch>`, the remote URL is stale, not the branch.** Older clones point `origin` at `arijitchhatui/uploadflow`, which is a rename redirect to this same repo. Git follows it silently, so pushes succeed and nothing looks wrong — but `gh` reads `arijitchhatui` as a different owner and attempts a cross-fork PR. The error names an empty diff, which sends you off checking commits that are fine. Fix the remote rather than working around it per command:
+
+```bash
+git remote set-url origin git@github.com:cloudgrids/uploadflow.git
+gh repo set-default cloudgrids/uploadflow
+```
+
+Remotes live in the shared `.git`, so this fixes every worktree at once. Confirm with `gh repo view --json nameWithOwner`.
 
 > ## ⚠ This repository is PUBLIC
 >
