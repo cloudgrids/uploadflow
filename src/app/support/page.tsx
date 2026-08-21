@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { PageHero, SitePage, StatusLine, StoreLink } from '../../components/site/SiteChrome';
+import { SupportForm } from '../../components/site/SupportForm';
 
 export const metadata: Metadata = {
   title: 'Support | UploadFlow',
@@ -90,6 +91,10 @@ export default function SupportPage() {
               <b>Never attach confidential files.</b> Replace private URLs with safe examples, and keep signed URLs, passwords and tokens
               out of a public report.
             </p>
+
+            <SupportForm />
+
+            <p className="uf-small">Prefer to report in the open? Use the issue tracker instead.</p>
             <div className="uf-cta-row">
               <a
                 className="uf-btn uf-btn-ghost"
