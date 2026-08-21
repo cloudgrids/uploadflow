@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { PageHero, SitePage, StatusLine, StoreLink } from '../../components/site/SiteChrome';
 import { ReleaseTimeline } from '../../components/whats-new/ReleaseTimeline';
 import { upcomingRelease } from '../../components/whats-new/content';
+import { WaitlistForm } from '../../components/site/WaitlistForm';
 
 export const metadata: Metadata = {
   title: 'What’s New in UploadFlow',
@@ -48,6 +49,13 @@ export default function WhatsNewPage() {
               Product guide
             </a>
           </div>
+        </div>
+
+        <div className="uf-card uf-stack">
+          <span className="uf-eyebrow">By email</span>
+          <h2>Hear when there is news.</h2>
+          <p className="uf-lede">Leave an address and we will let you know when there is something worth reading here.</p>
+          <WaitlistForm source="whats-new" />
         </div>
       </section>
     </SitePage>
