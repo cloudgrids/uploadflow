@@ -55,6 +55,11 @@ export function consumeMagicLink(token: string, signal?: AbortSignal): Promise<A
   return request<AuthTokens>('/auth/magic-link/consume', { method: 'POST', body: { token }, signal });
 }
 
+/** Confirms an email address with the single-use token from a confirmation link. */
+export function verifyEmail(token: string, signal?: AbortSignal): Promise<Accepted> {
+  return request<Accepted>('/auth/verify-email', { method: 'POST', body: { token }, signal });
+}
+
 /** Exchanges a refresh token for a new pair. The presented token is retired by the exchange. */
 export function refreshTokens(refreshToken: string, signal?: AbortSignal): Promise<AuthTokens> {
   return request<AuthTokens>('/auth/refresh', { method: 'POST', body: { refreshToken }, signal });
