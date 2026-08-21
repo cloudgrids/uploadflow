@@ -315,6 +315,59 @@ input[type='range'] {
 .uf-arw { display: none; }
 .uf-bar-spacer { margin-left: auto; }
 
+/* ---------- header menu ----------
+   The routes the header cannot show below 900px, behind a disclosure.
+
+   A native <details>, not a scripted dropdown, and deliberately so: the header
+   is the only way between pages at these widths, and it has to work before — or
+   without — hydration. `summary` already carries button semantics, keyboard
+   handling and expanded state, so none of that is re-implemented here.
+
+   Base is the OPEN state of the budget: visible whenever the nav is not. The
+   900px band switches it off, where the full nav takes over. */
+.uf-menu { display: none; position: relative; flex: none; }
+.uf-menu > summary {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: var(--uf-r-md);
+  border: 1px solid var(--uf-border); color: var(--uf-text-2);
+  cursor: pointer; list-style: none;
+}
+/* Safari draws its own triangle unless both of these are cleared. */
+.uf-menu > summary::-webkit-details-marker { display: none; }
+.uf-menu > summary::marker { content: ""; }
+.uf-menu > summary:hover { color: var(--uf-accent-ink); border-color: var(--uf-border-hover); }
+.uf-menu[open] > summary { color: var(--uf-accent-ink); border-color: var(--uf-border-hover); }
+
+.uf-menu-icon { position: relative; display: block; width: 15px; height: 1.5px; border-radius: 1px; background: currentColor; }
+.uf-menu-icon::before, .uf-menu-icon::after {
+  content: ""; position: absolute; left: 0; width: 15px; height: 1.5px;
+  border-radius: 1px; background: currentColor;
+}
+.uf-menu-icon::before { top: -4.5px; }
+.uf-menu-icon::after { top: 4.5px; }
+
+/* Scoped under `.uf-bar` deliberately: the panel is a <nav>, and `.uf-bar nav`
+   (0,1,1) hides every nav in the header. `.uf-menu-panel` alone (0,1,0) loses to
+   it and the panel never appears. The same applies to the link rules below,
+   which would otherwise be overridden by `.uf-bar nav a` from 620px. */
+.uf-bar .uf-menu-panel {
+  position: absolute; right: 0; top: calc(100% + 7px); z-index: 50;
+  display: flex; flex-direction: column; gap: 2px;
+  min-width: 168px; padding: 6px;
+  border: 1px solid var(--uf-border); border-radius: var(--uf-r-md);
+  background: var(--uf-bg); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+.uf-bar .uf-menu-panel a {
+  padding: 7px 9px; border-radius: var(--uf-r-sm);
+  color: var(--uf-text-2); text-decoration: none;
+  font-size: 13.5px; font-weight: 450; letter-spacing: -0.01em; white-space: nowrap;
+}
+.uf-bar .uf-menu-panel a:hover { color: var(--uf-accent-ink); background: var(--uf-card); }
+/* Carries the call to action while the header is too narrow to show it, so it
+   is moved rather than lost between 200px and 620px. */
+.uf-bar .uf-menu-cta { margin-top: 4px; border-top: 1px solid var(--uf-border); padding-top: 6px; }
+.uf-bar .uf-menu-panel a.uf-menu-cta:hover { background: none; color: var(--uf-accent-ink); }
+
 /* ---------- buttons ---------- */
 .uf-btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 5px;
@@ -779,6 +832,8 @@ a.uf-card:hover h3 { color: var(--uf-accent-ink); }
    Container bands — the base above is the 150px design
    ========================================================================== */
 @container uf (min-width: 200px) {
+  /* Below 200px the bar is only wide enough for the wordmark itself. */
+  .uf-menu { display: block; }
   .uf-deck-nav { gap: 10px; }
   .uf-deck-arrow { width: 30px; height: 30px; }
   .uf-deck-dots { gap: 5px; }
@@ -831,7 +886,6 @@ a.uf-card:hover h3 { color: var(--uf-accent-ink); }
   .uf-btn { white-space: nowrap; }
   .uf-btn-xs { font-size: 12px; }
   .uf-arw { display: inline; }
-  .uf-bar .uf-cta-sm { display: inline-flex; margin-left: auto; flex: none; }
   .uf-theme-toggle { display: inline-flex; }
   .uf-card { padding: 16px; }
   .uf-bar-in { padding: 12px 20px; }
@@ -840,6 +894,11 @@ a.uf-card:hover h3 { color: var(--uf-accent-ink); }
 }
 
 @container uf (min-width: 620px) {
+  /* Was the 380px band. The menu costs 32px there, and logo + toggle + CTA +
+     menu does not fit — the wordmark ellipsizes silently. The CTA waits for
+     room; the menu panel carries it in the meantime, so nothing is lost. */
+  .uf-bar .uf-cta-sm { display: inline-flex; margin-left: auto; flex: none; }
+  .uf-bar .uf-menu-cta { display: none; }
   /* only the tilt opens up here — the offset is already 50% from 380px, and
      re-stating it in px would silently collapse the spread */
   .uf-deck-stack > .uf-plan { --uf-fan-a: 3.2deg; }
@@ -869,6 +928,8 @@ a.uf-card:hover h3 { color: var(--uf-accent-ink); }
 
 @container uf (min-width: 900px) {
   .uf-wrap { padding-inline: 40px; }
+  /* the full nav is visible from here, so the disclosure is redundant */
+  .uf-menu { display: none; }
   .uf h1 { font-size: 68px; }
   .uf-hero-split { display: grid; grid-template-columns: 1.05fr 1fr; gap: 36px; align-items: center; }
   .uf-split { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }

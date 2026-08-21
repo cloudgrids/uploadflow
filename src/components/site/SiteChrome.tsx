@@ -40,6 +40,27 @@ export function SiteHeader() {
         </nav>
         <ThemeToggle />
         <StoreLink className="uf-btn uf-btn-primary uf-btn-xs uf-cta-sm">Add to Chrome</StoreLink>
+        {/*
+          The same routes, for the widths where the nav does not fit. A native
+          <details> rather than a scripted dropdown: below 900px this is the only
+          way between pages from the header, so it has to work before hydration
+          and without JavaScript. `summary` brings the button semantics, keyboard
+          handling and expanded state with it.
+        */}
+        <details className="uf-menu">
+          <summary aria-label="Menu">
+            <span className="uf-menu-icon" aria-hidden="true" />
+          </summary>
+          <nav className="uf-menu-panel" aria-label="Pages">
+            {navigation.map((item) => (
+              <a key={item.href} href={item.href}>
+                {item.label}
+              </a>
+            ))}
+            {/* The header has no room for the call to action until 620px, so it lives here until then. */}
+            <StoreLink className="uf-menu-cta">Add to Chrome</StoreLink>
+          </nav>
+        </details>
       </div>
     </header>
   );
