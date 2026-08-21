@@ -29,7 +29,7 @@ export function joinWaitlist(input: WaitlistRequest, signal?: AbortSignal): Prom
   return request<AcceptedResponse>('/waitlist', { method: 'POST', body: input, signal });
 }
 
-/** Sends a support message. No account needed. */
+/** Sends a support message. Public — the endpoint takes no credentials. */
 export function submitSupportTicket(input: SupportTicketRequest, signal?: AbortSignal): Promise<AcceptedResponse> {
   return request<AcceptedResponse>('/support/tickets', { method: 'POST', body: input, signal });
 }

@@ -10,7 +10,7 @@ const SUBJECT_LIMIT = 200;
 const BODY_LIMIT = 5000;
 
 /**
- * Sends a support message. No account needed.
+ * Sends a support message. Public — the endpoint takes no credentials.
  *
  * The limits below match what the service accepts. They are enforced here as well so an
  * over-length message is caught while it can still be edited, rather than coming back as a
