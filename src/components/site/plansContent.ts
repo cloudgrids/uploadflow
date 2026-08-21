@@ -82,7 +82,8 @@ export const plans = [
       { title: 'Media shelf', copy: 'Keep it to hand while you move between tabs.', state: 'included' },
       { title: 'Full editor', copy: 'Open any queued file and work on it.', state: 'included' },
       { title: 'Optimize, crop, cutout', copy: 'Resize, compress, convert, remove a background.', state: 'included' },
-      { title: 'Deliver to another site', copy: 'Hand the finished file to an upload field.', state: 'included' }
+      { title: 'Deliver to another site', copy: 'Hand the finished file to an upload field.', state: 'included' },
+      { title: 'Collections', copy: 'Group the media that belongs together.', state: 'included' }
     ]
   },
   {
@@ -95,8 +96,8 @@ export const plans = [
     features: [
       { title: 'Redact', copy: 'Cover or blur anything private before it leaves.', state: 'included' },
       { title: 'Watermark', copy: 'Reusable text or a saved brand mark.', state: 'included' },
-      { title: 'Collections', copy: 'Group the media that belongs together.', state: 'included' },
       { title: 'Alt text', copy: 'Write it once and keep it with the file.', state: 'included' },
+      { title: 'Saved site rules', copy: 'Prepare files the way each site expects.', state: 'included' },
       { title: 'Automatic privacy check', copy: 'Flag sensitive details for you.', state: 'soon' }
     ]
   },
@@ -112,7 +113,6 @@ export const plans = [
       { title: 'Video tools', copy: 'Trim, split, resize and adjust audio.', state: 'included' },
       { title: 'Upscale', copy: 'Recover resolution when a file is too small.', state: 'included' },
       { title: 'Post bundles', copy: 'Media, caption and links kept together.', state: 'included' },
-      { title: 'Saved site rules', copy: 'Prepare files the way each site expects.', state: 'included' },
       { title: 'Media history', copy: 'Find something you delivered before.', state: 'included' }
     ]
   },
