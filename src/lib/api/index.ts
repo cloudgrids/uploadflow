@@ -19,6 +19,7 @@ export {
   requestPasswordReset,
   resetPassword,
   signup,
+  verifyEmail,
   type AccountProfile,
   type AuthTokens
 } from './auth';
