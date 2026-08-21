@@ -40,9 +40,21 @@ Product copy and feature claims come from `README.md` and the `content.ts` modul
 pnpm dev        # dev server on port 3002 (extension/ uses 3000; they coexist)
 pnpm build      # next build --webpack
 pnpm start      # production server on 3002
-pnpm lint       # eslint .
+pnpm lint       # eslint . — see below, currently fails on every file
 npx tsc --noEmit  # typecheck — there is no package script for this
 ```
+
+**`pnpm lint` fails repo-wide whenever a git worktree exists under `.claude/worktrees/`.** That
+nested checkout gives `typescript-eslint` two candidate `tsconfigRootDir`s — the repo root and the
+worktree — so it refuses to pick one and every file errors at `0:0` with a parsing error rather than
+a lint finding. It looks like the code is catastrophically broken; it is the config. Either remove
+the worktree or set `tsconfigRootDir` explicitly in the parser options. Until then a clean `pnpm
+lint` is not evidence of anything, and neither is a dirty one — compare the error count against
+`main` before believing a change caused it.
+
+**`npx tsc --noEmit` reads stale generated types.** After deleting or renaming a route, `.next` still
+holds validators importing the old path and typecheck fails on files you did not touch. `rm -rf
+.next` first.
 
 **Turbopack does not reliably invalidate `globals.css`.** `pnpm dev` uses Turbopack and will serve a stale CSS chunk across edits *and across server restarts*. After changing `globals.css`, `rm -rf .next` and restart, or you will debug a stylesheet the browser never loaded. This has produced several false readings; verify a rule is live (`getComputedStyle`, or search `document.styleSheets`) before concluding a CSS change didn't work.
 
@@ -122,6 +134,21 @@ contain. If you cannot confirm a claim from a customer-facing source, ask rather
 Two tools are switched off in the current release and the site says so on purpose — see
 `whats-new/content.ts` and the landing page. Telling users what is disabled is deliberate; listing
 what is unreleased is not.
+
+**Which tier a feature belongs to is moving out of the extension and into the service.** It is
+becoming a value the backend states and signs rather than one compiled into the installed build. Two
+things follow for this repo, and both are about not being the last to find out:
+
+- **A tier can change without any release.** Plan assignments will be repriceable server-side, so
+  copy that was accurate when written can go stale with nothing in any changelog to prompt a check.
+  Treat a tier claim as perishable, and re-verify before a campaign rather than trusting that it was
+  right last quarter.
+- **Confirming a claim against a shipped build stops being sufficient.** During the migration the
+  build and the service can disagree with no visible symptom. Ask for the current answer rather than
+  reading it off a running install.
+
+Prices are the exception and stay here — see below. This is about *which tier a feature sits in*, not
+what a tier costs.
 
 ## Prices
 
@@ -206,6 +233,14 @@ Four things hold it together, and each breaks quietly:
   strip three of the four plans from the accessibility tree for anyone whose JavaScript never
   arrives — and without JavaScript there is no way to swipe them back. `useSyncExternalStore` gates
   it, the same shape ThemeToggle uses. The served HTML has zero `inert` and all four plan names.
+
+  **`MaintenanceOverlay` does the exact opposite, deliberately — do not "fix" one to match the
+  other.** It marks its covered region `inert` in the served HTML, because the rule above turns on
+  *recovery*: the deck's hidden cards can be swiped back, so blocking them before hydration would
+  strand a no-JavaScript reader. The overlay's controls do nothing in every case, JavaScript or not,
+  so there is nothing to recover and making them unreachable server-side is the honest state. One
+  attribute also covers the accessibility tree and the tab order, which is why the component sets no
+  `aria-hidden` or `tabIndex` of its own.
 - **`width: 100%` is load-bearing.** `.uf-stack-l` is a column flex container, so `max-width` alone
   leaves the deck shrink-to-fit — it rendered 353px instead of 520px until the explicit width.
 
