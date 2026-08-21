@@ -8,6 +8,8 @@ The public marketing/product site for UploadFlow (a Chrome extension), served at
 
 This directory is its own git repository (`cloudgrids/uploadflow`), separate from the sibling `extension/` and `server/` trees. Run all git commands from `web/`, never from the parent directory. See the parent `../CLAUDE.md` for the container layout.
 
+The `arijitchhatui/uploadflow` remote URL still in `.git/config` is a rename redirect to this same repo. Git follows it silently, but `gh` does not infer the base from it — `gh pr create` fails with the misleading `No commits between cloudgrids:main and arijitchhatui:<branch>`, which reads like an empty diff rather than a naming problem. Pass `--repo cloudgrids/uploadflow` explicitly.
+
 > ## ⚠ This repository is PUBLIC
 >
 > It is the only one of the three that is. `uploadflow-extension` and `uploadflow-server` are
@@ -92,6 +94,7 @@ When auditing, compare each element's width against the container **and** check 
 - `src/components/site/SiteLanding.tsx` — the landing page, composed inline (its own header/footer usage, not `SitePage`).
 - `src/components/site/content.ts` — nav, hero chips, flow, surfaces, tools, transfers, compatibility. Edit copy here, not in components.
 - `src/components/site/Clip.tsx` — the only client component in the site set. Autoplaying muted product recordings, with reduced-motion handled *at runtime* (poster + real controls, and it re-applies if the preference changes mid-session).
+- `src/app/error.tsx` / `src/app/global-error.tsx` — the two error boundaries. `error.tsx` renders inside the root layout, so it reuses `SitePage`. `global-error.tsx` replaces the root layout, so it renders its own `<html>`/`<body>`, imports `globals.css` itself, and deliberately imports nothing from `components/site` — the layout, `ThemeProvider` included, is what failed. Neither is reachable in `pnpm dev`; the dev overlay takes over, so verifying a change to either means `next build && next start` plus a route rigged to throw.
 - `public/site/` — two trimmed product recordings (`handoff.mp4`, `capture.mp4`) with WebP posters, plus the workspace screenshots. ~1.6 MB total.
 
 Data modules `components/landing/content.ts`, `components/how-it-works/content.ts` and `components/whats-new/content.ts` are still the source of copy for their pages.
@@ -219,6 +222,8 @@ renders — keep them on marketing surfaces only.
 - `/api/upscale` is a permissive-CORS proxy that spoofs browser headers to fetch the iLoveIMG page for the extension. `/api/test-upload` is a byte-count sink used only by the harness.
 - `/handoff` parses a base64url `#pair=` fragment inside a `setTimeout(0)` so the fragment never reaches the server render; malformed payloads fall through to an invalid state.
 - Navigation uses plain `<a>` and `<img>` — `next/link` and `next/image` are not used anywhere.
+- **Tailwind preflight strips `list-style`,** and `.uf-prose ul` only restores margin and padding — so a plain `<ul>` renders as an indent with no markers at all. Use `.uf-dots` for bullets or `.uf-flow` for numbers; both draw their own markers via `::before`. (`src/app/privacy/page.tsx` still has two plain `<ul>`s and is showing this today.)
+- **`global-error.tsx` applies the theme twice, and needs to.** Its inline pre-paint script covers a server-render failure. When the failure happens during *hydration* instead, React discards the tree and renders the boundary client-side — a script inserted that way never executes, and re-rendering `<html>` drops the class the script had set. An effect covers that second path. Delete either half and the page renders light with `"dark"` in storage.
 
 ## Heading tokens
 
