@@ -4,19 +4,7 @@ import { useState } from 'react';
 import { clearSession, isApiError, requestPasswordReset, resetPassword } from '../../lib/api';
 import { messageForFailure } from './apiMessages';
 import { useOneTimeToken } from './useOneTimeToken';
-
-/**
- * The rule the service enforces, restated so a password can be checked before it is sent.
- *
- * Two reasons to duplicate it rather than let the service decide. It tells somebody what is wrong
- * while they are still typing, and — because the service answers a bad password and a bad link with
- * the same status — a password that passes here makes a rejection almost certainly the link, which
- * is what lets the two be reported apart.
- *
- * Note the character set is closed: symbols outside this set are rejected, not merely uncounted.
- */
-const STRONG_PASSWORD = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-const ALLOWED_SYMBOLS = '@ $ ! % * ? &';
+import { ALLOWED_SYMBOLS, describePassword } from './passwordRules';
 
 type State =
   | { kind: 'form' }
@@ -24,17 +12,6 @@ type State =
   | { kind: 'done' }
   | { kind: 'rejected' }
   | { kind: 'failed'; message: string };
-
-function describePassword(value: string): string | null {
-  if (value.length === 0) return null;
-  if (value.length < 8) return 'At least 8 characters.';
-  if (!/[a-z]/.test(value)) return 'Add a lowercase letter.';
-  if (!/[A-Z]/.test(value)) return 'Add an uppercase letter.';
-  if (!/\d/.test(value)) return 'Add a number.';
-  if (!/[@$!%*?&]/.test(value)) return `Add one of ${ALLOWED_SYMBOLS}.`;
-  if (!STRONG_PASSWORD.test(value)) return `Only letters, numbers and ${ALLOWED_SYMBOLS} can be used.`;
-  return null;
-}
 
 export function ResetPasswordPanel() {
   const { token, hydrated } = useOneTimeToken();
