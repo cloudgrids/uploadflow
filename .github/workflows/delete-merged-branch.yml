@@ -1,0 +1,51 @@
+name: Delete merged branch
+
+# The head branch of a merged pull request has no readers left: its commits are on main and its
+# name is preserved in the pull request. GitHub's "Automatically delete head branches" repository
+# setting does the same job, but it is a checkbox nobody can see from a clone — this keeps the
+# behaviour in the tree, where it is reviewable.
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: write
+
+jobs:
+  delete-head-branch:
+    name: Delete the merged head branch
+    runs-on: ubuntu-latest
+    # Merged only — a pull request closed without merging keeps its branch, because the work on it
+    # has not landed anywhere. A fork's branch is not ours to delete, and the default branch is
+    # never a head we remove.
+    if: >-
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref != github.event.repository.default_branch
+
+    steps:
+      - name: Delete the branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          set -euo pipefail
+
+          # Long-lived branches merge into main like any other, so the default-branch check above
+          # does not cover them. Name them instead.
+          case "$BRANCH" in
+            main | master | develop | release/*)
+              echo "Refusing to delete long-lived branch '$BRANCH'."
+              exit 0
+              ;;
+          esac
+
+          # Already gone: deleted from the merge screen, or by an earlier run of this workflow.
+          if ! gh api "repos/$REPO/git/ref/heads/$BRANCH" >/dev/null 2>&1; then
+            echo "'$BRANCH' is already deleted."
+            exit 0
+          fi
+
+          gh api --method DELETE "repos/$REPO/git/refs/heads/$BRANCH"
+          echo "Deleted '$BRANCH'."
