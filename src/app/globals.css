@@ -315,6 +315,17 @@ input[type='range'] {
 .uf-arw { display: none; }
 .uf-bar-spacer { margin-left: auto; }
 
+/* A button that reads as a link. Used where the action is a change of mind rather
+   than a submission — switching how you sign in, say — so it must not look like a
+   second submit button competing with the real one, and must not be an <a>, which
+   would promise a destination it does not have. */
+.uf-linkish {
+  display: inline; padding: 0; border: 0; background: none;
+  font: inherit; color: var(--uf-accent-ink); cursor: pointer;
+  text-decoration: underline; text-underline-offset: 2px;
+}
+.uf-linkish:hover { color: var(--uf-text); }
+
 /* ---------- header menu ----------
    The routes the header cannot show below 900px, behind a disclosure.
 
