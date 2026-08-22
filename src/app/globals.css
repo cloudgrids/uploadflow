@@ -315,6 +315,17 @@ input[type='range'] {
 .uf-arw { display: none; }
 .uf-bar-spacer { margin-left: auto; }
 
+/* The route to an account. Hidden at the floor for the same reason everything else
+   is: the bar is only wide enough for the wordmark. The menu panel carries it
+   until the header has room, so there is exactly one at every width. */
+.uf-bar .uf-auth-link { display: none; }
+.uf-bar .uf-menu-auth {
+  padding: 7px 9px; border-radius: var(--uf-r-sm);
+  color: var(--uf-text-2); text-decoration: none;
+  font-size: 13.5px; font-weight: 450; letter-spacing: -0.01em; white-space: nowrap;
+}
+.uf-bar .uf-menu-auth:hover { color: var(--uf-accent-ink); background: var(--uf-card); }
+
 /* A button that reads as a link. Used where the action is a change of mind rather
    than a submission — switching how you sign in, say — so it must not look like a
    second submit button competing with the real one, and must not be an <a>, which
@@ -918,6 +929,14 @@ a.uf-card:hover h3 { color: var(--uf-accent-ink); }
      room; the menu panel carries it in the meantime, so nothing is lost. */
   .uf-bar .uf-cta-sm { display: inline-flex; margin-left: auto; flex: none; }
   .uf-bar .uf-menu-cta { display: none; }
+  /* Same bargain as the CTA and the theme control above it. */
+  .uf-bar .uf-auth-link {
+    display: inline-flex; align-items: center; flex: none;
+    color: var(--uf-text-2); text-decoration: none;
+    font-size: 13.5px; font-weight: 450; letter-spacing: -0.01em; white-space: nowrap;
+  }
+  .uf-bar .uf-auth-link:hover { color: var(--uf-accent-ink); }
+  .uf-bar .uf-menu-auth { display: none; }
   /* only the tilt opens up here — the offset is already 50% from 380px, and
      re-stating it in px would silently collapse the spread */
   .uf-deck-stack > .uf-plan { --uf-fan-a: 3.2deg; }
