@@ -81,11 +81,18 @@ export function OperatorListing<T>({
   const move = (by: number) => () => setQuery((q) => ({ ...q, offset: Math.max(0, (q.offset ?? 0) + by * limit) }));
 
   return (
-    <section className="uf-card uf-stack">
-      <div className="uf-stack-6">
-        <h2>{title}</h2>
-        <p className="uf-small">{note}</p>
-      </div>
+    <section className="uf-op-section">
+      {/* Title, then how many, then the note. The count is the first thing an operator wants and was
+          previously only findable at the bottom of the table, next to the paging. */}
+      <header className="uf-op-head">
+        <div className="uf-op-head-text">
+          <h2>
+            {title}
+            {page ? <span className="uf-op-count">{total.toLocaleString()}</span> : null}
+          </h2>
+          <p className="uf-small">{note}</p>
+        </div>
+      </header>
 
       <form
         className="uf-op-filter"

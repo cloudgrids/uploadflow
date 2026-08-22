@@ -13,6 +13,7 @@ import {
 import { messageForFailure } from '../apiMessages';
 import { CampaignForm } from './CampaignForm';
 import { onOrDash, titleCase } from './formats';
+import { CAMPAIGN_TONE, StateChip } from '../StateChip';
 
 type Query = { status?: CampaignStatus; offset: number };
 type Load = { kind: 'loading' } | { kind: 'ready'; page: CampaignPage } | { kind: 'failed'; message: string };
@@ -110,7 +111,7 @@ export function CampaignsPanel() {
 
   if (editing) {
     return (
-      <section className="uf-card uf-stack">
+      <section className="uf-op-section">
         <CampaignForm
           editing={editing.campaign}
           onSaved={() => {
@@ -124,14 +125,24 @@ export function CampaignsPanel() {
   }
 
   return (
-    <section className="uf-card uf-stack">
-      <div className="uf-stack-6">
-        <h2>Campaigns</h2>
-        <p className="uf-small">
-          Time-boxed offers and where each one stands. A campaign is written first and published as a separate decision;
-          closing one early cannot be undone.
-        </p>
-      </div>
+    <section className="uf-op-section">
+      <header className="uf-op-head">
+        <div className="uf-op-head-text">
+          <h2>
+            Campaigns
+            {page ? <span className="uf-op-count">{page.total.toLocaleString()}</span> : null}
+          </h2>
+          <p className="uf-small">
+            Time-boxed offers and where each one stands. A campaign is written first and published as a separate decision;
+            closing one early cannot be undone.
+          </p>
+        </div>
+        {/* The one thing you come here to do, at the top and on its own, rather than sharing a row
+            with the filters — those narrow what is shown, this adds to it. */}
+        <button className="uf-btn uf-btn-primary" type="button" onClick={() => setEditing({ campaign: null })}>
+          New campaign
+        </button>
+      </header>
 
       <div className="uf-op-filter">
         <div className="uf-op-checks">
@@ -147,9 +158,6 @@ export function CampaignsPanel() {
             </button>
           ))}
         </div>
-        <button className="uf-btn uf-btn-primary" type="button" onClick={() => setEditing({ campaign: null })}>
-          New campaign
-        </button>
       </div>
 
       {notice ? <p className="uf-small">{notice}</p> : null}
@@ -200,7 +208,9 @@ export function CampaignsPanel() {
                     <tr key={campaign.id}>
                       <td data-wrap="">{campaign.slug}</td>
                       <td data-wrap="">{campaign.title}</td>
-                      <td>{titleCase(campaign.phase)}</td>
+                      <td>
+                        <StateChip label={titleCase(campaign.phase)} tone={CAMPAIGN_TONE[campaign.phase]} />
+                      </td>
                       <td>{windowOf(campaign)}</td>
                       <td>
                         {titleCase(campaign.rewardPlan)}, {campaign.rewardDays} {campaign.rewardDays === 1 ? 'day' : 'days'}

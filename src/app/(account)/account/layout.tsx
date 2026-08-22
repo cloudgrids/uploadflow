@@ -12,7 +12,11 @@ export default function AccountRouteLayout({ children, operator }: { children: R
   return (
     <>
       {children}
-      {operator}
+      {/* The same horizontal wrap the page's own sections use. Without it the slot sat flush to the
+          column's edges while everything above it was inset, so an operator saw one card wider than
+          the other and no reason for it. `:empty` hides the section for everybody else, since a slot
+          that renders nothing should not leave padding behind. */}
+      <section className="uf-wrap uf-account-slot">{operator}</section>
     </>
   );
 }

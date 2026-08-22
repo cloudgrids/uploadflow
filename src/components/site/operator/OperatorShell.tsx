@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import { OPERATOR_ROLE, roleAtLeast, useAccess } from '../../../lib/api';
 import { PageHero, SitePage, StatusLine } from '../SiteChrome';
 import { messageForFailure } from '../apiMessages';
+import { titleCase } from './formats';
 
 /** The rank each slot asks for. Stated once, so a screen and its gate cannot drift apart. */
 const SLOT_ROLE = {
@@ -112,7 +113,7 @@ export function OperatorShell({
     <Frame lede="Tools for the people who run UploadFlow. What you see here depends on the access your account holds.">
       <div className="uf-card uf-stack">
         <StatusLine label="Signed in as" value={name} />
-        <StatusLine label="Access" value={role} />
+        <StatusLine label="Access" value={titleCase(role)} />
       </div>
 
       {children}
