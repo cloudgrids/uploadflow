@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { PageHero, SitePage } from '../../../components/site/SiteChrome';
+import { PageHero } from '../../../components/site/SiteChrome';
 import { VerifyEmailPanel } from '../../../components/site/VerifyEmailPanel';
 
 /**
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function VerifyEmailPage() {
   return (
-    <SitePage>
+    <>
       <PageHero
         eyebrow="Account"
         title={
@@ -36,6 +36,6 @@ export default function VerifyEmailPage() {
           </div>
         </div>
       </section>
-    </SitePage>
+    </>
   );
 }

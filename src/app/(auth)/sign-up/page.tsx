@@ -1,17 +1,18 @@
 import type { Metadata } from 'next';
-import { PageHero, SitePage } from '../../../components/site/SiteChrome';
+import { PageHero } from '../../../components/site/SiteChrome';
 import { SignUpPanel } from '../../../components/site/SignUpPanel';
 
 export const metadata: Metadata = {
   title: 'Create an account | UploadFlow',
   description: 'Create an UploadFlow account to manage a subscription.',
-  alternates: { canonical: '/sign-up' },
-  robots: { index: false }
+  alternates: { canonical: '/sign-up' }
+  // `robots` is the group's, in (auth)/layout.tsx — page metadata replaces a layout's field rather
+  // than merging with it, so repeating a weaker form here would quietly drop `follow: false`.
 };
 
 export default function SignUpPage() {
   return (
-    <SitePage>
+    <>
       <PageHero
         eyebrow="Account"
         title={
@@ -29,6 +30,6 @@ export default function SignUpPage() {
           </div>
         </div>
       </section>
-    </SitePage>
+    </>
   );
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { PageHero, SitePage } from '../../../components/site/SiteChrome';
+import { PageHero } from '../../../components/site/SiteChrome';
 import { ResetPasswordPanel } from '../../../components/site/ResetPasswordPanel';
 
 /**
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function ResetPasswordPage() {
   return (
-    <SitePage>
+    <>
       <PageHero
         eyebrow="Account"
         title={
@@ -36,6 +36,6 @@ export default function ResetPasswordPage() {
           </div>
         </div>
       </section>
-    </SitePage>
+    </>
   );
 }

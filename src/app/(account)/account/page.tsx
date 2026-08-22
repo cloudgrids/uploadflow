@@ -1,17 +1,17 @@
 import type { Metadata } from 'next';
-import { PageHero, SitePage } from '../../../components/site/SiteChrome';
+import { PageHero } from '../../../components/site/SiteChrome';
 import { AccountPanel } from '../../../components/site/AccountPanel';
 
 export const metadata: Metadata = {
   title: 'Your account | UploadFlow',
   description: 'View your UploadFlow subscription and manage billing.',
-  alternates: { canonical: '/account' },
-  robots: { index: false }
+  alternates: { canonical: '/account' }
+  // `robots` is the group's, in (account)/layout.tsx.
 };
 
 export default function AccountPage() {
   return (
-    <SitePage>
+    <>
       <PageHero
         eyebrow="Account"
         title={
@@ -29,6 +29,6 @@ export default function AccountPage() {
           </div>
         </div>
       </section>
-    </SitePage>
+    </>
   );
 }

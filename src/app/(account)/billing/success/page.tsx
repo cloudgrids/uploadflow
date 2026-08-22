@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
-import { PageHero, SitePage } from '../../../../components/site/SiteChrome';
+import { PageHero } from '../../../../components/site/SiteChrome';
 
 export const metadata: Metadata = {
   title: 'Payment complete | UploadFlow',
   description: 'Where checkout returns after a completed payment.',
-  alternates: { canonical: '/billing/success' },
-  robots: { index: false }
+  alternates: { canonical: '/billing/success' }
+  // `robots` is the group's, in (account)/layout.tsx.
 };
 
 /**
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
  */
 export default function BillingSuccessPage() {
   return (
-    <SitePage>
+    <>
       <PageHero
         eyebrow="Checkout"
         title={
@@ -46,6 +46,6 @@ export default function BillingSuccessPage() {
           </div>
         </div>
       </section>
-    </SitePage>
+    </>
   );
 }

@@ -1,18 +1,19 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import { PageHero, SitePage } from '../../../components/site/SiteChrome';
+import { PageHero } from '../../../components/site/SiteChrome';
 import { SignInPanel } from '../../../components/site/SignInPanel';
 
 export const metadata: Metadata = {
   title: 'Sign in | UploadFlow',
   description: 'Sign in to manage your UploadFlow subscription.',
-  alternates: { canonical: '/sign-in' },
-  robots: { index: false }
+  alternates: { canonical: '/sign-in' }
+  // `robots` is the group's, in (auth)/layout.tsx — page metadata replaces a layout's field rather
+  // than merging with it, so repeating a weaker form here would quietly drop `follow: false`.
 };
 
 export default function SignInPage() {
   return (
-    <SitePage>
+    <>
       <PageHero
         eyebrow="Account"
         title={
@@ -42,6 +43,6 @@ export default function SignInPage() {
           </p>
         </div>
       </section>
-    </SitePage>
+    </>
   );
 }

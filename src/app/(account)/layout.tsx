@@ -1,5 +1,11 @@
+import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import { AccountChrome } from '../../components/site/AccountChrome';
 import { requireSignedIn } from '../../lib/server/gate';
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false }
+};
 
 /**
  * Nothing here is worth rendering for somebody who is not signed in.
@@ -9,10 +15,10 @@ import { requireSignedIn } from '../../lib/server/gate';
  * happens.
  *
  * **This is where the group becomes dynamic.** Reading a cookie opts these routes out of static
- * rendering, which is why the gate lives here and not in the root layout: one `cookies()` call up
- * there would take the marketing pages with it.
+ * rendering, which is exactly why the gate lives here and not in the root layout: one `cookies()`
+ * call up there would take every marketing page with it.
  */
 export default async function AccountLayout({ children }: { children: ReactNode }) {
   await requireSignedIn('/account');
-  return children;
+  return <AccountChrome>{children}</AccountChrome>;
 }

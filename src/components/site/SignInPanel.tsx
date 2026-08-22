@@ -93,7 +93,10 @@ export function SignInPanel() {
     return () => {
       cancelled = true;
     };
-  }, [token]);
+    // `returnPath` is derived from the query string and cannot change while this page is open, so
+    // listing it costs nothing and keeps the rule honest — a dependency array that lies once is a
+    // dependency array nobody reads again.
+  }, [token, returnPath]);
 
   useEffect(() => {
     // Only offer what this deployment actually has keys for; asking avoids a button that dead-ends.
