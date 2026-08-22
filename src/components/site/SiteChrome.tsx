@@ -40,6 +40,11 @@ export function SiteHeader({ logoHref }: { logoHref?: string } = {}) {
           ))}
         </nav>
         <ThemeToggle />
+        {/* Where the site ends and your account begins. The bar runs pages, then a preference, then
+            the two controls that are about you — and without a break the account link read as the
+            seventh page in the nav. Hidden at the widths where the account link is not in the bar at
+            all, because a rule with one side is just a mark. */}
+        <span className="uf-bar-sep" aria-hidden="true" />
         <HeaderAuth className="uf-auth-link" />
         <StoreLink className="uf-btn uf-btn-primary uf-btn-xs uf-cta-sm">Add to Chrome</StoreLink>
         {/*

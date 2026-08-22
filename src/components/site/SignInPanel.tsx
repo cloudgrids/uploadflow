@@ -235,26 +235,31 @@ export function SignInPanel() {
   };
 
   return (
-    <div className="uf-stack">
-      <form className="uf-stack" onSubmit={submit} noValidate>
-        <label className="uf-small" htmlFor="uf-signin-email">
-          Email address
-        </label>
-        <input
-          id="uf-signin-email"
-          className="uf-field"
-          type="email"
-          name="email"
-          autoComplete="email"
-          required
-          value={email}
-          disabled={busy}
-          onChange={change(setEmail)}
-          placeholder="you@example.com"
-        />
+    <div className="uf-auth-stack">
+      <form className="uf-auth-form" onSubmit={submit} noValidate>
+        {/* Label and control are one thing and sit close; the gap between groups is what separates
+            them from the next. Both used to come from the same even stack, which is why nothing on
+            this form read as belonging to anything. */}
+        <div className="uf-auth-group">
+          <label className="uf-small" htmlFor="uf-signin-email">
+            Email address
+          </label>
+          <input
+            id="uf-signin-email"
+            className="uf-field"
+            type="email"
+            name="email"
+            autoComplete="email"
+            required
+            value={email}
+            disabled={busy}
+            onChange={change(setEmail)}
+            placeholder="you@example.com"
+          />
+        </div>
 
         {mode === 'password' ? (
-          <>
+          <div className="uf-auth-group">
             <label className="uf-small" htmlFor="uf-signin-password">
               Password
             </label>
@@ -269,43 +274,50 @@ export function SignInPanel() {
               disabled={busy}
               onChange={change(setPassword)}
             />
-          </>
+          </div>
         ) : null}
 
-        <div className="uf-cta-row">
-          <button type="submit" className="uf-btn uf-btn-primary" disabled={busy || !ready}>
-            {busy ? 'Working…' : MODE_LABEL[mode]}
-          </button>
-        </div>
+        <button type="submit" className="uf-btn uf-btn-primary uf-auth-wide" disabled={busy || !ready}>
+          {busy ? 'Working…' : MODE_LABEL[mode]}
+        </button>
 
         <p className={phase.kind === 'failed' ? 'uf-alert' : 'uf-small'} role="status" aria-live="polite">
           {phase.kind === 'failed' ? phase.message : ''}
         </p>
       </form>
 
-      {/* Plain buttons, not a second form: switching is a change of mind, not a submission. */}
-      <p className="uf-small">
+      {/*
+        Plain buttons, not a second form: switching is a change of mind, not a submission.
+
+        A row with a real gap rather than a sentence with spaces in it. Two underlined phrases a
+        single space apart read as one long link, and these are the two most important escape hatches
+        on the page — the one for somebody who cannot remember a password sat flush against the one
+        for somebody who never had one.
+      */}
+      <div className="uf-auth-switch">
         {mode !== 'password' ? (
           <button type="button" className="uf-linkish" onClick={pick('password')}>
             Use a password instead
           </button>
-        ) : null}{' '}
+        ) : null}
         {mode !== 'link' ? (
           <button type="button" className="uf-linkish" onClick={pick('link')}>
             Email me a link instead
           </button>
-        ) : null}{' '}
+        ) : null}
         {mode !== 'forgot' ? (
           <button type="button" className="uf-linkish" onClick={pick('forgot')}>
             Forgotten your password?
           </button>
         ) : null}
-      </p>
+      </div>
 
       {providers.length > 0 ? (
-        <div className="uf-stack-6">
-          <span className="uf-eyebrow uf-eyebrow-dim">Or</span>
-          <div className="uf-cta-row">
+        <div className="uf-auth-alt">
+          {/* A rule with the word in it, rather than a label floating above a button. It has two
+              sides to separate and should look like it. */}
+          <span className="uf-auth-or">Or</span>
+          <div className="uf-auth-providers">
             {providers.map((provider) =>
               // A plain link in both cases: the service redirects to the provider, so this has to
               // work before hydration and without JavaScript.

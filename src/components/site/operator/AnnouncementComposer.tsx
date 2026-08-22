@@ -178,7 +178,7 @@ export function AnnouncementComposer({
   const toggle = <T,>(list: T[], value: T): T[] => (list.includes(value) ? list.filter((entry) => entry !== value) : [...list, value]);
 
   return (
-    <form className="uf-stack" onSubmit={submit}>
+    <form className="uf-stack uf-op-form" onSubmit={submit}>
       <div className="uf-stack-6">
         <h3>{editing ? 'Editing an announcement' : 'New announcement'}</h3>
         <p className="uf-small">

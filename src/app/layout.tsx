@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import { ThemeProvider } from '../components/site/ThemeProvider';
+import { SESSION_FLAG_SCRIPT } from '../components/site/sessionFlag';
 import './globals.css';
 
 const siteUrl = 'https://uploadflow.cloudgrids.tech';
@@ -47,6 +48,16 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
           href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Inter:wght@400;500;600&display=swap"
           rel="stylesheet"
         />
+        {/*
+          Settles the header's account label before the first paint, the same way next-themes settles
+          the theme. Without it a signed-in reader saw "Sign in" and then watched it change its mind —
+          on every page, because every navigation here is a full load.
+
+          It reads a cookie that carries no credential and grants nothing, and it must stay in the
+          head: moved below the markup it would run after the first paint and restore the flicker it
+          exists to remove.
+        */}
+        <script dangerouslySetInnerHTML={{ __html: SESSION_FLAG_SCRIPT }} />
       </head>
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>

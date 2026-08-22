@@ -25,7 +25,14 @@ export function AuthChrome({ children }: { children: ReactNode }) {
             <ThemeToggle />
           </div>
         </header>
-        <main>{children}</main>
+        {/*
+          One narrow column for the whole page, title included.
+          A sign-in form is a handful of short controls, and letting it fill a desktop is what made
+          an email field a thousand pixels wide with its label stranded at the far left. A form is
+          easier to read when the eye does not have to travel — so this is the width the design
+          system already uses for a single column of prose, and everything sits in it.
+        */}
+        <main className="uf-auth">{children}</main>
         <footer className="uf-foot uf-wrap">
           <div className="uf-foot-links">
             <a href="/">Home</a>
