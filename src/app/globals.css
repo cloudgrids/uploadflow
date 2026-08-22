@@ -1417,3 +1417,7 @@ a.uf-card:hover h3 { color: var(--uf-accent-ink); }
 @container uf (min-width: 620px) {
   .uf-op-fields { flex-direction: row; flex-wrap: wrap; align-items: flex-start; }
 }
+
+/* The audience's breadth, which is the thing somebody must not skim past — meaning to reach a
+   segment and reaching everybody is the mistake, and it looks identical in a row of numbers. */
+.uf-op-scope { margin: 0; font-family: var(--uf-head); font-size: 18px; letter-spacing: var(--uf-head-track); color: var(--uf-text); }

@@ -9,6 +9,7 @@ import { messageForFailure } from '../apiMessages';
 const SLOT_ROLE = {
   people: OPERATOR_ROLE,
   campaigns: 'ADMIN',
+  announcements: 'ADMIN',
   billing: 'ADMIN'
 } as const;
 
@@ -43,11 +44,13 @@ export function OperatorShell({
   children,
   people,
   campaigns,
+  announcements,
   billing
 }: {
   children: ReactNode;
   people: ReactNode;
   campaigns: ReactNode;
+  announcements: ReactNode;
   billing: ReactNode;
 }) {
   const access = useAccess(OPERATOR_ROLE);
@@ -116,6 +119,7 @@ export function OperatorShell({
 
       {roleAtLeast(role, SLOT_ROLE.people) ? people : null}
       {roleAtLeast(role, SLOT_ROLE.campaigns) ? campaigns : null}
+      {roleAtLeast(role, SLOT_ROLE.announcements) ? announcements : null}
       {roleAtLeast(role, SLOT_ROLE.billing) ? billing : null}
     </Frame>
   );
