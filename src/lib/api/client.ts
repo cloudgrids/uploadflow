@@ -1,4 +1,4 @@
-import { apiUrl } from './config';
+import { apiPointsAtTheVisitorsMachine, apiUrl } from './config';
 import { ApiError } from './errors';
 
 /**
@@ -16,6 +16,18 @@ export interface RequestOptions {
   /** Bearer token, for the routes that require one. */
   token?: string;
   signal?: AbortSignal;
+}
+
+/** Said once, not per request: a broken deployment should be obvious in the console, not a flood. */
+let warned = false;
+function warnOnce(): void {
+  if (warned) return;
+  warned = true;
+  console.error(
+    '[uploadflow] NEXT_PUBLIC_API_URL was not set when this site was built, so the API address ' +
+      'fell back to http://localhost:8080 — which is this browser\'s own machine. The value is ' +
+      'inlined at build time: set it and rebuild.'
+  );
 }
 
 /** `Retry-After` in seconds. The header may also carry an HTTP date, which is converted here. */
@@ -63,6 +75,13 @@ async function readJson(response: Response): Promise<unknown> {
  * as the same type, distinguished by `outcome`. Nothing else escapes.
  */
 export async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
+  // Refuse before the fetch. Left alone, this becomes a connection failure and the visitor is told
+  // to check their internet — which is the specific wrong answer worth engineering against.
+  if (apiPointsAtTheVisitorsMachine()) {
+    warnOnce();
+    throw ApiError.notConfigured();
+  }
+
   const { method = 'GET', body, token, signal } = options;
 
   const headers: Record<string, string> = { accept: 'application/json' };

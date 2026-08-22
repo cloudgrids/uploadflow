@@ -77,6 +77,23 @@ export class ApiError extends Error {
     this.retryAfterSeconds = init.retryAfterSeconds ?? null;
   }
 
+  /**
+   * The build has no API address, and the fallback would call the visitor's own machine.
+   *
+   * Deliberately a `request` outcome rather than `connectivity`. Connectivity means "try again when
+   * your network is better", and that advice is false here — nothing about the visitor's connection
+   * is wrong, and no amount of retrying will fix a variable that was missing when the bundle was
+   * built. The message names the variable so the cause is in the console and in any error report.
+   */
+  static notConfigured(): ApiError {
+    return new ApiError({
+      status: 0,
+      code: 'API_URL_NOT_CONFIGURED',
+      outcome: 'request',
+      message: 'NEXT_PUBLIC_API_URL was not set when this site was built, so it has no API address to call.'
+    });
+  }
+
   /** The request never reached the service, or the answer never came back. */
   static transport(cause: unknown): ApiError {
     return new ApiError({

@@ -315,6 +315,68 @@ input[type='range'] {
 .uf-arw { display: none; }
 .uf-bar-spacer { margin-left: auto; }
 
+/* ---------- tier comparison ----------
+   Base is the narrow answer: the capability and the tier it starts at. The four
+   tier columns are added once there is room for them. Neither a sideways scroll
+   nor a collapse into per-tier cards, because each gives up the comparison the
+   table exists to provide — where a capability begins is the question, and one
+   column answers it at any width. */
+.uf-compare-wrap { width: 100%; }
+.uf-compare { width: 100%; border-collapse: collapse; text-align: left; }
+.uf-compare th, .uf-compare td { padding: 9px 8px; border-bottom: 1px solid var(--uf-border); vertical-align: top; }
+.uf-compare thead th {
+  font-size: 11.5px; font-weight: 500; letter-spacing: -0.005em;
+  color: var(--uf-text-3);
+  /* Held in view while the rows scroll, or a tick halfway down the table belongs
+     to a column you can no longer see. Offset by the bar rather than 0, because
+     the site header is itself sticky — the same `top: var(--uf-bar-h)` the
+     in-page nav uses, so the two never overlap at any band. Under the bar's
+     z-index, never over it. */
+  position: sticky; top: var(--uf-bar-h); z-index: 20;
+  background: var(--uf-bg);
+  /* An inset shadow, not the inherited border: with `border-collapse: collapse` a
+     sticky cell's own border is painted by the collapsed grid and drops out while
+     it is stuck, leaving the header floating with no edge. */
+  border-bottom: 0;
+  box-shadow: inset 0 -1px 0 var(--uf-border-hover);
+}
+.uf-compare tbody th { font-weight: 400; padding-left: 0; }
+.uf-compare tbody th b { display: block; font-size: 13.5px; font-weight: 500; color: var(--uf-text); }
+.uf-compare tbody th span { display: block; font-size: 11.5px; color: var(--uf-text-3); line-height: 1.5; }
+.uf-compare thead th:first-child { padding-left: 0; }
+
+/* the narrow column */
+.uf-compare-from { font-size: 12.5px; color: var(--uf-text-2); white-space: nowrap; text-align: right; padding-right: 0 !important; }
+.uf-compare-soon { color: var(--uf-text-3); }
+
+/* the wide columns, off until they fit */
+.uf-compare-tier, .uf-compare-cell { display: none; }
+.uf-compare-cell[data-state='yes'] { color: var(--uf-ok); }
+.uf-compare-cell[data-state='soon'] { color: var(--uf-warn); font-size: 11.5px; }
+.uf-compare-cell[data-state='no'] { color: var(--uf-text-3); }
+
+/* The route to an account. Hidden at the floor for the same reason everything else
+   is: the bar is only wide enough for the wordmark. The menu panel carries it
+   until the header has room, so there is exactly one at every width. */
+.uf-bar .uf-auth-link { display: none; }
+.uf-bar .uf-menu-auth {
+  padding: 7px 9px; border-radius: var(--uf-r-sm);
+  color: var(--uf-text-2); text-decoration: none;
+  font-size: 13.5px; font-weight: 450; letter-spacing: -0.01em; white-space: nowrap;
+}
+.uf-bar .uf-menu-auth:hover { color: var(--uf-accent-ink); background: var(--uf-card); }
+
+/* A button that reads as a link. Used where the action is a change of mind rather
+   than a submission — switching how you sign in, say — so it must not look like a
+   second submit button competing with the real one, and must not be an <a>, which
+   would promise a destination it does not have. */
+.uf-linkish {
+  display: inline; padding: 0; border: 0; background: none;
+  font: inherit; color: var(--uf-accent-ink); cursor: pointer;
+  text-decoration: underline; text-underline-offset: 2px;
+}
+.uf-linkish:hover { color: var(--uf-text); }
+
 /* ---------- header menu ----------
    The routes the header cannot show below 900px, behind a disclosure.
 
@@ -907,6 +969,14 @@ a.uf-card:hover h3 { color: var(--uf-accent-ink); }
      room; the menu panel carries it in the meantime, so nothing is lost. */
   .uf-bar .uf-cta-sm { display: inline-flex; margin-left: auto; flex: none; }
   .uf-bar .uf-menu-cta { display: none; }
+  /* Same bargain as the CTA and the theme control above it. */
+  .uf-bar .uf-auth-link {
+    display: inline-flex; align-items: center; flex: none;
+    color: var(--uf-text-2); text-decoration: none;
+    font-size: 13.5px; font-weight: 450; letter-spacing: -0.01em; white-space: nowrap;
+  }
+  .uf-bar .uf-auth-link:hover { color: var(--uf-accent-ink); }
+  .uf-bar .uf-menu-auth { display: none; }
   /* only the tilt opens up here — the offset is already 50% from 380px, and
      re-stating it in px would silently collapse the spread */
   .uf-deck-stack > .uf-plan { --uf-fan-a: 3.2deg; }
@@ -936,6 +1006,10 @@ a.uf-card:hover h3 { color: var(--uf-accent-ink); }
 
 @container uf (min-width: 900px) {
   .uf-wrap { padding-inline: 40px; }
+  /* Four tiers fit from here, so the grid replaces the single "From" column. */
+  .uf-compare-from { display: none; }
+  .uf-compare-tier, .uf-compare-cell { display: table-cell; text-align: center; white-space: nowrap; }
+  .uf-compare thead th.uf-compare-tier { text-align: center; color: var(--uf-text-2); font-size: 12.5px; }
   /* the full nav is visible from here, so the disclosure is redundant */
   .uf-menu { display: none; }
   .uf h1 { font-size: 68px; }

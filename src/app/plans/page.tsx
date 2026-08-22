@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { PageHero, SitePage, StoreLink } from '../../components/site/SiteChrome';
 import { PlanExplorer } from '../../components/site/PlanExplorer';
 import { PlanMarquee } from '../../components/site/PlanMarquee';
-import { MaintenanceOverlay } from '../../components/site/MaintenanceOverlay';
+import { PlanComparison } from '../../components/site/PlanComparison';
 import { planNotes } from '../../components/site/plansContent';
 
 export const metadata: Metadata = {
@@ -36,13 +36,19 @@ export default function PlansPage() {
       />
 
       <section className="uf-wrap uf-section">
-        <MaintenanceOverlay
-          title="Plans aren't open for sign-up yet"
-          note="The tiers and prices below are real, but subscribing isn't switched on. Free needs no account and works today."
-        >
-          <PlanMarquee />
-          <PlanExplorer />
-        </MaintenanceOverlay>
+        <PlanMarquee />
+        <PlanExplorer />
+      </section>
+
+      <section className="uf-wrap uf-section">
+        <div className="uf-stack-l">
+          <div className="uf-stack-6">
+            <span className="uf-eyebrow">Side by side</span>
+            <h2>Where each capability starts.</h2>
+            <p className="uf-lede">Every tier includes everything in the tiers below it.</p>
+          </div>
+          <PlanComparison />
+        </div>
       </section>
 
       <section className="uf-wrap uf-section">

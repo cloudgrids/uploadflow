@@ -200,18 +200,19 @@ export const plans = [
       'Upload interception, the URL and native pickers, and the compatibility check',
       'The overlay, the side panel and the media shelf',
       'The full editor — optimize, crop and cutout',
-      'Downloads, keyboard shortcuts, Event Drops and Subscriptions'
+      'Downloads, keyboard shortcuts, Event Drops and Subscriptions',
+      'Collections'
     ]
   },
   {
     name: 'Silver',
     summary: 'Preparation tools for work that has to look a certain way.',
-    includes: ['Redaction', 'Watermark', 'Collections', 'Alt-text studio', 'Extra command shortcuts']
+    includes: ['Redaction', 'Watermark', 'Alt-text studio', 'Site and destination presets', 'Extra command shortcuts']
   },
   {
     name: 'Gold',
     summary: 'Repeatable delivery, and the heavier media tools.',
-    includes: ['Video editor', 'Upscaling', 'Post bundles', 'Site and destination presets', 'Private Media Memory']
+    includes: ['Video editor', 'Upscaling', 'Post bundles', 'Private Media Memory']
   },
   {
     name: 'Platinum',
