@@ -59,6 +59,10 @@
   --uf-ok: #1F6F4A;
   --uf-warn: #7A5310;
   --uf-stop: #A32B33;
+  /* The site never fills with --uf-stop; it uses it as ink and as hairlines. A destructive button
+     does fill with it, and the ink then has to flip per theme exactly as --uf-accent-text does —
+     #A32B33 wants white on it and the dark palette's #F0949A wants black. */
+  --uf-stop-ink: #FFFFFF;
 }
 
 /* ---- DARK palette ----
@@ -87,6 +91,77 @@
   --uf-ok: #7FD8AE;
   --uf-warn: #E4BC70;
   --uf-stop: #F0949A;
+  --uf-stop-ink: #0B0C0E;
+}
+
+/* ---- the bridge for borrowed components ----------------------------------
+   Components copied in from shadcn/ui are styled with Tailwind utilities that
+   read semantic names — bg-background, text-muted-foreground, border-input.
+   Those names have to resolve to something, and the whole risk in adopting
+   them is that they resolve to a palette of their own. Then the site has two
+   sources of visual truth that nearly agree, which is worse than having two
+   that obviously do not.
+
+   So the names are declared here as aliases and nothing else. Every one is a
+   var() pointing into the uf- palette above; not one carries a literal colour.
+   A borrowed component is therefore already wearing the site's palette the
+   moment it lands, in both themes, with no per-component patching — and the
+   only way to change what one looks like is to change the uf- token, which is
+   the property worth protecting.
+
+   `inline` is what makes the theme switch work. It puts the var() reference
+   into the utility itself rather than resolving it once at build time, so a
+   utility re-reads the token when .dark changes it.
+
+   One name collides and it is worth reading twice: shadcn's `accent` is the
+   quiet ground a menu item takes on hover, while uf's --uf-accent is the
+   loud fill a primary button takes. They are opposites. shadcn's `primary`
+   is what --uf-accent means, and is mapped accordingly.
+
+   Typography is deliberately *not* bridged. The uf- scale is set in px at
+   specific weights and tracking, Tailwind's is a rem ladder, and pretending
+   one is the other produces labels that are close enough to look like a
+   mistake. A borrowed component that shows text gets uf- type classes on the
+   way in instead. */
+@theme inline {
+  --color-background: var(--uf-bg);
+  --color-foreground: var(--uf-text);
+
+  --color-card: var(--uf-surface);
+  --color-card-foreground: var(--uf-text);
+  --color-popover: var(--uf-surface);
+  --color-popover-foreground: var(--uf-text);
+
+  /* the loud fill — a primary button, a selected row */
+  --color-primary: var(--uf-accent);
+  --color-primary-foreground: var(--uf-accent-text);
+
+  /* the quiet fill — a secondary button */
+  --color-secondary: var(--uf-bg-2);
+  --color-secondary-foreground: var(--uf-text);
+
+  /* the quiet ground — hover, focus-within, a highlighted menu item.
+     NOT --uf-accent; see the note above. */
+  --color-accent: var(--uf-bg-2);
+  --color-accent-foreground: var(--uf-text);
+
+  --color-muted: var(--uf-bg-2);
+  --color-muted-foreground: var(--uf-text-3);
+
+  --color-destructive: var(--uf-stop);
+  --color-destructive-foreground: var(--uf-stop-ink);
+
+  --color-border: var(--uf-border);
+  --color-input: var(--uf-border);
+  --color-ring: var(--uf-ring);
+
+  --radius-sm: var(--uf-r-sm);
+  --radius-md: var(--uf-r-md);
+  --radius-lg: var(--uf-r);
+  --radius-xl: var(--uf-r-xl);
+
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: var(--uf-mono);
 }
 
 * {
