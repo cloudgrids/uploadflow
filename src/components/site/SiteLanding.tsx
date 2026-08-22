@@ -353,6 +353,7 @@ export function SiteLanding() {
           <div className="uf-foot-links">
             <a href="/how-it-works">How it works</a>
             <a href="/whats-new">What&rsquo;s new</a>
+            <a href="/drops">Drops</a>
             <a href="/privacy">Privacy</a>
             <a href="/support">Support</a>
             <a href="#compat">Limits</a>
