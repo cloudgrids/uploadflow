@@ -135,7 +135,7 @@ export function CampaignForm({
   };
 
   return (
-    <form className="uf-stack" onSubmit={submit}>
+    <form className="uf-stack uf-op-form" onSubmit={submit}>
       <div className="uf-stack-6">
         <h3>{editing ? `Editing ${editing.slug}` : 'New campaign'}</h3>
         <p className="uf-small">

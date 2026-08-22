@@ -440,6 +440,8 @@ input[type='range'] {
    is: the bar is only wide enough for the wordmark. The menu panel carries it
    until the header has room, so there is exactly one at every width. */
 .uf-bar .uf-auth-link { display: none; }
+/* Shown only alongside the account link it separates — see the 900px band. */
+.uf-bar .uf-bar-sep { display: none; }
 .uf-bar .uf-menu-auth {
   padding: 7px 9px; border-radius: var(--uf-r-sm);
   color: var(--uf-text-2); text-decoration: none;
@@ -1064,6 +1066,11 @@ a.uf-card:hover h3 { color: var(--uf-accent-ink); }
   }
   .uf-bar .uf-auth-link:hover { color: var(--uf-accent-ink); }
   .uf-bar .uf-menu-auth { display: none; }
+  .uf-bar .uf-bar-sep {
+    display: block; flex: 0 0 auto;
+    width: 1px; height: 18px; margin-inline: 2px;
+    background: var(--uf-border-hover);
+  }
   /* only the tilt opens up here — the offset is already 50% from 380px, and
      re-stating it in px would silently collapse the spread */
   .uf-deck-stack > .uf-plan { --uf-fan-a: 3.2deg; }
@@ -1488,3 +1495,85 @@ a.uf-card:hover h3 { color: var(--uf-accent-ink); }
   .uf-google { width: auto; padding: 0 12px; }
   .uf-google-label { display: inline; }
 }
+
+/* ---------- the sign-in column ----------
+   Base first, bands after.
+
+   A sign-in form is a handful of short controls, and a page that lets it fill a desktop produces an
+   email field a thousand pixels wide with its label stranded at the far left — a longer eye
+   journey for less information. So the whole auth page, title included, sits in one narrow column.
+   Everything below assumes that column and would be wrong outside it. */
+.uf-auth { width: 100%; max-width: 420px; margin-inline: auto; }
+
+/* The heading scale is built for a page that has something to say. Here it is a label on a form,
+   and at the top of the scale it pushed the first field below the fold on a laptop. Selector is
+   deliberately more specific than the `.uf h1` band rules so it wins wherever they sit in the
+   file — those set the size at four widths and matching each one would be four chances to drift. */
+.uf .uf-auth h1 { font-size: 26px; letter-spacing: var(--uf-head-track); }
+/* The page hero becomes a two-column grid at wide widths, to sit a title beside an aside. There is
+   no aside here, so the title got one column of a grid built for two and wrapped to a third of the
+   width it had. One column, always. */
+.uf .uf-auth .uf-page-hero-in { display: flex; flex-direction: column; }
+.uf .uf-auth .uf-page-hero { padding-block: 24px 4px; }
+.uf .uf-auth .uf-section { border-top: 0; padding-block: 14px 30px; }
+
+/* Groups apart, label and control together. Both used to come from one even stack, which is why
+   nothing on the form read as belonging to anything. */
+.uf-auth-stack { display: flex; flex-direction: column; gap: 18px; }
+.uf-auth-form { display: flex; flex-direction: column; gap: 16px; }
+.uf-auth-group { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.uf-auth-form .uf-field { font-size: 13px; padding: 10px 11px; }
+/* The one action on the form is the width of what it acts on. */
+.uf-auth-wide { width: 100%; }
+
+/* A row with a real gap, not a sentence with spaces in it: two underlined phrases one space apart
+   read as one long link, and these are the escape hatches for somebody who cannot get in. */
+.uf-auth-switch { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+
+/* A rule with the word in it. It has two sides to separate and should look like it. */
+.uf-auth-alt { display: flex; flex-direction: column; gap: 14px; }
+.uf-auth-or {
+  display: flex; align-items: center; gap: 10px;
+  color: var(--uf-text-3); font-size: 11.5px;
+}
+.uf-auth-or::before, .uf-auth-or::after { content: ''; flex: 1 1 auto; height: 1px; background: var(--uf-border); }
+.uf-auth-providers { display: flex; flex-direction: column; gap: 8px; }
+
+/* Not one of the usual bands, and the number is measured rather than chosen: the labelled button
+   needs 154px and overflows a 200px container by nine. The general button waits for 380px, which
+   would leave a 375px phone — the commonest narrow width there is — with a small square beside a
+   full-width primary, reading as the lesser option. That is the wrong way round for the way most
+   people actually sign in, so in this column the label arrives as soon as it fits. */
+@container uf (min-width: 300px) {
+  .uf-auth .uf-google { width: 100%; padding: 0 12px; }
+  .uf-auth .uf-google-label { display: inline; }
+}
+
+@container uf (min-width: 380px) {
+  .uf-auth-stack { gap: 22px; }
+  .uf-auth-form { gap: 18px; }
+}
+
+@container uf (min-width: 620px) {
+  .uf .uf-auth h1 { font-size: 32px; }
+}
+
+/* The header's account label, chosen before the first paint by the script in the root layout.
+   Both words are in the markup and CSS picks one, which is what keeps the page static: a server
+   that cannot read the cookie cannot know which to render, and rendering one and correcting it on
+   hydration is the flicker. The rules act on the spans, never on the link, so the header's own
+   width bands keep deciding whether the control appears at all. */
+[data-auth='in'] { display: none; }
+:root[data-uf-session] [data-auth='out'] { display: none; }
+:root[data-uf-session] [data-auth='in'] { display: inline; }
+
+/* ---------- operator widths ----------
+   A listing earns the whole page: several columns of short values are exactly what a wide viewport
+   is for, and squeezing them is what the horizontal scroller exists to avoid.
+
+   Everything else on these screens does not. A form is read and typed into one line at a time, and
+   at 1240px an author was writing a campaign's copy into a textarea wider than most articles, with
+   its label a foot away from the field it names. A search box for an email address is worse: the
+   field was longer than any address that could go in it. */
+.uf-op-form { max-width: 760px; }
+.uf-op-filter .uf-op-search { max-width: 340px; }
