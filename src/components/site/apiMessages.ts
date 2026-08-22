@@ -10,6 +10,12 @@ import { isApiError } from '../../lib/api';
 export function messageForFailure(cause: unknown, fallback: string): string {
   if (!isApiError(cause)) return fallback;
 
+  // Named before the outcome switch: this one must never be reported as a connectivity problem,
+  // and the visitor should not be told to check a connection that is working.
+  if (cause.code === 'API_URL_NOT_CONFIGURED') {
+    return 'This site is not configured to reach its service. Nothing is wrong with your connection.';
+  }
+
   switch (cause.outcome) {
     case 'connectivity':
       return 'Could not reach the service. Check your connection and try again.';
