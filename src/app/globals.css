@@ -1371,3 +1371,49 @@ a.uf-card:hover h3 { color: var(--uf-accent-ink); }
   .uf-op-search { flex: 1 1 auto; }
   .uf-op-page { flex-direction: row; align-items: center; justify-content: space-between; }
 }
+
+/* ---------- operator forms ----------
+   Same rule as the listings above: base first, band after. */
+
+.uf-op-fields { display: flex; flex-direction: column; gap: 12px; }
+.uf-op-field { display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1 1 180px; }
+.uf-op-field input,
+.uf-op-field select,
+.uf-op-field textarea {
+  width: 100%; min-width: 0;
+  font: inherit; font-size: 12.5px; color: var(--uf-text);
+  padding: 8px 10px; border-radius: var(--uf-r-md);
+  border: 1px solid var(--uf-border); background: var(--uf-surface);
+}
+.uf-op-field textarea { resize: vertical; line-height: 1.5; }
+.uf-op-field input:focus-visible,
+.uf-op-field select:focus-visible,
+.uf-op-field textarea:focus-visible { outline: 2px solid var(--uf-ring); outline-offset: 1px; border-color: var(--uf-border-hover); }
+/* A permanent value is shown rather than hidden, so it reads as settled and not as broken. */
+.uf-op-field input[readonly] { color: var(--uf-text-3); background: var(--uf-bg-2); }
+
+.uf-op-group { display: flex; flex-direction: column; gap: 10px; min-width: 0; margin: 0; padding: 12px; border: 1px solid var(--uf-border); border-radius: var(--uf-r); }
+.uf-op-group legend { padding: 0 6px; }
+.uf-op-group:disabled { opacity: 0.6; }
+
+/* Label and control on one line — the one place in the form where they belong side by side.
+   A checkbox will not shrink and its label cannot go below its longest word, so at the floor the
+   pair overflows unless the text is allowed to break inside a word. `break-word` does not help
+   here: it wraps visually without reducing the min-content width the flex item is sized from. */
+.uf-op-check { display: flex; align-items: center; gap: 6px; min-width: 0; max-width: 100%; }
+.uf-op-check input { flex: 0 0 auto; accent-color: var(--uf-accent); }
+.uf-op-check span { min-width: 0; overflow-wrap: anywhere; }
+.uf-op-checks { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; }
+.uf-op-checks > * { min-width: 0; max-width: 100%; }
+
+.uf-op-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.uf-op-row-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.uf-op-confirm { padding: 12px; border: 1px solid var(--uf-border-hover); border-radius: var(--uf-r); background: var(--uf-card); }
+.uf-op-actions .uf-btn[disabled],
+.uf-op-row-actions .uf-btn[disabled] { opacity: 0.45; cursor: default; transform: none; }
+/* A filter that is on reads as pressed rather than as one of four identical buttons. */
+.uf-op-checks .uf-btn[aria-pressed='true'] { border-color: var(--uf-accent-ink); color: var(--uf-accent-ink); }
+
+@container uf (min-width: 620px) {
+  .uf-op-fields { flex-direction: row; flex-wrap: wrap; align-items: flex-start; }
+}

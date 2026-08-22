@@ -8,6 +8,7 @@ import { messageForFailure } from '../apiMessages';
 /** The rank each slot asks for. Stated once, so a screen and its gate cannot drift apart. */
 const SLOT_ROLE = {
   people: OPERATOR_ROLE,
+  campaigns: 'ADMIN',
   billing: 'ADMIN'
 } as const;
 
@@ -38,7 +39,17 @@ function Frame({ lede, children }: { lede: string; children: ReactNode }) {
  * apart deliberately — one is a fact about the account and the other is a fault, and reporting a
  * fault as a refusal tells somebody they have been demoted when the truth is that a request failed.
  */
-export function OperatorShell({ children, people, billing }: { children: ReactNode; people: ReactNode; billing: ReactNode }) {
+export function OperatorShell({
+  children,
+  people,
+  campaigns,
+  billing
+}: {
+  children: ReactNode;
+  people: ReactNode;
+  campaigns: ReactNode;
+  billing: ReactNode;
+}) {
   const access = useAccess(OPERATOR_ROLE);
 
   if (access.state === 'deciding') {
@@ -104,6 +115,7 @@ export function OperatorShell({ children, people, billing }: { children: ReactNo
       {children}
 
       {roleAtLeast(role, SLOT_ROLE.people) ? people : null}
+      {roleAtLeast(role, SLOT_ROLE.campaigns) ? campaigns : null}
       {roleAtLeast(role, SLOT_ROLE.billing) ? billing : null}
     </Frame>
   );
