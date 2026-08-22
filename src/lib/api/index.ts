@@ -56,3 +56,19 @@ export {
   type PayablePlanId,
   type Subscription
 } from './subscriptions';
+export {
+  CAMPAIGN_CHANNELS,
+  CAMPAIGN_PAGE_SIZE,
+  listCampaigns,
+  MAX_REWARD_DAYS,
+  saveCampaign,
+  setCampaignStatus,
+  type Campaign,
+  type CampaignAssets,
+  type CampaignChannel,
+  type CampaignDraft,
+  type CampaignPage,
+  type CampaignPhase,
+  type CampaignStatus,
+  type RewardPlan
+} from './campaigns';

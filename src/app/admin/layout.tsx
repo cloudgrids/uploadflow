@@ -25,14 +25,16 @@ export const metadata: Metadata = {
 export default function AdminLayout({
   children,
   people,
+  campaigns,
   billing
 }: {
   children: ReactNode;
   people: ReactNode;
+  campaigns: ReactNode;
   billing: ReactNode;
 }) {
   return (
-    <OperatorShell people={people} billing={billing}>
+    <OperatorShell people={people} campaigns={campaigns} billing={billing}>
       {children}
     </OperatorShell>
   );
