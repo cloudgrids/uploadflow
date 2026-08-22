@@ -1,6 +1,7 @@
 import { request, type RequestOptions } from './client';
 import { ApiError, isApiError } from './errors';
 import { logout, refreshTokens, type AuthTokens } from './auth';
+import { writeSessionHint } from './sessionHint';
 
 /**
  * Who is signed in, and the one way to make a call as them.
@@ -68,6 +69,10 @@ function write(session: Session | null): void {
     } catch {
       // A full or blocked store must not break sign-in; the session simply will not outlive the tab.
     }
+    // The hint the server reads, written here and nowhere else so the two cannot drift. It holds no
+    // token — see `sessionHint.ts` — and a token refresh comes through this function too, which is
+    // what keeps the hint's window sliding while somebody stays signed in.
+    writeSessionHint(session);
   }
   announce();
 }
@@ -77,6 +82,10 @@ export function getSession(): Session | null {
   if (!loaded) {
     current = read();
     loaded = true;
+    // Anybody already signed in when this shipped has a stored session and no hint, and would
+    // otherwise be redirected away from their own account until they signed in again. Writing it
+    // on the first read is the migration; it is idempotent and costs one cookie assignment.
+    if (current) writeSessionHint(current);
   }
   return current;
 }
