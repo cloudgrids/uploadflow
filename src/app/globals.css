@@ -711,7 +711,15 @@ a.uf-card:hover h3 { color: var(--uf-accent-ink); }
   display: grid;
   touch-action: pan-y;  /* vertical scrolling stays the page's, horizontal is ours */
 }
-.uf-deck-stack > .uf-plan {
+/* The reach target rides the same transform as the card it fronts — one block, two selectors, so
+   the fan's geometry stays defined in exactly one place.
+
+   **Both selectors, in every band.** The angle and the offset are re-stated per width, and adding
+   the target to the base rule alone left it with the floor's `--uf-fan-x: 0px` at every width: two
+   targets stacked dead centre, catching nothing, while the cards fanned out from under them. This
+   is the same trap the note at 380px describes from the other side. */
+.uf-deck-stack > .uf-plan,
+.uf-deck-stack > .uf-plan-reach {
   grid-area: 1 / 1;
   /* The fan is off at the floor and widens in two steps. Rotating a card adds
      height×sin(angle) to its bounding box, and these cards are several hundred
@@ -740,6 +748,20 @@ a.uf-card:hover h3 { color: var(--uf-accent-ink); }
 /* further than one step from the middle: no side of its own, and each painted
    card costs a full card of compositing */
 .uf-deck-stack > .uf-plan[data-buried="true"] { visibility: hidden; }
+
+/* Invisible, and only there to be clicked. It sits at the same depth as the card it fronts, so the
+   top card — a whole layer above — still wins wherever the two overlap; what it catches is the part
+   of a neighbour you can actually see. Rendered after its card, so at equal depth it is the one on
+   top.
+
+   Not a hand cursor: it does not do what the card under it appears to offer. It brings that card
+   forward, which is what the arrows and dots do, so it borrows their pointer. */
+.uf-deck-stack > .uf-plan-reach {
+  appearance: none; border: 0; padding: 0; background: transparent;
+  cursor: pointer;
+  z-index: calc(10 - var(--uf-depth, 0));
+}
+.uf-deck-stack > .uf-plan-reach:focus-visible { outline: 2px solid var(--uf-ring); outline-offset: -2px; border-radius: var(--uf-r-2xl); }
 
 /* Sized for the 150px floor: two arrows, four dots and the gaps have to fit a
    130px content box, so everything starts small and grows at 200px. */
@@ -1019,7 +1041,8 @@ a.uf-card:hover h3 { color: var(--uf-accent-ink); }
   .uf-deck-stack { width: min(520px, 48%); margin-inline: auto; }
   /* no pull-back: the fan is symmetric about the active card, so centring the
      column centres the whole spread */
-  .uf-deck-stack > .uf-plan { --uf-fan-a: 1.5deg; --uf-fan-x: 50%; }
+  .uf-deck-stack > .uf-plan,
+  .uf-deck-stack > .uf-plan-reach { --uf-fan-a: 1.5deg; --uf-fan-x: 50%; }
   /* label, switch and hint fit on one line once there is room; below this they
      stack, because the switch alone is wider than the column at the floor */
   .uf-billing { flex-direction: row; align-items: center; flex-wrap: wrap; gap: 8px 10px; }
@@ -1073,7 +1096,8 @@ a.uf-card:hover h3 { color: var(--uf-accent-ink); }
   }
   /* only the tilt opens up here — the offset is already 50% from 380px, and
      re-stating it in px would silently collapse the spread */
-  .uf-deck-stack > .uf-plan { --uf-fan-a: 3.2deg; }
+  .uf-deck-stack > .uf-plan,
+  .uf-deck-stack > .uf-plan-reach { --uf-fan-a: 3.2deg; }
 
   /* not at 380: that is where the plan grid goes two-up and the cards are at
      their narrowest, so a nowrap badge overflows its feature column there */

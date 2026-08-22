@@ -12,3 +12,6 @@ dist/
 CLAUDE.md
 .vercel
 .env*
+
+# Playwright MCP scratch snapshots
+.playwright-mcp/

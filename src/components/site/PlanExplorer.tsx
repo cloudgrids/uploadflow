@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useRef, useState, useSyncExternalStore } from 'react';
+import { Fragment, useCallback, useRef, useState, useSyncExternalStore } from 'react';
 import {
   accountStates,
   annualSaving,
@@ -78,10 +78,30 @@ const DECK_DEPTH = 1;
 export function PlanExplorer() {
   const [stateId, setStateId] = useState<AccountStateId>('out');
   const [period, setPeriod] = useState<BillingPeriod>('monthly');
-  const [active, setActive] = useState(0);
+  /**
+   * Which card the deck opens on.
+   *
+   * **Not the first one.** `plans[0]` is Free, whose button is disabled because it is what somebody
+   * already has — so the page loaded with its one interactive card offering nothing to press, and
+   * every plan you could actually buy sitting behind it, visible and inert. Opening on the
+   * recommended tier means the default state has something to do in it.
+   */
+  const [active, setActive] = useState(() => {
+    const recommended = plans.findIndex((plan) => plan.recommended && isPayablePlan(plan.id));
+    return recommended >= 0 ? recommended : Math.max(0, plans.findIndex((plan) => isPayablePlan(plan.id)));
+  });
   const [dragging, setDragging] = useState(false);
   const deckRef = useRef<HTMLDivElement>(null);
   const drag = useRef<{ id: number; x: number } | null>(null);
+  /**
+   * Whether the pointer moved rather than tapped.
+   *
+   * A browser still fires a click after a drag that ends on the element it started on, so a swipe
+   * finishing over a neighbour would step the deck *and* then be caught by that neighbour's reach
+   * target — two jumps for one gesture. This lets the target ignore the click that belongs to a
+   * swipe already handled.
+   */
+  const swiped = useRef(false);
   const account = accountStates.find((s) => s.id === stateId) ?? accountStates[0];
   const count = plans.length;
 
@@ -140,6 +160,8 @@ export function PlanExplorer() {
   function onPointerUp(event: React.PointerEvent<HTMLDivElement>) {
     if (!drag.current || drag.current.id !== event.pointerId) return;
     const dx = event.clientX - drag.current.x;
+    // Four pixels: enough to tell a tap from a drag without demanding a steady hand.
+    swiped.current = Math.abs(dx) > 4;
     drag.current = null;
     setDragging(false);
     setDragOffset(0);
@@ -268,8 +290,8 @@ export function PlanExplorer() {
           const depth = Math.abs(offset);
           const top = offset === 0;
           return (
+            <Fragment key={plan.id}>
             <div
-              key={plan.id}
               className="uf-card uf-plan"
               data-current={current}
               data-recommended={!current && plan.recommended ? true : undefined}
@@ -321,6 +343,35 @@ export function PlanExplorer() {
                 </button>
               </div>
             </div>
+            {/*
+              A way to reach a card you can see.
+
+              The fan shows the neighbours on purpose, and `inert` makes them untouchable on
+              purpose — which together told somebody three plans were right there and then ignored
+              the click. Worse, the top card's box overlaps their inner halves, so even a click on
+              exposed artwork landed on the wrong card and did nothing at all: no request, no notice,
+              nothing to explain it.
+
+              This sits outside the inert subtree, over the neighbour and under the top card, and
+              its only job is to bring that card forward. `inert` keeps doing its job for the
+              keyboard and the accessibility tree; the pointer gets an answer.
+            */}
+            {!top && depth <= DECK_DEPTH ? (
+              <button
+                type="button"
+                className="uf-plan-reach"
+                aria-label={`Show ${plan.name}`}
+                onClick={() => {
+                  if (swiped.current) {
+                    swiped.current = false;
+                    return;
+                  }
+                  setActive(index);
+                }}
+                style={{ '--uf-d': offset, '--uf-depth': depth } as React.CSSProperties}
+              />
+            ) : null}
+            </Fragment>
           );
         })}
         </div>
