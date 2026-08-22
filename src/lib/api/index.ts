@@ -89,3 +89,4 @@ export {
   type Severity
 } from './announcements';
 
+export { liveDrops, type Drop, type DropAssets } from './drops';
