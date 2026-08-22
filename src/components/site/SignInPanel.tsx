@@ -15,6 +15,7 @@ import {
   startSession
 } from '../../lib/api';
 import { messageForFailure } from './apiMessages';
+import { GoogleMark } from '../../lib/icons';
 
 type Phase =
   | { kind: 'form' }
@@ -303,14 +304,30 @@ export function SignInPanel() {
 
       {providers.length > 0 ? (
         <div className="uf-stack-6">
-          <span className="uf-eyebrow uf-eyebrow-dim">Or continue with</span>
+          <span className="uf-eyebrow uf-eyebrow-dim">Or</span>
           <div className="uf-cta-row">
-            {providers.map((provider) => (
-              // A plain link: the service redirects to the provider, so this must work without JavaScript.
-              <a key={provider} className="uf-btn uf-btn-ghost" href={apiUrl(`/auth/oauth/${provider}`)}>
-                {providerLabel(provider)}
-              </a>
-            ))}
+            {providers.map((provider) =>
+              // A plain link in both cases: the service redirects to the provider, so this has to
+              // work before hydration and without JavaScript.
+              provider.toLowerCase() === 'google' ? (
+                /*
+                 * Google's own button rather than ours.
+                 *
+                 * The label is carried in `aria-label` as well as in the span, because the span is
+                 * hidden at the narrow widths this site is authored down to and the button becomes
+                 * the mark alone — which is a variant Google's guidance provides for exactly that
+                 * case. Without the attribute the accessible name would disappear with the text.
+                 */
+                <a key={provider} className="uf-google" href={apiUrl(`/auth/oauth/${provider}`)} aria-label="Sign in with Google">
+                  <GoogleMark />
+                  <span className="uf-google-label">Sign in with Google</span>
+                </a>
+              ) : (
+                <a key={provider} className="uf-btn uf-btn-ghost" href={apiUrl(`/auth/oauth/${provider}`)}>
+                  Sign in with {providerLabel(provider)}
+                </a>
+              )
+            )}
           </div>
         </div>
       ) : null}
