@@ -1421,3 +1421,18 @@ a.uf-card:hover h3 { color: var(--uf-accent-ink); }
 /* The audience's breadth, which is the thing somebody must not skim past — meaning to reach a
    segment and reaching everybody is the mistake, and it looks identical in a row of numbers. */
 .uf-op-scope { margin: 0; font-family: var(--uf-head); font-size: 18px; letter-spacing: var(--uf-head-track); color: var(--uf-text); }
+
+/* ---------- drops ----------
+   Base first, band after. */
+.uf-drop-facts { display: flex; flex-direction: column; gap: 6px; }
+/* The time left is the reason the page exists, so it is set at heading size rather than left as
+   another line of small print. Tabular figures stop the whole line jittering as digits change. */
+.uf-drop-clock {
+  font-family: var(--uf-head); font-size: 22px; font-weight: var(--uf-head-weight);
+  letter-spacing: var(--uf-head-track); color: var(--uf-text);
+  font-variant-numeric: tabular-nums; min-height: 1.2em;
+}
+
+@container uf (min-width: 620px) {
+  .uf-drop-facts { flex-direction: row; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+}
