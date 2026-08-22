@@ -315,6 +315,34 @@ input[type='range'] {
 .uf-arw { display: none; }
 .uf-bar-spacer { margin-left: auto; }
 
+/* ---------- tier comparison ----------
+   Base is the narrow answer: the capability and the tier it starts at. The four
+   tier columns are added once there is room for them. Neither a sideways scroll
+   nor a collapse into per-tier cards, because each gives up the comparison the
+   table exists to provide — where a capability begins is the question, and one
+   column answers it at any width. */
+.uf-compare-wrap { width: 100%; }
+.uf-compare { width: 100%; border-collapse: collapse; text-align: left; }
+.uf-compare th, .uf-compare td { padding: 9px 8px; border-bottom: 1px solid var(--uf-border); vertical-align: top; }
+.uf-compare thead th {
+  font-size: 11.5px; font-weight: 500; letter-spacing: -0.005em;
+  color: var(--uf-text-3); border-bottom-color: var(--uf-border-hover);
+}
+.uf-compare tbody th { font-weight: 400; padding-left: 0; }
+.uf-compare tbody th b { display: block; font-size: 13.5px; font-weight: 500; color: var(--uf-text); }
+.uf-compare tbody th span { display: block; font-size: 11.5px; color: var(--uf-text-3); line-height: 1.5; }
+.uf-compare thead th:first-child { padding-left: 0; }
+
+/* the narrow column */
+.uf-compare-from { font-size: 12.5px; color: var(--uf-text-2); white-space: nowrap; text-align: right; padding-right: 0 !important; }
+.uf-compare-soon { color: var(--uf-text-3); }
+
+/* the wide columns, off until they fit */
+.uf-compare-tier, .uf-compare-cell { display: none; }
+.uf-compare-cell[data-state='yes'] { color: var(--uf-ok); }
+.uf-compare-cell[data-state='soon'] { color: var(--uf-warn); font-size: 11.5px; }
+.uf-compare-cell[data-state='no'] { color: var(--uf-text-3); }
+
 /* The route to an account. Hidden at the floor for the same reason everything else
    is: the bar is only wide enough for the wordmark. The menu panel carries it
    until the header has room, so there is exactly one at every width. */
@@ -966,6 +994,10 @@ a.uf-card:hover h3 { color: var(--uf-accent-ink); }
 
 @container uf (min-width: 900px) {
   .uf-wrap { padding-inline: 40px; }
+  /* Four tiers fit from here, so the grid replaces the single "From" column. */
+  .uf-compare-from { display: none; }
+  .uf-compare-tier, .uf-compare-cell { display: table-cell; text-align: center; white-space: nowrap; }
+  .uf-compare thead th.uf-compare-tier { text-align: center; color: var(--uf-text-2); font-size: 12.5px; }
   /* the full nav is visible from here, so the disclosure is redundant */
   .uf-menu { display: none; }
   .uf h1 { font-size: 68px; }
