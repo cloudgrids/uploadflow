@@ -33,6 +33,18 @@ export {
   type Session
 } from './session';
 export { useIsSignedIn, useSession } from './useSession';
+export { asGlobalRole, roleAtLeast, GLOBAL_ROLES, OPERATOR_ROLE, type GlobalRole } from './roles';
+export { myProfile } from './profile';
+export { useAccess, type Access } from './useAccess';
+export {
+  listAccounts,
+  listSubscriptions,
+  OPERATOR_PAGE_SIZE,
+  type OperatorAccount,
+  type OperatorPage,
+  type OperatorQuery,
+  type OperatorSubscription
+} from './operators';
 export {
   isPayablePlan,
   listPlanIdentifiers,

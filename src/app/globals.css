@@ -1254,3 +1254,45 @@ a.uf-card:hover h3 { color: var(--uf-accent-ink); }
 @media (prefers-reduced-motion: reduce) {
   .uf-maint-body { filter: none; opacity: 0.35; }
 }
+
+/* ---------- operator listings ----------
+   Base rules first and the band after, per the rule at the top of the bands: a base rule written
+   below a band wins at every width and quietly flattens it. */
+
+/* Stacked at the floor. A label and its control are two flex items and will sit side by side given
+   the chance, which at 150px leaves the input about 40px wide. */
+.uf-op-filter { display: flex; flex-direction: column; gap: 8px; align-items: stretch; }
+.uf-op-search { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.uf-op-search input {
+  width: 100%; min-width: 0;
+  font: inherit; font-size: 12.5px; color: var(--uf-text);
+  padding: 8px 10px; border-radius: var(--uf-r-md);
+  border: 1px solid var(--uf-border); background: var(--uf-surface);
+}
+.uf-op-search input:focus-visible { outline: 2px solid var(--uf-ring); outline-offset: 1px; border-color: var(--uf-border-hover); }
+
+/* The one place on the site that legitimately scrolls sideways: a table of several columns cannot
+   be made to fit 150px, and squeezing it produces a column of single characters instead. */
+.uf-op-scroll { width: 100%; overflow-x: auto; }
+.uf-op-table { width: 100%; min-width: 460px; border-collapse: collapse; text-align: left; }
+.uf-op-table th, .uf-op-table td {
+  padding: 8px 10px 8px 0; border-bottom: 1px solid var(--uf-border);
+  vertical-align: top; font-size: 12.5px; line-height: 1.45; white-space: nowrap;
+}
+.uf-op-table thead th { font-weight: 500; color: var(--uf-text-3); letter-spacing: -0.01em; }
+.uf-op-table tbody td { color: var(--uf-text-2); }
+/* Addresses and identifiers have no spaces in them, so `break-word` would not shorten the column —
+   only `anywhere` reduces the min-content width a table cell is sized from. */
+.uf-op-table td[data-wrap] { white-space: normal; overflow-wrap: anywhere; }
+.uf-op-table tbody tr:last-child th, .uf-op-table tbody tr:last-child td { border-bottom: 0; }
+
+.uf-op-page { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.uf-op-page-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+.uf-op-page .uf-btn[disabled] { opacity: 0.45; cursor: default; transform: none; }
+.uf-op-page .uf-btn[disabled]:hover { border-color: var(--uf-border-hover); color: var(--uf-text); }
+
+@container uf (min-width: 380px) {
+  .uf-op-filter { flex-direction: row; align-items: flex-end; }
+  .uf-op-search { flex: 1 1 auto; }
+  .uf-op-page { flex-direction: row; align-items: center; justify-content: space-between; }
+}
