@@ -22,14 +22,19 @@ export function OperatorHandoff() {
   if (access.state !== 'granted') return null;
 
   return (
-    <section className="uf-card uf-stack">
+    <div className="uf-card uf-stack">
       <div className="uf-stack-6">
         <h2>Operational tools</h2>
         <p className="uf-small">This account also has access to the tools for running UploadFlow.</p>
       </div>
-      <a className="uf-btn uf-btn-ghost" href="/admin">
-        Go to operations <span className="uf-arw">&rarr;</span>
-      </a>
-    </section>
+      {/* In a row rather than loose in the stack: a column flex parent stretches its children, and
+          a button the full width of the card reads as the page's main action rather than a door out
+          of it. */}
+      <div className="uf-cta-row">
+        <a className="uf-btn uf-btn-ghost" href="/admin">
+          Go to operations <span className="uf-arw">&rarr;</span>
+        </a>
+      </div>
+    </div>
   );
 }

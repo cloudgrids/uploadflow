@@ -3,13 +3,14 @@
 import { listSubscriptions, type OperatorSubscription } from '../../../lib/api';
 import { Column, OperatorListing } from './OperatorListing';
 import { onOrDash, titleCase } from './formats';
+import { StateChip, SUBSCRIPTION_TONE } from '../StateChip';
 
 const load = listSubscriptions;
 
 const COLUMNS: readonly Column<OperatorSubscription>[] = [
   { key: 'user', head: 'Account', cell: (row) => row.userId, wrap: true },
   { key: 'plan', head: 'Plan', cell: (row) => (row.plan ? titleCase(row.plan) : '—') },
-  { key: 'status', head: 'Status', cell: (row) => titleCase(row.status) },
+  { key: 'status', head: 'Status', cell: (row) => <StateChip label={titleCase(row.status)} tone={SUBSCRIPTION_TONE[row.status]} /> },
   { key: 'ends', head: 'Period ends', cell: (row) => onOrDash(row.currentPeriodEnd) },
   { key: 'cancelling', head: 'Cancelling', cell: (row) => (row.cancelAtPeriodEnd ? 'At period end' : '—') },
   { key: 'cancelled', head: 'Cancelled', cell: (row) => onOrDash(row.canceledAt) }

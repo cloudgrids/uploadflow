@@ -13,6 +13,7 @@ import {
 import { messageForFailure } from '../apiMessages';
 import { AnnouncementComposer } from './AnnouncementComposer';
 import { onOrDash, titleCase } from './formats';
+import { ANNOUNCEMENT_TONE, StateChip } from '../StateChip';
 
 type Query = { phase?: AnnouncementPhase; offset: number };
 type Load = { kind: 'loading' } | { kind: 'ready'; page: AnnouncementPage } | { kind: 'failed'; message: string };
@@ -95,7 +96,7 @@ export function AnnouncementsPanel() {
 
   if (composing) {
     return (
-      <section className="uf-card uf-stack">
+      <section className="uf-op-section">
         <AnnouncementComposer
           editing={composing.announcement}
           onSaved={() => {
@@ -109,14 +110,22 @@ export function AnnouncementsPanel() {
   }
 
   return (
-    <section className="uf-card uf-stack">
-      <div className="uf-stack-6">
-        <h2>Announcements</h2>
-        <p className="uf-small">
-          What has been said, what is queued behind a start time, and what has stopped. Retiring one stops it being shown;
-          it does not unsay it.
-        </p>
-      </div>
+    <section className="uf-op-section">
+      <header className="uf-op-head">
+        <div className="uf-op-head-text">
+          <h2>
+            Announcements
+            {page ? <span className="uf-op-count">{page.total.toLocaleString()}</span> : null}
+          </h2>
+          <p className="uf-small">
+            What has been said, what is queued behind a start time, and what has stopped. Retiring one stops it being shown;
+            it does not unsay it.
+          </p>
+        </div>
+        <button className="uf-btn uf-btn-primary" type="button" onClick={() => setComposing({ announcement: null })}>
+          New announcement
+        </button>
+      </header>
 
       <div className="uf-op-filter">
         <div className="uf-op-checks">
@@ -132,9 +141,6 @@ export function AnnouncementsPanel() {
             </button>
           ))}
         </div>
-        <button className="uf-btn uf-btn-primary" type="button" onClick={() => setComposing({ announcement: null })}>
-          New announcement
-        </button>
       </div>
 
       {notice ? <p className="uf-small">{notice}</p> : null}
@@ -183,7 +189,9 @@ export function AnnouncementsPanel() {
                   {page.items.map((announcement) => (
                     <tr key={announcement.id}>
                       <td data-wrap="">{announcement.title}</td>
-                      <td>{titleCase(announcement.phase)}</td>
+                      <td>
+                        <StateChip label={titleCase(announcement.phase)} tone={ANNOUNCEMENT_TONE[announcement.phase]} />
+                      </td>
                       <td>{titleCase(announcement.severity)}</td>
                       <td data-wrap="">{audienceOf(announcement)}</td>
                       <td>

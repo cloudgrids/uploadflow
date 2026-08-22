@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { isApiError, mySubscription, openBillingPortal, signOut, useSession, type MySubscription } from '../../lib/api';
-import { StatusLine } from './SiteChrome';
+import { StateChip, SUBSCRIPTION_TONE } from './StateChip';
 import { messageForFailure } from './apiMessages';
 
 type Load = { kind: 'loading' } | { kind: 'ready'; data: MySubscription } | { kind: 'failed'; message: string };
@@ -17,6 +17,26 @@ function formatDate(iso: string | null): string | null {
   if (!iso) return null;
   const at = new Date(iso);
   return Number.isNaN(at.getTime()) ? null : at.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+/**
+ * What the subscription is doing, in a sentence.
+ *
+ * Three separate label-and-value rows used to leave the reader to assemble this themselves — a
+ * status word, a date, and a label that said "Ends" or "Renews" depending on a flag they could not
+ * see. It is one fact and it is written as one.
+ */
+function standing(data: MySubscription): string {
+  const subscription = data.subscription;
+  if (!subscription) return 'Everything that runs on your machine, with no account needed for it.';
+
+  const ends = formatDate(subscription.currentPeriodEnd);
+  const trial = formatDate(subscription.trialEndsAt);
+
+  if (subscription.cancelAtPeriodEnd && ends) return `Ends on ${ends}. Nothing you have already made goes with it.`;
+  if (trial) return `Trial until ${trial}.`;
+  if (ends) return `Renews on ${ends}.`;
+  return 'Active.';
 }
 
 /**
@@ -88,15 +108,18 @@ export function AccountPanel() {
       {load.kind === 'failed' ? <p className="uf-lede">{load.message}</p> : null}
 
       {load.kind === 'ready' ? (
-        <div className="uf-card">
-          <StatusLine label="Plan" value={label(load.data.plan)} />
-          {load.data.subscription ? <StatusLine label="Status" value={label(load.data.subscription.status)} /> : null}
-          {load.data.subscription && formatDate(load.data.subscription.currentPeriodEnd) ? (
-            <StatusLine
-              label={load.data.subscription.cancelAtPeriodEnd ? 'Ends' : 'Renews'}
-              value={formatDate(load.data.subscription.currentPeriodEnd) as string}
-            />
-          ) : null}
+        <div className="uf-standing">
+          <span className="uf-eyebrow uf-eyebrow-dim">Your plan</span>
+          {/* The tier is the answer to the only question this page exists to answer, so it is the
+              size of an answer. It used to be the right-hand half of a label-and-value row, the same
+              weight as the word "Plan" sitting opposite it. */}
+          <p className="uf-standing-plan">
+            {label(load.data.plan)}
+            {load.data.subscription ? (
+              <StateChip label={label(load.data.subscription.status)} tone={SUBSCRIPTION_TONE[load.data.subscription.status]} />
+            ) : null}
+          </p>
+          <p className="uf-small">{standing(load.data)}</p>
         </div>
       ) : null}
 

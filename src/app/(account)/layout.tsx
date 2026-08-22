@@ -27,5 +27,13 @@ export const metadata: Metadata = {
  */
 export default async function AccountLayout({ children }: { children: ReactNode }) {
   await requireSignedIn('/account');
-  return <SitePage>{children}</SitePage>;
+  // A column, for the same reason the sign-in pages have one: what is on this page is a plan, a
+  // date and two buttons, and a card the width of a desktop holding them left most of itself empty
+  // while the reader's eye travelled the whole way anyway. Wider than the sign-in column because
+  // this page has more than a form on it, and because the operator door sits under it.
+  return (
+    <SitePage>
+      <div className="uf-account">{children}</div>
+    </SitePage>
+  );
 }
