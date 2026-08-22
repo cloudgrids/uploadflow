@@ -1,6 +1,7 @@
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { decodeSessionHint, SESSION_HINT_COOKIE, type SessionHint } from '../api/sessionHint';
+import { PATHNAME_HEADER } from '../../proxy';
 
 /**
  * The server half of the gate.
@@ -22,25 +23,26 @@ export async function sessionHint(): Promise<SessionHint | null> {
   return decodeSessionHint(store.get(SESSION_HINT_COOKIE)?.value);
 }
 
-/**
- * Sends somebody to sign in and back again.
- *
- * The path is carried as `next` so the trip is not a dead end — landing on the account page after
- * signing in from `/admin` would be a small betrayal of what they asked for.
- */
-export function toSignIn(pathname: string): never {
-  redirect(`/sign-in?next=${encodeURIComponent(pathname)}`);
+/** The page being wrapped, from the header the proxy sets. */
+export async function currentPath(fallback: string): Promise<string> {
+  const store = await headers();
+  return store.get(PATHNAME_HEADER) || fallback;
 }
 
 /**
- * Renders only for a request that looks signed in.
+ * Renders only for a request that looks signed in, and otherwise sends them to sign in and back.
  *
  * "Looks" is the honest word: a hint can be stale, and a stale one buys nothing but a rendered page
- * whose every call the API refuses. What it cannot do is let somebody in, because it grants
+ * whose every call the API refuses anyway. What it cannot do is let somebody in, because it grants
  * nothing — so the failure mode is a wasted render rather than an exposure.
+ *
+ * The path they were going to travels as `next`, because landing on the account page after asking
+ * for the operator area is an answer rather than help.
  */
-export async function requireSignedIn(pathname: string): Promise<SessionHint> {
+export async function requireSignedIn(fallbackPath: string): Promise<SessionHint> {
   const hint = await sessionHint();
-  if (!hint) toSignIn(pathname);
-  return hint;
+  if (hint) return hint;
+
+  const from = await currentPath(fallbackPath);
+  redirect(`/sign-in?next=${encodeURIComponent(from)}`);
 }

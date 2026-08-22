@@ -1,4 +1,4 @@
-import { UploadFlowLoader } from '../components/site/UploadFlowLoader';
+import { UploadFlowLoader } from '../../components/site/UploadFlowLoader';
 
 /**
  * Shown while a route segment resolves. Most pages here are prerendered, so

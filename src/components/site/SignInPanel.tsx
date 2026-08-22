@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { DEFAULT_RETURN_PATH, safeReturnPath } from '../../lib/returnPath';
 import {
   apiUrl,
   consumeMagicLink,
@@ -56,6 +57,8 @@ export function SignInPanel() {
   const params = useSearchParams();
   const token = params.get('token');
   const failedProvider = params.get('error') === 'oauth';
+  // Where the gate said this trip started. Checked rather than trusted — see `returnPath.ts`.
+  const returnPath = safeReturnPath(params.get('next'));
 
   const [phase, setPhase] = useState<Phase>(() =>
     token
@@ -78,8 +81,9 @@ export function SignInPanel() {
         if (cancelled) return;
         startSession(tokens);
         setPhase({ kind: 'signedIn' });
-        // Clear the token from the address bar so a reload does not retry a spent one.
-        window.history.replaceState(null, '', '/sign-in');
+        // Clear the token from the address bar so a reload does not retry a spent one. The return
+        // path is kept, because it is the only record of where this trip started.
+        window.history.replaceState(null, '', returnPath === DEFAULT_RETURN_PATH ? '/sign-in' : `/sign-in?next=${encodeURIComponent(returnPath)}`);
       })
       .catch((cause: unknown) => {
         if (cancelled) return;
@@ -148,8 +152,8 @@ export function SignInPanel() {
       <div className="uf-stack">
         <p className="uf-lede">You are signed in.</p>
         <div className="uf-cta-row">
-          <a className="uf-btn uf-btn-primary" href="/account">
-            Go to your account <span className="uf-arw">&rarr;</span>
+          <a className="uf-btn uf-btn-primary" href={returnPath}>
+            {returnPath === DEFAULT_RETURN_PATH ? 'Go to your account' : 'Carry on where you were'} <span className="uf-arw">&rarr;</span>
           </a>
         </div>
       </div>
