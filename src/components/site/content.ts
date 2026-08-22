@@ -6,6 +6,7 @@ export const navigation = [
   { href: '/how-it-works', label: 'How it works' },
   { href: '/whats-new', label: 'What\u2019s new' },
   { href: '/plans', label: 'Plans' },
+  { href: '/drops', label: 'Drops' },
   { href: '/privacy', label: 'Privacy' },
   { href: '/support', label: 'Support' }
 ];
