@@ -13,7 +13,7 @@ import {
   type PlanId
 } from './plansContent';
 import { isApiError, isPayablePlan, startCheckout } from '../../lib/api';
-import { messageForFailure } from './apiMessages';
+import { isNotConfigured, messageForFailure } from './apiMessages';
 
 const chipTone = { quiet: 'uf-chip', on: 'uf-chip uf-chip-ok', outline: 'uf-chip uf-chip-beta' } as const;
 
@@ -171,7 +171,14 @@ export function PlanExplorer() {
         window.location.assign('/sign-in');
         return;
       }
-      setNotice(messageForFailure(cause, 'Could not start checkout. Try again.'));
+      // Naming the plan is worth the extra branch: the notice sits under a deck where three other
+      // cards are one swipe away, so "that part of the service" leaves it ambiguous which one was
+      // refused.
+      setNotice(
+        isNotConfigured(cause)
+          ? `${plan.name} cannot be bought yet. Nothing is wrong on your side, and trying again will not change it.`
+          : messageForFailure(cause, 'Could not start checkout. Try again.')
+      );
       setStarting(null);
     }
   };
