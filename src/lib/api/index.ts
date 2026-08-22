@@ -72,3 +72,20 @@ export {
   type CampaignStatus,
   type RewardPlan
 } from './campaigns';
+export {
+  ANNOUNCEMENT_PAGE_SIZE,
+  listAnnouncements,
+  previewAudience,
+  retireAnnouncement,
+  saveAnnouncement,
+  SEVERITIES,
+  type Announcement,
+  type AnnouncementDraft,
+  type AnnouncementPage,
+  type AnnouncementPhase,
+  type Audience,
+  type AudiencePreview,
+  type AudienceScope,
+  type Severity
+} from './announcements';
+

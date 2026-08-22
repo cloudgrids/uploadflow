@@ -26,15 +26,17 @@ export default function AdminLayout({
   children,
   people,
   campaigns,
+  announcements,
   billing
 }: {
   children: ReactNode;
   people: ReactNode;
   campaigns: ReactNode;
+  announcements: ReactNode;
   billing: ReactNode;
 }) {
   return (
-    <OperatorShell people={people} campaigns={campaigns} billing={billing}>
+    <OperatorShell people={people} campaigns={campaigns} announcements={announcements} billing={billing}>
       {children}
     </OperatorShell>
   );
