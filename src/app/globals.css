@@ -347,6 +347,12 @@ input[type='range'] {
 .uf-eyebrow-dim { color: var(--uf-text-3); }
 .uf-lede { color: var(--uf-text-2); font-size: 14px; line-height: 1.6; }
 .uf-small { color: var(--uf-text-3); font-size: 11.5px; line-height: 1.5; }
+/* A line reporting that something went wrong, rather than a line of ordinary quiet copy.
+   `--uf-stop` is the site's ink for a problem and is already used for chips and hairlines; set as
+   type on the page ground it measures 6.8:1 in the light palette and 9.4:1 in the dark, so it
+   clears AA in both without a second token. Weight rather than size does the extra work — the
+   scale is shared with .uf-small on purpose, so an error does not reflow the box it appears in. */
+.uf-alert { color: var(--uf-stop); font-size: 11.5px; line-height: 1.5; font-weight: 500; }
 .uf-mono { font-family: var(--uf-mono); font-variant-numeric: tabular-nums; }
 
 /* ---------- brand ---------- */
@@ -1441,4 +1447,44 @@ a.uf-card:hover h3 { color: var(--uf-accent-ink); }
 
 @container uf (min-width: 620px) {
   .uf-drop-facts { flex-direction: row; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+}
+
+/* ---------- the Google button ----------
+   Google's, not ours, and the only thing on this site that does not take its colours from the
+   `uf-` palette. Their sign-in guidance fixes the ground, the border, the ink, the corner radius
+   and the mark, and a version repainted to match a design system is both off brand and harder for
+   a reader to recognise as the thing they already trust. So the tokens are absent here on purpose;
+   this is not a rule to tidy up later.
+
+   The one deviation is the typeface. The guidance asks for Roboto; loading a second family for a
+   single button is a network request for every visitor who never presses it, so it inherits the
+   site's — matched on size, weight and tracking instead.
+
+   Base is the mark alone, which is a variant their guidance provides and the only thing that fits
+   the 150px floor: the full label runs to about 180px before padding. The words arrive at 380px. */
+.uf-google {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  box-sizing: border-box; height: 40px; width: 40px; padding: 0;
+  border: 1px solid #747775; border-radius: 4px;
+  background: #FFFFFF; color: #1F1F1F;
+  font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.25px;
+  text-decoration: none; white-space: nowrap; cursor: pointer;
+  transition: background-color .18s, border-color .18s;
+}
+.uf-google svg { flex: 0 0 auto; }
+.uf-google-label { display: none; }
+/* Their hover is a state layer over the ground rather than a different colour; these are the two
+   it resolves to at the specified opacity. */
+.uf-google:hover { background: #F2F2F2; }
+.uf-google:focus-visible { outline: 2px solid var(--uf-ring); outline-offset: 2px; }
+
+/* Their dark variant, which exists because a white button on a black page is a flare. It is keyed
+   to the site's own dark class rather than to a media query, for the same reason the palette is —
+   an explicit choice has to beat the operating system. */
+.dark .uf-google { background: #131314; border-color: #8E918F; color: #E3E3E3; }
+.dark .uf-google:hover { background: #1E1F20; }
+
+@container uf (min-width: 380px) {
+  .uf-google { width: auto; padding: 0 12px; }
+  .uf-google-label { display: inline; }
 }

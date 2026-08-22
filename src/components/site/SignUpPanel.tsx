@@ -32,6 +32,23 @@ export function SignUpPanel() {
   const passwordProblem = describePassword(password);
   const mismatch = confirm.length > 0 && confirm !== password;
   const nameTooLong = fullName.trim().length > NAME_LIMIT;
+
+  /**
+   * The one thing wrong right now, or nothing.
+   *
+   * Named rather than inlined into the JSX because the line has to know whether it is reporting a
+   * problem — an empty live region styled as an error is an error nobody can see, and a real one
+   * styled as ordinary copy is what this used to be.
+   */
+  const problem =
+    passwordProblem ??
+    (mismatch
+      ? 'The two entries do not match.'
+      : nameTooLong
+        ? `A name can be up to ${NAME_LIMIT} characters.`
+        : state.kind === 'failed'
+          ? state.message
+          : '');
   const complete =
     fullName.trim().length > 0 && !nameTooLong && email.trim().length > 0 && password.length > 0 && !passwordProblem && !mismatch;
   const creating = state.kind === 'creating';
@@ -168,15 +185,8 @@ export function SignUpPanel() {
         </button>
       </div>
 
-      <p className="uf-small" role="status" aria-live="polite">
-        {passwordProblem ??
-          (mismatch
-            ? 'The two entries do not match.'
-            : nameTooLong
-              ? `A name can be up to ${NAME_LIMIT} characters.`
-              : state.kind === 'failed'
-                ? state.message
-                : '')}
+      <p className={problem ? 'uf-alert' : 'uf-small'} role="status" aria-live="polite">
+        {problem}
       </p>
 
       <p className="uf-small">
