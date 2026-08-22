@@ -21,6 +21,9 @@ export function ResetPasswordPanel() {
 
   const problem = describePassword(password);
   const mismatch = confirm.length > 0 && confirm !== password;
+
+  /** The one thing wrong right now, or nothing. Named so the line can tell which it is styling. */
+  const setProblem = problem ?? (mismatch ? 'The two entries do not match.' : state.kind === 'failed' ? state.message : '');
   const ready = password.length > 0 && !problem && !mismatch;
   const saving = state.kind === 'saving';
 
@@ -114,8 +117,8 @@ export function ResetPasswordPanel() {
         }}
       />
 
-      <p className="uf-small" role="status" aria-live="polite">
-        {problem ?? (mismatch ? 'The two entries do not match.' : state.kind === 'failed' ? state.message : '')}
+      <p className={setProblem ? 'uf-alert' : 'uf-small'} role="status" aria-live="polite">
+        {setProblem}
       </p>
 
       <p className="uf-limit">
@@ -191,7 +194,7 @@ function RequestNewLink({ title, lede }: { title: string; lede: string }) {
               {sending ? 'Sending…' : 'Email me a new link'}
             </button>
           </div>
-          <p className="uf-small" role="status" aria-live="polite">
+          <p className={state.kind === 'failed' ? 'uf-alert' : 'uf-small'} role="status" aria-live="polite">
             {state.kind === 'failed' ? state.message : ''}
           </p>
         </form>

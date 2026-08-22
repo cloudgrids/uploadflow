@@ -10,6 +10,7 @@ import {
   login,
   oauthProviders,
   requestMagicLink,
+  getSession,
   requestPasswordReset,
   startSession
 } from '../../lib/api';
@@ -22,6 +23,12 @@ type Phase =
   | { kind: 'resetSent' }
   | { kind: 'exchanging' }
   | { kind: 'signedIn' }
+  /**
+   * The link did not work **and there is already a session**. Not a failure to report, because the
+   * thing they were trying to achieve is already true — see the render for why this is a state of
+   * its own rather than a nicer error message.
+   */
+  | { kind: 'alreadyIn'; message: string }
   | { kind: 'failed'; message: string };
 
 /** Password, emailed link, or a forgotten password. One panel, because they all start with an address. */
@@ -87,7 +94,13 @@ export function SignInPanel() {
       })
       .catch((cause: unknown) => {
         if (cancelled) return;
-        setPhase({ kind: 'failed', message: messageForFailure(cause, 'That link has expired or has already been used.') });
+        const message = messageForFailure(cause, 'That link has expired or has already been used.');
+        // Being signed in already changes what this failure *means*. Somebody who clicks a spent
+        // link from a browser that already holds a session has not failed to sign in — they are
+        // signed in — and answering with a dead end on a sign-in form is the site refusing to
+        // notice. `getSession()` rather than the hook: this runs in a promise, and the value read
+        // at the moment of failure is the one that matters.
+        setPhase(getSession() ? { kind: 'alreadyIn', message } : { kind: 'failed', message });
       });
 
     return () => {
@@ -149,6 +162,33 @@ export function SignInPanel() {
   };
 
   if (phase.kind === 'exchanging') return <p className="uf-lede">Signing you in…</p>;
+
+  /**
+   * A spent link opened by somebody who is already signed in.
+   *
+   * The old behaviour left them on a sign-in form reading "that link has expired", which is true
+   * and useless: they are signed in, and the page was telling them they had failed to do the thing
+   * they had already done. It is worth saying what happened to the link — silently sending them on
+   * would look like the link worked, and if it was meant for a different account that matters — but
+   * the way out belongs on this page rather than in their hands.
+   */
+  if (phase.kind === 'alreadyIn') {
+    return (
+      <div className="uf-stack">
+        <p className="uf-lede">You are already signed in.</p>
+        <p className="uf-alert">{phase.message}</p>
+        <p className="uf-small">
+          Nothing has changed about the account you are signed in as. If that link was for a different one, sign out from your
+          account first and then open it again.
+        </p>
+        <div className="uf-cta-row">
+          <a className="uf-btn uf-btn-primary" href={returnPath}>
+            {returnPath === DEFAULT_RETURN_PATH ? 'Go to your account' : 'Carry on where you were'} <span className="uf-arw">&rarr;</span>
+          </a>
+        </div>
+      </div>
+    );
+  }
 
   if (phase.kind === 'signedIn') {
     return (
@@ -237,7 +277,7 @@ export function SignInPanel() {
           </button>
         </div>
 
-        <p className="uf-small" role="status" aria-live="polite">
+        <p className={phase.kind === 'failed' ? 'uf-alert' : 'uf-small'} role="status" aria-live="polite">
           {phase.kind === 'failed' ? phase.message : ''}
         </p>
       </form>
