@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { UploadFlowIcon } from '../../lib/icons';
 import { navigation, storeUrl } from './content';
 import { ThemeToggle } from './ThemeToggle';
+import { HeaderAuth } from './HeaderAuth';
 
 export function Logo({ tagline, href = '/' }: { tagline: string; href?: string }) {
   return (
@@ -39,6 +40,7 @@ export function SiteHeader({ logoHref }: { logoHref?: string } = {}) {
           ))}
         </nav>
         <ThemeToggle />
+        <HeaderAuth className="uf-auth-link" />
         <StoreLink className="uf-btn uf-btn-primary uf-btn-xs uf-cta-sm">Add to Chrome</StoreLink>
         {/*
           The same routes, for the widths where the nav does not fit. A native
@@ -65,6 +67,7 @@ export function SiteHeader({ logoHref }: { logoHref?: string } = {}) {
               ))}
             </nav>
             {/* Each of these is here only while the header itself is too narrow to show it. */}
+            <HeaderAuth className="uf-menu-auth" />
             <StoreLink className="uf-menu-cta">Add to Chrome</StoreLink>
             <div className="uf-menu-theme">
               <ThemeToggle />
