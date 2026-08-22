@@ -29,6 +29,28 @@ export const isApiConfigured: boolean = Boolean(configured);
 /** Origin only, no trailing slash. */
 export const apiBaseUrl: string = (configured || LOCAL_BASE_URL).replace(/\/+$/, '');
 
+/** Hosts where `localhost` is a sensible thing for the browser to call. */
+function servedLocally(hostname: string): boolean {
+  return hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '[::1]' || hostname.endsWith('.localhost');
+}
+
+/**
+ * True when the fallback is in use somewhere it cannot possibly work.
+ *
+ * The fallback is right for a developer and catastrophic anywhere else: a visitor's browser calls
+ * their own machine, fails to connect, and is told to check their internet. This is what lets the
+ * client refuse instead — the one thing it must not do is present a missing build variable as a
+ * problem with the visitor's connection.
+ *
+ * Answered in the browser only. During a server render there is no visitor whose machine could be
+ * called, and the build-time check in `next.config.ts` is what covers the deployment itself.
+ */
+export function apiPointsAtTheVisitorsMachine(): boolean {
+  if (isApiConfigured) return false;
+  if (typeof window === 'undefined') return false;
+  return !servedLocally(window.location.hostname);
+}
+
 /** Absolute URL for a path stated relative to the API prefix, e.g. `apiUrl('/waitlist')`. */
 export function apiUrl(path: string): string {
   return `${apiBaseUrl}${API_PREFIX}${path.startsWith('/') ? path : `/${path}`}`;
